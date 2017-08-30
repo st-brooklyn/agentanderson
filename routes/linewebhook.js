@@ -87,17 +87,17 @@ function handleEvent(event) {
                 // Extract the reply
                 console.log("Recast: " + JSON.stringify(res));
 
-                var reply = res.reply();
-                recastConversToken = res.conversationToken;
-
                 // Update conversation token back to the mapping
-                if (recastConversToken === null) {
+                if (recastConversToken == null) {
                     Mapping.findByIdAndUpdate({"_id": mappingId}, {conversationToken: recastConversToken}, {new: true}, function(err, mapping) {
                         if (err) return handleError(err);
 
+                        recastConversToken = res.conversationToken;
                         console.log("Updated conversation token: " + recastConversToken);
                     });
                 }
+
+                var reply = res.reply();
 
                 // Send reply back to the room
                 const message = {

@@ -47,7 +47,7 @@ function handleEvent(event) {
             .then(function (res) {
                 // Extract the reply
                 var reply = res.reply();
-                var convers Token = res.conversationToken;
+                var convers_Token = res.conversationToken;
 
                 // Send reply back to the room
                 const message = {

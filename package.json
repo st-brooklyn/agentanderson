@@ -1,0 +1,35 @@
+{
+  "name": "agentanderson",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "engines": {
+    "node": "8.4.0",
+    "npm": "5.3.0"
+  },
+  "description": "Agent Anderson is a chatbot",
+  "author": {
+    "name": "Brooklyn Steinfeld"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^2.0.0",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.9",
+    "morgan": "^1.7.0",
+    "node-datetime": "^2.0.0",
+    "pg-promise": "^6.5.1",
+    "pug": "^2.0.0-beta6",
+    "recastai": "^3.4.1",
+    "serve-favicon": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

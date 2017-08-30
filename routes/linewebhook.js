@@ -90,12 +90,16 @@ function handleEvent(event) {
 
                 // Update conversation token back to the mapping
                 if (recastConversToken == null) {                    
-                    Mapping.findByIdAndUpdate(mappingId, {$set: {conversationToken: recastConversToken}}, {new: true}, function(err, mapping) {
-                        if (err) return handleError(err);
+                    Mapping.findByIdAndUpdate(mappingId, 
+                        {$set: {conversationToken: recastConversToken}}, 
+                        {new: true}, 
+                        function(err, mapping) {
+                            if (err) return handleError(err);
 
-                        recastConversToken = res.conversationToken;
-                        console.log("Updated conversation token: " + recastConversToken);
-                    });
+                            recastConversToken = res.conversationToken;
+                            console.log("Updated conversation token: " + recastConversToken);
+                        }
+                    );
                 }
 
                 var reply = res.reply();

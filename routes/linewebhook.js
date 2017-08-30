@@ -4,6 +4,7 @@ const line = require('@line/bot-sdk');
 const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
+const hl = require('heroku-logger');
 
 var Mapping = require('../models/mapping');
 
@@ -64,7 +65,7 @@ function handleEvent(event) {
                     });
             })
             .catch((err) => {
-
+                hl.error('Failed to convers text', { argument: 'test arg', value: 'test value' });
             });
 
         Mapping.create({

@@ -45,6 +45,7 @@ function handleEvent(event) {
         var roomId = event.source.roomId;
         var replyToken = event.replyToken;
         var originalMessage = event.message.text;
+        var recastConversToken = null;
 
         var mappingId = '';
 
@@ -57,7 +58,7 @@ function handleEvent(event) {
             if(mapping) {
                 // Mapping exists
                 console.log('Found a mapping with a Token: ' + mapping.conversationToken);
-                replyToken = mapping.conversationToken;
+                recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
             }
             else {
@@ -81,18 +82,22 @@ function handleEvent(event) {
 
         var recastrequest = new rc.request(recast_request_token);
 
-        recastrequest.converseText(event.message.text, { conversationToken: replyToken })
+        recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (res) {
                 // Extract the reply
                 console.log("Recast: " + JSON.stringify(res));
 
                 var reply = res.reply();
-                var convers_Token = res.conversationToken;
+                recastConversToken = res.conversationToken;
 
                 // Update conversation token back to the mapping
-                Mapping.findByIdAndUpdate({"_id": mappingId}, {conversationToken: convers_Token}, {new: true}, function(err, mapping) {
-                    if (err) return handleError(err);
-                });
+                if (recastConversToken === null) {
+                    Mapping.findByIdAndUpdate({"_id": mappingId}, {conversationToken: recastConversToken}, {new: true}, function(err, mapping) {
+                        if (err) return handleError(err);
+
+                        console.log("Updated conversation token: " + recastConversToken);
+                    });
+                }
 
                 // Send reply back to the room
                 const message = {

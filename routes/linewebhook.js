@@ -88,8 +88,8 @@ function handleEvent(event) {
                 console.log("Recast: " + JSON.stringify(res));
 
                 // Update conversation token back to the mapping
-                if (recastConversToken == null) {
-                    Mapping.findByIdAndUpdate({_id: ObjectId(mappingId)}, {$set: {conversationToken: recastConversToken}}, {new: true}, function(err, mapping) {
+                if (recastConversToken == null) {                    
+                    Mapping.findByIdAndUpdate(mappingId, {$set: {conversationToken: recastConversToken}}, {new: true}, function(err, mapping) {
                         if (err) return handleError(err);
 
                         recastConversToken = res.conversationToken;

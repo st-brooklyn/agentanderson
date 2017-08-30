@@ -29,6 +29,10 @@ router.post('/webhook', line.middleware(config), (req, res) => {
     Promise.all(req.body.events.map(handleEvent)).then((result) => res.json(result));
 });
 
+function handleError(err) {
+    console.log(err);
+}
+
 function handleEvent(event) {
     // Process only text message
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -38,9 +42,38 @@ function handleEvent(event) {
     // Extract the message
     if (event.source.type === 'room')
     {
-        var originalMessage = event.message.text;
-        var replyToken = event.replyToken;
         var roomId = event.source.roomId;
+        var replyToken = event.replyToken;
+        var originalMessage = event.message.text;
+
+        console.log('Incoming message: ' + originalMessage + '. Room Id: ' + roomId);
+
+        // Check if the conversation exists -- using roomId
+        Mapping.findOne({roomId: roomId}, 'roomId conversationToken', function(err, mapping) {
+            if(err) return handleError(err);
+            
+            if(mapping) {
+                // Mapping exists
+                console.log('Found a mapping with a Token: ' + mapping.conversationToken);
+                replyToken = mapping.conversationToken;
+            }
+            else {
+                // No mapping -> create a new one
+                console.log('No mapping found');
+                Mapping.create({
+                    roomId: roomId,
+                    userId: event.source.userId,
+                    conversationToken: replyToken,
+                    createdDate: new Date().toJSON(),
+                    modifiedDate: new Date().toJSON(),
+                    originalMessage: originalMessage
+                }, function(err, mapping) {
+                    if (err) handleError(err);
+
+                    console.log("Created with Id: " + mapping._id);
+                });                
+            }
+        });
 
         var recastrequest = new rc.request(recast_request_token);
 
@@ -62,20 +95,21 @@ function handleEvent(event) {
                     })
                     .catch((err) => {
                         // error handling
+                        console.log(err);
                     });
             })
             .catch((err) => {
-                hl.error('Failed to convers text', { argument: 'test arg', value: 'test value' });
+                console.log(err);
             });
 
-        Mapping.create({
-            roomId: roomId,
-            userId: event.source.userId,
-            conversationToken: replyToken,
-            createdDate: new Date().toJSON(),
-            modifiedDate: new Date().toJSON(),
-            originalMessage: originalMessage
-        });
+        // Mapping.create({
+        //     roomId: roomId,
+        //     userId: event.source.userId,
+        //     conversationToken: replyToken,
+        //     createdDate: new Date().toJSON(),
+        //     modifiedDate: new Date().toJSON(),
+        //     originalMessage: originalMessage
+        // });
     }
 
     //Extract data from line message

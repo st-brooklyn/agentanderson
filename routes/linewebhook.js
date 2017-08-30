@@ -86,6 +86,7 @@ function handleEvent(event) {
             .then(function (res) {
                 // Extract the reply
                 console.log("Recast: " + JSON.stringify(res));
+                console.log("Mapping Id: " + mappingId);
 
                 // Update conversation token back to the mapping
                 if (recastConversToken == null) {                    

@@ -46,6 +46,8 @@ function handleEvent(event) {
         var replyToken = event.replyToken;
         var originalMessage = event.message.text;
 
+        var mappingId = '';
+
         console.log('Incoming message: ' + originalMessage + '. Room Id: ' + roomId);
 
         // Check if the conversation exists -- using roomId
@@ -56,6 +58,7 @@ function handleEvent(event) {
                 // Mapping exists
                 console.log('Found a mapping with a Token: ' + mapping.conversationToken);
                 replyToken = mapping.conversationToken;
+                mappingId = mapping._id;
             }
             else {
                 // No mapping -> create a new one
@@ -63,13 +66,14 @@ function handleEvent(event) {
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
-                    conversationToken: replyToken,
+                    conversationToken: null,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
                     originalMessage: originalMessage
                 }, function(err, mapping) {
                     if (err) handleError(err);
-
+                    
+                    mappingId = mapping._id;
                     console.log("Created with Id: " + mapping._id);
                 });                
             }
@@ -84,6 +88,11 @@ function handleEvent(event) {
 
                 var reply = res.reply();
                 var convers_Token = res.conversationToken;
+
+                // Update conversation token back to the mapping
+                Mapping.findByIdAndUpdate({"_id": mappingId}, {conversationToken: convers_Token}, {new: true}, function(err, mapping) {
+                    if (err) return handleError(err);
+                });
 
                 // Send reply back to the room
                 const message = {

@@ -94,7 +94,7 @@ function handleEvent(event) {
                         if (errfind) handleError(errfind);
 
                         if(mapping) {
-                            console.log("Found a mapping with Id: " + Json.stringify(mapping));
+                            console.log("Found a mapping with Id: " + JSON.stringify(mapping));
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: res.conversationToken}}, 

@@ -156,7 +156,7 @@ function handleEvent(event) {
                     handleError("[Create mapping] Created with Id: " + mapping._id, "DEBUG");
                 })
                 .catch((errorcreate) => {
-                    handleError('[Create mapping] ' + errorcreate);
+                    handleError('[Create mapping] ' + errorcreate.stack, "ERROR");
                 });
             }
 
@@ -186,7 +186,7 @@ function handleEvent(event) {
                                 handleError("[Find and update token] Updated conversation token: " + recastConversToken, "DEBUG");
                             })
                             .catch((errupdate) => {
-                                handleError('[Find and update token] ' + errupdate);
+                                handleError('[Find and update token] ' + errupdate.stack, "ERROR");
                             });
                         }
                         else {
@@ -194,7 +194,7 @@ function handleEvent(event) {
                         }
                     })
                     .catch((errfind) => {
-                        handleError('[Find when null token] ' + errfind);
+                        handleError('[Find when null token] ' + errfind.stack, "ERROR");
                     });
                 }
                 else {
@@ -256,15 +256,15 @@ function handleEvent(event) {
                                 {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
                                 {new: true})
                             .then((mappingUpdateReply) => {                                
-                                handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");                                
+                                handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
                             })
                             .catch((errupdate) => {
-                                handleError('[Find to update reply] ' + errupdate);
+                                handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
                             });
                         })
                         .catch((errPushCarousel) => {
                             // error handling
-                            handleError("[Push carousel] Push failed. " + errPushCarousel);
+                            handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
                         });
 
                         lineclient.pushMessage(senderId, reply_text)
@@ -272,15 +272,14 @@ function handleEvent(event) {
 
                         })
                         .catch((errPushText) => {
-                            handleError(errPushText);
-                        });
+                            handleError('[Push Text]' + errPushText.stack, "ERROR");                        });
 
                         lineclient.pushMessage(senderId, reply_confirm)
                         .then(() => {
 
                         })
                         .catch((errPushConfirm) => {
-                            handleError(errPushConfirm);
+                            handleError('[Push confirm] ' + errPushConfirm.stack, "ERROR");
                         });
                     }
                     else {
@@ -288,7 +287,7 @@ function handleEvent(event) {
                     }                    
                 })
                 .catch((errfind) => {
-                    handleError("[Find for sender] Find sender failed. " + errfind);
+                    handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
                 });
             }) // End then findById
             .catch((err) => {

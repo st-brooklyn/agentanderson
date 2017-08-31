@@ -108,11 +108,11 @@ function handleEvent(event) {
                                 }
                             );
 
-                            mapping.conversationToken = recastConversToken;
-                            mapping.save(function(errsave) {
-                                if(errsave) handleError(errsave);
-                                console.log("Updated!!!");
-                            });
+                            // mapping.conversationToken = recastConversToken;
+                            // mapping.save(function(errsave) {
+                            //     if(errsave) handleError(errsave);
+                            //     console.log("Updated!!!");
+                            // });
 
                             // Mapping.update({_id: mapping._id}, 
                             //     {$set : {'conversationToken': recastConversToken}},

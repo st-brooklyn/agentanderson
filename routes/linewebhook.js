@@ -101,7 +101,8 @@ function handleEvent(event) {
                                 function(err, affected, response) {
                                     if(err) handleError(err);
 
-                                    console.log(res);
+                                    console.log("Affected: " + affected._id);
+                                    console.log("Response: " + response);
                                 }
                             );
 

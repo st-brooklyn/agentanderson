@@ -152,8 +152,8 @@ function handleEvent(event) {
                     originalMessage: originalMessage
                 })
                 .then((createdmapping) => {
-                    mappingId = mapping._id;
-                    handleError("[Create mapping] Created with Id: " + mapping._id, "DEBUG");
+                    mappingId = createdmapping._id;
+                    handleError("[Create mapping] Created with Id: " + createdmapping._id, "DEBUG");
                 })
                 .catch((errorcreate) => {
                     handleError('[Create mapping] ' + errorcreate.stack, "ERROR");

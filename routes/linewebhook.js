@@ -89,21 +89,35 @@ function handleEvent(event) {
                 console.log("Mapping Id: " + mappingId);
 
                 // Update conversation token back to the mapping
-                if (recastConversToken == null) {                    
-                    Mapping.findByIdAndUpdate(mappingId, 
-                        {$set: {conversationToken: recastConversToken}}, 
-                        {new: true}, 
-                        function(err, mapping) {
-                            if (err) return handleError(err);
+                if (recastConversToken == null) {
+                    Mapping.findById(mappingId, function(err, mapping) {
+                        if (err) handleError(err);
 
-                            recastConversToken = res.conversationToken;
-                            console.log("Updated conversation token: " + recastConversToken);
+                        if(mapping) {
+                            console.log("Found a mapping with Id: " + mapping._id);
+
+                            // Mapping.findByIdAndUpdate(mappingId, 
+                            //     {$set: {conversationToken: recastConversToken}}, 
+                            //     {new: true}, 
+                            //     function(err, mapping) {
+                            //         if (err) return handleError(err);
+        
+                            //         recastConversToken = res.conversationToken;
+                            //         console.log("Updated conversation token: " + recastConversToken);
+                            //     }
+                            // );
                         }
-                    );
+                        else {
+                            console.log("Mapping not found");
+                        }
+                    });
                 }
 
                 var reply = res.reply();
 
+                if(reply == null) {
+                    reply = '[Error]';
+                }
                 // Send reply back to the room
                 const message = {
                     type: 'text',

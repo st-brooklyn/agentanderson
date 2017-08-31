@@ -43,6 +43,72 @@ router.post('/getmessage', function (req, res) {
     
 });
 
+function createProductCarousel(products) {
+    var parsedProducts = JSON.parse(products);
+    
+    var carousel = {
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {
+            "type": "carousel",
+            "columns": []
+        }
+    };
+
+    parsedProducts.data.products.forEach(function(product) {
+        var column = {
+            "thumbnailImageUrl": product.url_pic,
+            "title": product.product_name,
+            "text": product.highlight,
+            "actions": [                
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": product.tourdetail
+                },
+                {
+                    "type": "uri",
+                    "label": "View Slide",
+                    "uri": product.itemslide
+                }
+            ]
+          };
+
+          carousel.template.columns.push(column);
+    }, this);
+
+    console.log("DEBUG: " + JSON.stringify(carousel));
+
+    return JSON.parse(carousel);
+}
+
+function createConfirmation(intent, converseToken, mappingId) {
+    var confirm = {
+        "type": "template",
+        "altText": "this is a confirm template",
+        "template": {
+            "type": "confirm",
+            "text": "Message correct?",
+            "actions": [
+                {
+                  "type": "uri",
+                  "label": "Yes",
+                  "url": "https://agentanderson.herokuapp.com/qualify/" + mappingId
+                },
+                {
+                  "type": "uri",
+                  "label": "No",
+                  "url": "https://agentanderson.herokuapp.com/disqualify/" + mappingId
+                }
+            ]
+        }
+    };
+
+    console.log("DEBUG: " + JSON.stringify(confirm));
+
+    return JSON.parse(confirm);
+}
+
 
 
 

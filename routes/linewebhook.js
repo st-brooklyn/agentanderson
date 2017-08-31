@@ -89,8 +89,7 @@ function handleEvent(event) {
             handleError("recastConversToken: " + recastConversToken, "DEBUG");
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
-            .then(function (recast_response) {
-                // Extract the reply from recast
+            .then(function (recast_response) {                
                 handleError("Recast: " + JSON.stringify(recast_response), "DEBUG");
                 handleError("Mapping Id: " + mappingId, "DEBUG");
 
@@ -128,17 +127,38 @@ function handleEvent(event) {
                     // No need to update
                 }
 
-                // Construct the reply message            
-                var reply = recast_response.reply() + '\n' + recast_response.conversationToken;
-                
+                // Extract the reply from recast
+                var intent = recast_response.action.slug;
+                handleError("Intent: " + intent, "INFO");
+
+                var isdone = recast_response.action.done;
+                handleError("Done?: " + isdone, "INFO");
+
+                var actual_token = recast_response.conversationToken;
+
+                // Construct the reply message
+                var mockup_products = require('./products.json');
+
+                const linehelper = require('../controllers/LineMessageController');
+                var reply_carousel = linehelper.createProductCarousel(mockup_products);
+
+                var reply_confirm = linehelper.createConfirmation(intent, recast_response.conversationToken, mappingId);
+
+
+                var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                 if(reply == null) {
                     reply = '[Error]\n' + recast_response.conversationToken;
                 }
-        
-                const message = {
-                    type: 'text',
-                    text: reply
+
+                var reply_text = {
+                    "type": "text",
+                    "text": reply
                 };
+        
+                const messages = [];
+                messages.push(reply_text);
+                messages.push(reply_carousel);
+                messages.push(reply_confirm);
 
                 // Send reply to the sender --> reservation //
                 // 1. Get the sender by the mappingId
@@ -150,10 +170,21 @@ function handleEvent(event) {
                         senderId = senderMapping.userId;
                         handleError("Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(senderId, message)
+                        lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
-                            console.log("Line message sent to the sender.", "DEBUG");
+                            handleError("Line message sent to the sender.", "DEBUG");
+
+                            // Save the response back to the mapping -> replyMessage [JSON.stringify]
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                                {new: true})
+                            .then((mappingUpdateReply) => {                                
+                                handleError("Updated response mapping: " + mappingUpdateReply, "DEBUG");                                
+                            })
+                            .catch((errupdate) => {
+                                handleError(errupdate);
+                            });                            
                         })
                         .catch((errpush) => {
                             // error handling

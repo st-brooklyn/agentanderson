@@ -5,7 +5,8 @@ var MappingSchema = new mongoose.Schema({
     conversationToken: String,
     createdDate: String,
     modifiedDate: String,
-    originalMessage: String
+    originalMessage: String,
+    replyMessage: String
 });
 
 mongoose.model('Mapping', MappingSchema);

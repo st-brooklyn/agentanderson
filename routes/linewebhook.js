@@ -34,7 +34,7 @@ function handleError(err, level) {
         console.log(level + ": " + err);    
     }
     else {
-        console.log("ERROR: " + err);
+        console.log("ERROR: " + err.stack);
     }
 }
 

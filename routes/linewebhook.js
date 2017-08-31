@@ -38,6 +38,72 @@ function handleError(err, level) {
     }
 }
 
+function createProductCarousel(products) {
+    var parsedProducts = JSON.parse(products);
+    
+    var carousel = {
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {
+            "type": "carousel",
+            "columns": []
+        }
+    };
+
+    parsedProducts.data.products.forEach(function(product) {
+        var column = {
+            "thumbnailImageUrl": product.url_pic,
+            "title": product.product_name,
+            "text": product.highlight,
+            "actions": [                
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": product.tourdetail
+                },
+                {
+                    "type": "uri",
+                    "label": "View Slide",
+                    "uri": product.itemslide
+                }
+            ]
+          };
+
+          carousel.template.columns.push(column);
+    }, this);
+
+    console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
+
+    return JSON.parse(carousel);
+}
+
+function createConfirmation(intent, converseToken, mappingId) {
+    var confirm = {
+        "type": "template",
+        "altText": "this is a confirm template",
+        "template": {
+            "type": "confirm",
+            "text": "Message correct?",
+            "actions": [
+                {
+                  "type": "uri",
+                  "label": "Yes",
+                  "url": "https://agentanderson.herokuapp.com/qualify/" + mappingId
+                },
+                {
+                  "type": "uri",
+                  "label": "No",
+                  "url": "https://agentanderson.herokuapp.com/disqualify/" + mappingId
+                }
+            ]
+        }
+    };
+
+    console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
+
+    return JSON.parse(confirm);
+}
+
 function handleEvent(event) {
     // Process only text message
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -139,10 +205,10 @@ function handleEvent(event) {
                 // Construct the reply message
                 var mockup_products = require('./products.json');
 
-                const linehelper = require('../controllers/LineMessageController');
-                var reply_carousel = linehelper.createProductCarousel(mockup_products);
+                //const linehelper = require('../controllers/LineMessageController');
+                var reply_carousel = createProductCarousel(mockup_products);
 
-                var reply_confirm = linehelper.createConfirmation(intent, recast_response.conversationToken, mappingId);
+                var reply_confirm = createConfirmation(intent, recast_response.conversationToken, mappingId);
 
 
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                

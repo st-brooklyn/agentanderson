@@ -78,92 +78,83 @@ function handleEvent(event) {
                     console.log("Created with Id: " + mapping._id);
                 });                
             }
+
+            var recastrequest = new rc.request(recast_request_token);
+            
+                    console.log("recastConversToken: " + recastConversToken);
+            
+                    recastrequest.converseText(event.message.text, { "conversation_token": recastConversToken })
+                        .then(function (res) {
+                            // Extract the reply
+                            console.log("Recast: " + JSON.stringify(res));
+                            console.log("Mapping Id: " + mappingId);
+            
+                            // Update conversation token back to the mapping
+                            if (recastConversToken == null) {
+                                Mapping.findById(mappingId, function(errfind, mapping) {
+                                    if (errfind) handleError(errfind);
+            
+                                    if(mapping) {
+                                        console.log("Found a mapping with Id: " + JSON.stringify(mapping));
+            
+                                        Mapping.findByIdAndUpdate(mappingId, 
+                                            {$set: {conversationToken: res.conversationToken}}, 
+                                            {new: true}, 
+                                            function(errupdate, affected) {
+                                                if (errupdate) return handleError(errupdate);
+                    
+                                                recastConversToken = affected.conversationToken;
+                                                console.log("Affected: " + affected);
+                                                console.log("Updated conversation token: " + recastConversToken);
+                                            }
+                                        );
+            
+                                        // mapping.conversationToken = recastConversToken;
+                                        // mapping.save(function(errsave) {
+                                        //     if(errsave) handleError(errsave);
+                                        //     console.log("Updated!!!");
+                                        // });
+            
+                                        // Mapping.update({_id: mapping._id}, 
+                                        //     {$set : {'conversationToken': recastConversToken}},
+                                        //     function(err, affected, response) {
+                                        //         if(err) handleError(err);
+            
+                                        //         console.log("Affected: " + affected._id);
+                                        //         console.log("Response: " + response);
+                                        //     }
+                                        // );
+                                    }
+                                    else {
+                                        console.log("Mapping not found");
+                                    }
+                                });
+                            }
+            
+                            var reply = res.reply();
+            
+                            if(reply == null) {
+                                reply = '[Error]';
+                            }
+                            // Send reply back to the room
+                            const message = {
+                                type: 'text',
+                                text: reply
+                            };
+            
+                            lineclient.pushMessage(event.source.roomId, message)
+                                .then(() => {
+                                    // process after push message to Line
+                                })
+                                .catch((errpush) => {
+                                    // error handling
+                                    console.log(errpush);
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
         });
-
-        var recastrequest = new rc.request(recast_request_token);
-
-        console.log("recastConversToken: " + recastConversToken);
-
-        recastrequest.converseText(event.message.text, { "conversation_token": recastConversToken })
-            .then(function (res) {
-                // Extract the reply
-                console.log("Recast: " + JSON.stringify(res));
-                console.log("Mapping Id: " + mappingId);
-
-                // Update conversation token back to the mapping
-                if (recastConversToken == null) {
-                    Mapping.findById(mappingId, function(errfind, mapping) {
-                        if (errfind) handleError(errfind);
-
-                        if(mapping) {
-                            console.log("Found a mapping with Id: " + JSON.stringify(mapping));
-
-                            Mapping.findByIdAndUpdate(mappingId, 
-                                {$set: {conversationToken: res.conversationToken}}, 
-                                {new: true}, 
-                                function(errupdate, affected) {
-                                    if (errupdate) return handleError(errupdate);
-        
-                                    recastConversToken = affected.conversationToken;
-                                    console.log("Affected: " + affected);
-                                    console.log("Updated conversation token: " + recastConversToken);
-                                }
-                            );
-
-                            // mapping.conversationToken = recastConversToken;
-                            // mapping.save(function(errsave) {
-                            //     if(errsave) handleError(errsave);
-                            //     console.log("Updated!!!");
-                            // });
-
-                            // Mapping.update({_id: mapping._id}, 
-                            //     {$set : {'conversationToken': recastConversToken}},
-                            //     function(err, affected, response) {
-                            //         if(err) handleError(err);
-
-                            //         console.log("Affected: " + affected._id);
-                            //         console.log("Response: " + response);
-                            //     }
-                            // );
-                        }
-                        else {
-                            console.log("Mapping not found");
-                        }
-                    });
-                }
-
-                var reply = res.reply();
-
-                if(reply == null) {
-                    reply = '[Error]';
-                }
-                // Send reply back to the room
-                const message = {
-                    type: 'text',
-                    text: reply
-                };
-
-                lineclient.pushMessage(event.source.roomId, message)
-                    .then(() => {
-                        // process after push message to Line
-                    })
-                    .catch((errpush) => {
-                        // error handling
-                        console.log(errpush);
-                    });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-        // Mapping.create({
-        //     roomId: roomId,
-        //     userId: event.source.userId,
-        //     conversationToken: replyToken,
-        //     createdDate: new Date().toJSON(),
-        //     modifiedDate: new Date().toJSON(),
-        //     originalMessage: originalMessage
-        // });
     }
 
     //Extract data from line message

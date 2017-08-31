@@ -67,7 +67,7 @@ function handleEvent(event) {
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
-                    conversationToken: null,
+                    conversationToken: '',
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
                     originalMessage: originalMessage
@@ -101,7 +101,7 @@ function handleEvent(event) {
                                 function(err, affected, response) {
                                     if(err) handleError(err);
 
-                                    console.log(resp);
+                                    console.log(res);
                                 }
                             );
 

@@ -30,9 +30,12 @@ function handleError(err, level) {
 router.get('/qualify/:id', function (req, res, next) {
     var id = req.params.id;
 
+    console.log("[Qualifier ID] => " + id);
+
     Mapping.findById(id)
     .then((foundone) => {
         // get the message and send back to the room
+        console.log("Found: " + JSON.stringify(foundone));
         var roomId = foundone.roomId;
         var reply = foundone.replyMessage;
 

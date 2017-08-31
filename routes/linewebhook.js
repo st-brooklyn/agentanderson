@@ -29,8 +29,13 @@ router.post('/webhook', line.middleware(config), (req, res) => {
     Promise.all(req.body.events.map(handleEvent)).then((result) => res.json(result));
 });
 
-function handleError(err) {
-    console.log(err);
+function handleError(err, level) {
+    if (level){
+        console.log(level + ": " + err);    
+    }
+    else {
+        console.log("ERROR: " + err);
+    }
 }
 
 function handleEvent(event) {
@@ -49,112 +54,133 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        console.log('Incoming message: ' + originalMessage + '. Room Id: ' + roomId);
+        handleError('Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // Check if the conversation exists -- using roomId
-        Mapping.findOne({roomId: roomId}, 'roomId conversationToken', function(err, mapping) {
-            if(err) return handleError(err);
-            
+        Mapping.findOne({roomId: roomId}, 'roomId conversationToken')
+        .then((mapping) => {
             if(mapping) {
-                // Mapping exists
-                console.log('Found a mapping with a Token: ' + mapping.conversationToken);
+                // Mapping exists, set the converse token
+                handleError('Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
             }
             else {
-                // No mapping -> create a new one
-                console.log('No mapping found');
+                // No mapping -> create a new one [converse token is still null]
+                handleError('No mapping found', "DEBUG");
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
-                    conversationToken: '',
+                    conversationToken: null,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
                     originalMessage: originalMessage
-                }, function(err, mapping) {
-                    if (err) handleError(err);
-                    
+                })
+                .then((createdmapping) => {
                     mappingId = mapping._id;
-                    console.log("Created with Id: " + mapping._id);
-                });                
+                    handleError("Created with Id: " + mapping._id, "DEBUG");
+                })
+                .catch((errorcreate) => {
+                    handleError(errorcreate);
+                });
             }
 
             var recastrequest = new rc.request(recast_request_token);
-            
-                    console.log("recastConversToken: " + recastConversToken);
-            
-                    recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
-                        .then(function (res) {
-                            // Extract the reply
-                            console.log("Recast: " + JSON.stringify(res));
-                            console.log("Mapping Id: " + mappingId);
-            
-                            // Update conversation token back to the mapping
-                            if (recastConversToken == null) {
-                                Mapping.findById(mappingId, function(errfind, mapping) {
-                                    if (errfind) handleError(errfind);
-            
-                                    if(mapping) {
-                                        console.log("Found a mapping with Id: " + JSON.stringify(mapping));
-            
-                                        Mapping.findByIdAndUpdate(mappingId, 
-                                            {$set: {conversationToken: res.conversationToken}}, 
-                                            {new: true}, 
-                                            function(errupdate, affected) {
-                                                if (errupdate) return handleError(errupdate);
-                    
-                                                recastConversToken = affected.conversationToken;
-                                                console.log("Affected: " + affected);
-                                                console.log("Updated conversation token: " + recastConversToken);
-                                            }
-                                        );
-            
-                                        // mapping.conversationToken = recastConversToken;
-                                        // mapping.save(function(errsave) {
-                                        //     if(errsave) handleError(errsave);
-                                        //     console.log("Updated!!!");
-                                        // });
-            
-                                        // Mapping.update({_id: mapping._id}, 
-                                        //     {$set : {'conversationToken': recastConversToken}},
-                                        //     function(err, affected, response) {
-                                        //         if(err) handleError(err);
-            
-                                        //         console.log("Affected: " + affected._id);
-                                        //         console.log("Response: " + response);
-                                        //     }
-                                        // );
-                                    }
-                                    else {
-                                        console.log("Mapping not found");
-                                    }
-                                });
-                            }
-            
-                            var reply = res.reply() + '\n' + res.conversationToken;
-            
-                            if(reply == null) {
-                                reply = '[Error]\n' + res.conversationToken;
-                            }
-                            // Send reply back to the room
-                            const message = {
-                                type: 'text',
-                                text: reply
-                            };
-            
-                            lineclient.pushMessage(event.source.roomId, message)
-                                .then(() => {
-                                    // process after push message to Line
-                                })
-                                .catch((errpush) => {
-                                    // error handling
-                                    console.log(errpush);
-                                });
+            handleError("recastConversToken: " + recastConversToken, "DEBUG");
+
+            recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
+            .then(function (recast_response) {
+                // Extract the reply from recast
+                handleError("Recast: " + JSON.stringify(recast_response), "DEBUG");
+                handleError("Mapping Id: " + mappingId, "DEBUG");
+
+                // Update conversation token back to the mapping 
+                // and Set the converse token
+                if (recastConversToken == null) {
+                    Mapping.findById(mappingId)
+                    .then((mappingtoupdate) => {
+                        if(mappingtoupdate) {
+                            handleError("Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
+
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {conversationToken: recast_response.conversationToken}}, 
+                                {new: true})
+                            .then((affected) => {
+                                // update the converse token
+                                recastConversToken = affected.conversationToken;
+                                handleError("Affected: " + affected, "DEBUG");
+                                handleError("Updated conversation token: " + recastConversToken, "DEBUG");
+                            })
+                            .catch((errupdate) => {
+                                handleError(errupdate);
+                            });
+                        }
+                        else {
+                            return handleError("Mapping not found.", "WARNING");
+                        }
+                    })
+                    .catch((errfind) => {
+                        handleError(errfind);
+                    });
+                }
+                else {
+                    // recastConversToken is not null
+                    // No need to update
+                }
+
+                // Construct the reply message            
+                var reply = recast_response.reply() + '\n' + recast_response.conversationToken;
+                
+                if(reply == null) {
+                    reply = '[Error]\n' + recast_response.conversationToken;
+                }
+        
+                const message = {
+                    type: 'text',
+                    text: reply
+                };
+
+                // Send reply to the sender --> reservation //
+                // 1. Get the sender by the mappingId
+                var senderId = '';
+
+                Mapping.findById(mappingId)
+                .then((senderMapping) => {
+                    if(senderMapping) {
+                        senderId = senderMapping.userId;
+                        handleError("Sender Id: " + senderId, "DEBUG");
+                        
+                        lineclient.pushMessage(userId, message)
+                        .then(() => {
+                            // process after push message to Line
+                            console.log("Line message sent to the sender.", "DEBUG");
                         })
-                        .catch((err) => {
-                            console.log(err);
+                        .catch((errpush) => {
+                            // error handling
+                            handleError(errpush);
                         });
-        });
+                    }
+                    else {
+                        handleError("Mapping for sender not found", "WARNING");
+                    }                    
+                })
+                .catch((errfind) => {
+                    handleError(errfind);
+                });
+            }) // End then findById
+            .catch((err) => {
+                handleError(err);
+            });            
+        }) // End then
+        .catch((errfindone) => {
+            handleError(errfindone);
+        }); 
+            
+            
+
+            
+            
+
     }
 
     //Extract data from line message

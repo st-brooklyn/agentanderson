@@ -122,14 +122,14 @@ function handleEvent(event) {
 
         handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
-        // for testing -> delete the entry
-        Mapping.findOneAndRemove({roomId: roomId})
-        .then((res) => {
-            handleError("[Remove an entry] Removed.", "DEBUG");
-        })
-        .catch((error) => {
-            handleError(error);
-        });
+        // // for testing -> delete the entry
+        // Mapping.findOneAndRemove({roomId: roomId})
+        // .then((res) => {
+        //     handleError("[Remove an entry] Removed.", "DEBUG");
+        // })
+        // .catch((error) => {
+        //     handleError(error);
+        // });
 
         // Check if the conversation exists -- using roomId
         Mapping.findOne({roomId: roomId}, 'roomId conversationToken')
@@ -216,7 +216,6 @@ function handleEvent(event) {
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);
-
                 var reply_confirm = createConfirmation(intent, recast_response.conversationToken, mappingId);
 
 
@@ -235,6 +234,8 @@ function handleEvent(event) {
                 messages.push(reply_carousel);
                 messages.push(reply_confirm);
 
+                handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+
                 // Send reply to the sender --> reservation //
                 // 1. Get the sender by the mappingId
                 var senderId = '';
@@ -245,10 +246,10 @@ function handleEvent(event) {
                         senderId = senderMapping.userId;
                         handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(senderId, messages)
+                        lineclient.pushMessage(senderId, reply_carousel)
                         .then(() => {
                             // process after push message to Line
-                            handleError("[Push message] Line message sent to the sender.", "DEBUG");
+                            handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
 
                             // Save the response back to the mapping -> replyMessage [JSON.stringify]
                             Mapping.findByIdAndUpdate(mappingId, 
@@ -259,11 +260,27 @@ function handleEvent(event) {
                             })
                             .catch((errupdate) => {
                                 handleError('[Find to update reply] ' + errupdate);
-                            });                            
+                            });
                         })
-                        .catch((errpush) => {
+                        .catch((errPushCarousel) => {
                             // error handling
-                            handleError("[Push message] Push failed. " + errpush);
+                            handleError("[Push carousel] Push failed. " + errPushCarousel);
+                        });
+
+                        lineclient.pushMessage(senderId, reply_text)
+                        .then(() => {
+
+                        })
+                        .catch((errPushText) => {
+                            handleError(errPushText);
+                        });
+
+                        lineclient.pushMessage(senderId, reply_confirm)
+                        .then(() => {
+
+                        })
+                        .catch((errPushConfirm) => {
+                            handleError(errPushConfirm);
                         });
                     }
                     else {

@@ -131,10 +131,10 @@ function handleEvent(event) {
                                 });
                             }
             
-                            var reply = res.reply();
+                            var reply = res.reply() + '\n' + res.conversationToken;
             
                             if(reply == null) {
-                                reply = '[Error]';
+                                reply = '[Error]\n' + res.conversationToken;
                             }
                             // Send reply back to the room
                             const message = {

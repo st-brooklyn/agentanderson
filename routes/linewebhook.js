@@ -94,7 +94,19 @@ function handleEvent(event) {
                         if (errfind) handleError(errfind);
 
                         if(mapping) {
-                            console.log("Found a mapping with Id: " + mapping._id);
+                            console.log("Found a mapping with Id: " + Json.stringify(mapping));
+
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {conversationToken: res.conversationToken}}, 
+                                {new: true}, 
+                                function(errupdate, affected) {
+                                    if (errupdate) return handleError(errupdate);
+        
+                                    recastConversToken = affected.conversationToken;
+                                    console.log("Affected: " + affected);
+                                    console.log("Updated conversation token: " + recastConversToken);
+                                }
+                            );
 
                             mapping.conversationToken = recastConversToken;
                             mapping.save(function(errsave) {
@@ -109,17 +121,6 @@ function handleEvent(event) {
 
                             //         console.log("Affected: " + affected._id);
                             //         console.log("Response: " + response);
-                            //     }
-                            // );
-
-                            // Mapping.findByIdAndUpdate(mappingId, 
-                            //     {$set: {conversationToken: recastConversToken}}, 
-                            //     {new: true}, 
-                            //     function(err, mapping) {
-                            //         if (err) return handleError(err);
-        
-                            //         recastConversToken = res.conversationToken;
-                            //         console.log("Updated conversation token: " + recastConversToken);
                             //     }
                             // );
                         }

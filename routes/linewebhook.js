@@ -90,21 +90,27 @@ function handleEvent(event) {
 
                 // Update conversation token back to the mapping
                 if (recastConversToken == null) {
-                    Mapping.findById(mappingId, function(err, mapping) {
-                        if (err) handleError(err);
+                    Mapping.findById(mappingId, function(errfind, mapping) {
+                        if (errfind) handleError(errfind);
 
                         if(mapping) {
                             console.log("Found a mapping with Id: " + mapping._id);
 
-                            Mapping.update({_id: mappingId}, 
-                                {$set : {'conversationToken': recastConversToken}},
-                                function(err, affected, response) {
-                                    if(err) handleError(err);
+                            mapping.conversationToken = recastConversToken;
+                            mapping.save(function(errsave) {
+                                if(errsave) handleError(errsave);
+                                console.log("Updated!!!");
+                            });
 
-                                    console.log("Affected: " + affected._id);
-                                    console.log("Response: " + response);
-                                }
-                            );
+                            // Mapping.update({_id: mapping._id}, 
+                            //     {$set : {'conversationToken': recastConversToken}},
+                            //     function(err, affected, response) {
+                            //         if(err) handleError(err);
+
+                            //         console.log("Affected: " + affected._id);
+                            //         console.log("Response: " + response);
+                            //     }
+                            // );
 
                             // Mapping.findByIdAndUpdate(mappingId, 
                             //     {$set: {conversationToken: recastConversToken}}, 
@@ -138,9 +144,9 @@ function handleEvent(event) {
                     .then(() => {
                         // process after push message to Line
                     })
-                    .catch((err) => {
+                    .catch((errpush) => {
                         // error handling
-                        console.log(err);
+                        console.log(errpush);
                     });
             })
             .catch((err) => {

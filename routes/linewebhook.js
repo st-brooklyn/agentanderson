@@ -149,7 +149,8 @@ function handleEvent(event) {
                     conversationToken: null,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
-                    originalMessage: originalMessage
+                    originalMessage: originalMessage,
+                    replyMessage: null
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
@@ -246,7 +247,7 @@ function handleEvent(event) {
                         senderId = senderMapping.userId;
                         handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(senderId, reply_carousel)
+                        lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
                             handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
@@ -267,20 +268,20 @@ function handleEvent(event) {
                             handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
                         });
 
-                        lineclient.pushMessage(senderId, reply_text)
-                        .then(() => {
+                        // lineclient.pushMessage(senderId, reply_text)
+                        // .then(() => {
 
-                        })
-                        .catch((errPushText) => {
-                            handleError('[Push Text]' + errPushText.stack, "ERROR");                        });
+                        // })
+                        // .catch((errPushText) => {
+                        //     handleError('[Push Text]' + errPushText.stack, "ERROR");                        });
 
-                        lineclient.pushMessage(senderId, reply_confirm)
-                        .then(() => {
+                        // lineclient.pushMessage(senderId, reply_confirm)
+                        // .then(() => {
 
-                        })
-                        .catch((errPushConfirm) => {
-                            handleError('[Push confirm] ' + errPushConfirm.stack, "ERROR");
-                        });
+                        // })
+                        // .catch((errPushConfirm) => {
+                        //     handleError('[Push confirm] ' + errPushConfirm.stack, "ERROR");
+                        // });
                     }
                     else {
                         handleError("[Find for sender] Mapping for sender not found", "WARNING");

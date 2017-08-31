@@ -103,10 +103,10 @@ function createConfirmation(mappingId) {
     return confirm;
 }
 
-function createAiResultMessage(intent, converseToken, replyFromAi) {
+function createAiResultMessage(intent, converseToken, replyFromAi, sourceMessage) {
     return {
         "type" : "text",
-        "text" : 'Message: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+        "text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
     };
 }
 
@@ -223,7 +223,7 @@ function handleEvent(event) {
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);
-                var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply());
+                var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
                 var reply_confirm = createConfirmation(mappingId);
 
 

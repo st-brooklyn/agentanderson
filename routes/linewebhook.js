@@ -39,7 +39,7 @@ function handleError(err, level) {
 }
 
 function createProductCarousel(products) {
-    var parsedProducts = JSON.parse(products);
+    var parsedProducts = products;
     
     var carousel = {
         "type": "template",

@@ -74,7 +74,7 @@ function createProductCarousel(products) {
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
-    return JSON.parse(carousel);
+    return carousel;
 }
 
 function createConfirmation(intent, converseToken, mappingId) {
@@ -101,7 +101,7 @@ function createConfirmation(intent, converseToken, mappingId) {
 
     console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
 
-    return JSON.parse(confirm);
+    return confirm;
 }
 
 function handleEvent(event) {
@@ -121,6 +121,15 @@ function handleEvent(event) {
         var mappingId = '';
 
         handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+
+        // for testing -> delete the entry
+        Mapping.findOneAndRemove({roomId: roomId})
+        .then((res) => {
+            handleError("[Remove an entry] Removed.", "DEBUG");
+        })
+        .catch((error) => {
+            handleError(error);
+        });
 
         // Check if the conversation exists -- using roomId
         Mapping.findOne({roomId: roomId}, 'roomId conversationToken')

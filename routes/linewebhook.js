@@ -168,7 +168,6 @@ function handleEvent(event) {
             }
 
 
-            
 
             var recastrequest = new rc.request(recast_request_token);
             handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");

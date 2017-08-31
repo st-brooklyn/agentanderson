@@ -83,7 +83,7 @@ function handleEvent(event) {
             
                     console.log("recastConversToken: " + recastConversToken);
             
-                    recastrequest.converseText(event.message.text, { "conversation_token": recastConversToken })
+                    recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
                         .then(function (res) {
                             // Extract the reply
                             console.log("Recast: " + JSON.stringify(res));

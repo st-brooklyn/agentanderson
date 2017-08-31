@@ -150,7 +150,7 @@ function handleEvent(event) {
                         senderId = senderMapping.userId;
                         handleError("Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(userId, message)
+                        lineclient.pushMessage(senderId, message)
                         .then(() => {
                             // process after push message to Line
                             console.log("Line message sent to the sender.", "DEBUG");

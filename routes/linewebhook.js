@@ -4,7 +4,6 @@ const line = require('@line/bot-sdk');
 const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
-const hl = require('heroku-logger');
 
 var Mapping = require('../models/mapping');
 
@@ -77,7 +76,7 @@ function createProductCarousel(products) {
     return carousel;
 }
 
-function createConfirmation(intent, converseToken, mappingId) {
+function createConfirmation(mappingId) {
     var confirm = {
         "type": "template",
         "altText": "this is a confirm template",
@@ -102,6 +101,13 @@ function createConfirmation(intent, converseToken, mappingId) {
     console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
 
     return confirm;
+}
+
+function createAiResultMessage(intent, converseToken, replyFromAi) {
+    return {
+        "type" : "text",
+        "text" : 'Message: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+    };
 }
 
 function handleEvent(event) {
@@ -217,7 +223,8 @@ function handleEvent(event) {
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);
-                var reply_confirm = createConfirmation(intent, recast_response.conversationToken, mappingId);
+                var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply());
+                var reply_confirm = createConfirmation(mappingId);
 
 
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
@@ -230,9 +237,9 @@ function handleEvent(event) {
                     "text": reply
                 };
         
-                const messages = [];
-                messages.push(reply_text);
+                const messages = [];                
                 messages.push(reply_carousel);
+                messages.push(reply_details);
                 messages.push(reply_confirm);
 
                 handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");

@@ -54,20 +54,20 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        handleError('Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // Check if the conversation exists -- using roomId
         Mapping.findOne({roomId: roomId}, 'roomId conversationToken')
         .then((mapping) => {
             if(mapping) {
                 // Mapping exists, set the converse token
-                handleError('Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
+                handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
             }
             else {
                 // No mapping -> create a new one [converse token is still null]
-                handleError('No mapping found', "DEBUG");
+                handleError('[Check room Id] No mapping found', "DEBUG");
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
@@ -78,20 +78,20 @@ function handleEvent(event) {
                 })
                 .then((createdmapping) => {
                     mappingId = mapping._id;
-                    handleError("Created with Id: " + mapping._id, "DEBUG");
+                    handleError("[Create mapping] Created with Id: " + mapping._id, "DEBUG");
                 })
                 .catch((errorcreate) => {
-                    handleError(errorcreate);
+                    handleError('[Create mapping] ' + errorcreate);
                 });
             }
 
             var recastrequest = new rc.request(recast_request_token);
-            handleError("recastConversToken: " + recastConversToken, "DEBUG");
+            handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {                
-                handleError("Recast: " + JSON.stringify(recast_response), "DEBUG");
-                handleError("Mapping Id: " + mappingId, "DEBUG");
+                handleError("[ConversText] Recast: " + JSON.stringify(recast_response), "DEBUG");
+                handleError("[ConversText] Mapping Id: " + mappingId, "DEBUG");
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token
@@ -99,7 +99,7 @@ function handleEvent(event) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
                         if(mappingtoupdate) {
-                            handleError("Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
+                            handleError("[Find when null token] Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: recast_response.conversationToken}}, 
@@ -107,19 +107,19 @@ function handleEvent(event) {
                             .then((affected) => {
                                 // update the converse token
                                 recastConversToken = affected.conversationToken;
-                                handleError("Affected: " + affected, "DEBUG");
-                                handleError("Updated conversation token: " + recastConversToken, "DEBUG");
+                                handleError("[Find and update token] Affected: " + affected, "DEBUG");
+                                handleError("[Find and update token] Updated conversation token: " + recastConversToken, "DEBUG");
                             })
                             .catch((errupdate) => {
-                                handleError(errupdate);
+                                handleError('[Find and update token] ' + errupdate);
                             });
                         }
                         else {
-                            return handleError("Mapping not found.", "WARNING");
+                            return handleError("[Find and update token] Mapping not found.", "WARNING");
                         }
                     })
                     .catch((errfind) => {
-                        handleError(errfind);
+                        handleError('[Find when null token] ' + errfind);
                     });
                 }
                 else {
@@ -129,10 +129,10 @@ function handleEvent(event) {
 
                 // Extract the reply from recast
                 var intent = recast_response.action.slug;
-                handleError("Intent: " + intent, "INFO");
+                handleError("[Main] Intent: " + intent, "INFO");
 
                 var isdone = recast_response.action.done;
-                handleError("Done?: " + isdone, "INFO");
+                handleError("[Main] Done?: " + isdone, "INFO");
 
                 var actual_token = recast_response.conversationToken;
 
@@ -168,35 +168,35 @@ function handleEvent(event) {
                 .then((senderMapping) => {
                     if(senderMapping) {
                         senderId = senderMapping.userId;
-                        handleError("Sender Id: " + senderId, "DEBUG");
+                        handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         
                         lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
-                            handleError("Line message sent to the sender.", "DEBUG");
+                            handleError("[Push message] Line message sent to the sender.", "DEBUG");
 
                             // Save the response back to the mapping -> replyMessage [JSON.stringify]
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
                                 {new: true})
                             .then((mappingUpdateReply) => {                                
-                                handleError("Updated response mapping: " + mappingUpdateReply, "DEBUG");                                
+                                handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");                                
                             })
                             .catch((errupdate) => {
-                                handleError(errupdate);
+                                handleError('[Find to update reply] ' + errupdate);
                             });                            
                         })
                         .catch((errpush) => {
                             // error handling
-                            handleError(errpush);
+                            handleError("[Push message] Push failed. " + errpush);
                         });
                     }
                     else {
-                        handleError("Mapping for sender not found", "WARNING");
+                        handleError("[Find for sender] Mapping for sender not found", "WARNING");
                     }                    
                 })
                 .catch((errfind) => {
-                    handleError(errfind);
+                    handleError("[Find for sender] Find sender failed. " + errfind);
                 });
             }) // End then findById
             .catch((err) => {

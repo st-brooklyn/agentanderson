@@ -97,7 +97,7 @@ function handleEvent(event) {
                             console.log("Found a mapping with Id: " + mapping._id);
 
                             Mapping.update({_id: mappingId}, 
-                                {conversationToken: recastConversToken},
+                                {$set : {'conversationToken': recastConversToken}},
                                 function(err, affected, response) {
                                     if(err) handleError(err);
 

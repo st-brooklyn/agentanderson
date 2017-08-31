@@ -96,6 +96,15 @@ function handleEvent(event) {
                         if(mapping) {
                             console.log("Found a mapping with Id: " + mapping._id);
 
+                            Mapping.update({_id: mappingId}, 
+                                {conversationToken: recastConversToken},
+                                function(err, affected, response) {
+                                    if(err) handleError(err);
+
+                                    console.log(resp);
+                                }
+                            );
+
                             // Mapping.findByIdAndUpdate(mappingId, 
                             //     {$set: {conversationToken: recastConversToken}}, 
                             //     {new: true}, 

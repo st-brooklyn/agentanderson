@@ -77,7 +77,7 @@ function createProductCarousel(products) {
           carousel.template.columns.push(column);
     }, this);
 
-    console.log("DEBUG: " + JSON.stringify(carousel));
+    console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
     return JSON.parse(carousel);
 }
@@ -104,7 +104,7 @@ function createConfirmation(intent, converseToken, mappingId) {
         }
     };
 
-    console.log("DEBUG: " + JSON.stringify(confirm));
+    console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
 
     return JSON.parse(confirm);
 }
@@ -113,4 +113,4 @@ function createConfirmation(intent, converseToken, mappingId) {
 
 
 
-module.exports = router;
+//module.exports = router;

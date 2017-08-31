@@ -50,7 +50,7 @@ function createProductCarousel(products) {
         }
     };
 
-    parsedProducts.data.products.forEach(function(product) {
+    parsedProducts.data.products.forEach((product) => {
         var column = {
             "thumbnailImageUrl": product.url_pic,
             "title": product.product_name,
@@ -59,15 +59,15 @@ function createProductCarousel(products) {
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": product.tourdetail
+                    "uri": ''+product.tourdetail
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": product.itemslide
+                    "uri": ''+product.itemslide 
                 }
             ]
-          };
+        };
 
           carousel.template.columns.push(column);
     }, this);
@@ -88,12 +88,12 @@ function createConfirmation(intent, converseToken, mappingId) {
                 {
                   "type": "uri",
                   "label": "Yes",
-                  "url": "https://agentanderson.herokuapp.com/qualify/" + mappingId
+                  "uri": "https://agentanderson.herokuapp.com/qualify/" + mappingId
                 },
                 {
                   "type": "uri",
                   "label": "No",
-                  "url": "https://agentanderson.herokuapp.com/disqualify/" + mappingId
+                  "uri": "https://agentanderson.herokuapp.com/disqualify/" + mappingId
                 }
             ]
         }

@@ -87,12 +87,12 @@ function createConfirmation(mappingId) {
                 {
                   "type": "uri",
                   "label": "Yes",
-                  "uri": "https://agentanderson.herokuapp.com/qualify/" + mappingId
+                  "uri": "https://agentanderson.herokuapp.com/qualifier/qualify/" + mappingId
                 },
                 {
                   "type": "uri",
                   "label": "No",
-                  "uri": "https://agentanderson.herokuapp.com/disqualify/" + mappingId
+                  "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
                 }
             ]
         }

@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+
 var app = express();
 var db = require('./data/database');
 
@@ -33,6 +34,9 @@ app.use('/users', users);
 // Controllers
 var linemessage = require('./routes/linewebhook');
 app.use('/line', linemessage);
+
+var qualifiers = require('./routes/qualifier');
+app.use('/qualifier', qualifiers);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

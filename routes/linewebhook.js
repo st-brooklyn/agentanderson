@@ -9,7 +9,7 @@ var Mapping = require('../models/mapping');
 
 const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
 const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
-const recast_request_token = '14dbc382a7fcd17d4df5e3a8a73a0176';
+const recast_request_token = 'a77e7abf77a2bb08422e96d0d1a7a84c';
 
 //const config = {
 //    channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,

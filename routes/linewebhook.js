@@ -43,7 +43,7 @@ function createProductCarousel(products) {
     var carousel = {
         "type": "template",
         "altText": "this is a carousel template",
-        "template": {
+        "template": {   
             "type": "carousel",
             "columns": []
         }
@@ -221,6 +221,7 @@ function handleEvent(event) {
                 var actual_token = recast_response.conversationToken;
 
                 // Construct the reply message
+                // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = require('./products.json');
 
                 //const linehelper = require('../controllers/LineMessageController');
@@ -306,13 +307,7 @@ function handleEvent(event) {
         }) // End then
         .catch((errfindone) => {
             handleError(errfindone);
-        }); 
-            
-            
-
-            
-            
-
+        });
     }
 
     //Extract data from line message

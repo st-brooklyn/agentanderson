@@ -85,9 +85,9 @@ function createConfirmation(mappingId) {
             "text": "Message correct?",
             "actions": [
                 {
-                  "type": "uri",
+                  "type": "postback",
                   "label": "Yes",
-                  "uri": "https://agentanderson.herokuapp.com/qualifier/qualify/" + mappingId
+                  "data": "disqualify/" + mappingId
                 },
                 {
                   "type": "uri",
@@ -277,21 +277,6 @@ function handleEvent(event) {
                             // error handling
                             handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
                         });
-
-                        // lineclient.pushMessage(senderId, reply_text)
-                        // .then(() => {
-
-                        // })
-                        // .catch((errPushText) => {
-                        //     handleError('[Push Text]' + errPushText.stack, "ERROR");                        });
-
-                        // lineclient.pushMessage(senderId, reply_confirm)
-                        // .then(() => {
-
-                        // })
-                        // .catch((errPushConfirm) => {
-                        //     handleError('[Push confirm] ' + errPushConfirm.stack, "ERROR");
-                        // });
                     }
                     else {
                         handleError("[Find for sender] Mapping for sender not found", "WARNING");

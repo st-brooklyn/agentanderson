@@ -87,7 +87,7 @@ function createConfirmation(mappingId) {
                 {
                   "type": "postback",
                   "label": "Yes",
-                  "data": "disqualify/" + mappingId
+                  "data": "qualify/" + mappingId
                 },
                 {
                   "type": "uri",

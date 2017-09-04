@@ -6,6 +6,7 @@ const db = require('../data/database');
 const rc = require('recastai').default;
 
 var Mapping = require('../models/mapping');
+var APIUrl = require('../data/api');
 
 const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
 const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
@@ -220,6 +221,8 @@ function handleEvent(event) {
                 handleError("[Main] Done?: " + isdone, "INFO");
 
                 var actual_token = recast_response.conversationToken;
+
+                // Call api tour    
 
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)

@@ -223,6 +223,8 @@ function handleEvent(event) {
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
+                var entities = recast_response.entities.country[0];
+                handleError("[Main] entities?: " + entities, "INFO");
 
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)

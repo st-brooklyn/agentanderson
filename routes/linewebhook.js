@@ -9,7 +9,7 @@ var Mapping = require('../models/mapping');
 
 const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
 const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
-const recast_request_token = '14dbc382a7fcd17d4df5e3a8a73a0176';
+const recast_request_token = 'a77e7abf77a2bb08422e96d0d1a7a84c';
 
 //const config = {
 //    channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -43,7 +43,7 @@ function createProductCarousel(products) {
     var carousel = {
         "type": "template",
         "altText": "this is a carousel template",
-        "template": {
+        "template": {   
             "type": "carousel",
             "columns": []
         }
@@ -85,9 +85,10 @@ function createConfirmation(mappingId) {
             "text": "Message correct?",
             "actions": [
                 {
-                  "type": "uri",
+                  "type": "postback",
                   "label": "Yes",
-                  "uri": "https://agentanderson.herokuapp.com/qualifier/qualify/" + mappingId
+                  "data": "qualify/" + mappingId,
+                  "text": "Message sent. :)"
                 },
                 {
                   "type": "uri",
@@ -221,6 +222,7 @@ function handleEvent(event) {
                 var actual_token = recast_response.conversationToken;
 
                 // Construct the reply message
+                // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = require('./products.json');
 
                 //const linehelper = require('../controllers/LineMessageController');
@@ -276,21 +278,6 @@ function handleEvent(event) {
                             // error handling
                             handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
                         });
-
-                        // lineclient.pushMessage(senderId, reply_text)
-                        // .then(() => {
-
-                        // })
-                        // .catch((errPushText) => {
-                        //     handleError('[Push Text]' + errPushText.stack, "ERROR");                        });
-
-                        // lineclient.pushMessage(senderId, reply_confirm)
-                        // .then(() => {
-
-                        // })
-                        // .catch((errPushConfirm) => {
-                        //     handleError('[Push confirm] ' + errPushConfirm.stack, "ERROR");
-                        // });
                     }
                     else {
                         handleError("[Find for sender] Mapping for sender not found", "WARNING");
@@ -306,13 +293,7 @@ function handleEvent(event) {
         }) // End then
         .catch((errfindone) => {
             handleError(errfindone);
-        }); 
-            
-            
-
-            
-            
-
+        });
     }
 
     //Extract data from line message

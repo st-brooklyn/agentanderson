@@ -225,13 +225,14 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities.country[0];
                 handleError("[Main] entities?: " + entities, "INFO");
+                
                 if (intent == "tour-search") {
                     APIUrl = APIUrl & "&mode=searchresultsproduct"
                 }
                 if (entities.value){
                     APIUrl = APIUrl & "&country_slug=japan"
                 }
-                 handleError("[Main] APIUrl?: " + APIUrl, "INFO");
+                handleError("[Main] APIUrl?: " + APIUrl, "INFO");
 
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)

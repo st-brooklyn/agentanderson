@@ -223,8 +223,13 @@ function handleEvent(event) {
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
-                var entities = recast_response.entities.country[0];
+                var entities = recast_response.entities;
                 handleError("[Main] entities?: " + entities, "INFO");
+                // Call function convert country to country_slug 
+                // Call function convert city to city_slug 
+                // Call function convert airline name to airline code
+                // Call function convert date to format date yyyy-mm-dd
+                // Call function convert month to format mm
                 
                 if (intent == "tour-search") {
                     APIUrl = APIUrl & "&mode=searchresultsproduct"

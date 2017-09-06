@@ -224,7 +224,7 @@ function handleEvent(event) {
 
                 // Call api tour    
                 var entities = recast_response.entities;
-                handleError("[Main] entities?: " + entities, "INFO");
+                handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 // Call function convert country to country_slug 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
@@ -241,7 +241,7 @@ function handleEvent(event) {
 
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
-                var mockup_products = require('./products.json');
+                var mockup_products = require('apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan');
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);

@@ -234,10 +234,15 @@ function handleEvent(event) {
                 var mockup_products = null
 
                 var api_request = require('request');
-                api_request('apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan', (errapi, apiResponse, apiBody) => {                    
-                    handleError("[API Mockup]" + JSON.stringify(apiResponse), "DEBUG");                    
-                    mockup_products = apiResponse;
-                });                
+                api_request.get({
+                    url: 'apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
+                    json: true,
+                    headers: {'User-Agent': 'request'}
+                }, (apierr, apiresponse, apidata) => {
+                    if(apierr) return handleError("[API Mockup] " + err.stack, "ERROR");
+                    handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
+                    mockup_products = apidata;
+                })
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);

@@ -239,7 +239,7 @@ function handleEvent(event) {
                     json: true,
                     headers: {'User-Agent': 'request'}
                 }, (apierr, apiresponse, apidata) => {
-                    if(apierr) return handleError("[API Mockup] " + err.stack, "ERROR");
+                    if(apierr) return handleError("[API Mockup] " + apierr.stack, "ERROR");
                     handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
                     mockup_products = apidata;
                 })

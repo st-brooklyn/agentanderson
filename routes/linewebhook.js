@@ -244,6 +244,10 @@ function handleEvent(event) {
                     mockup_products = apidata;
                 })
 
+                if(mockup_products == null) {
+                    mockup_products = require('./products.json');
+                }
+
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);
                 var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);

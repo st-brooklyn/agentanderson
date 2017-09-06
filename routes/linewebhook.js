@@ -237,7 +237,7 @@ function handleEvent(event) {
                 api_request.get({
                     url: 'http://apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
                     json: true,
-                    headers: null,
+                    headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
                 }, (apierr, apiresponse, apidata) => {
                     if(apierr) return handleError("[API Mockup] " + apierr.stack, "ERROR");
                     handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    

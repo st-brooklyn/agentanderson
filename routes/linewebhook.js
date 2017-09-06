@@ -4,22 +4,14 @@ const line = require('@line/bot-sdk');
 const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
+const configfile = require('../data/config');
 
 var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
 
-const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
-const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
-const recast_request_token = 'a77e7abf77a2bb08422e96d0d1a7a84c';
-
-//const config = {
-//    channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-//    channelSecret: process.env.CHANNEL_SECRET,
-//};
-
 const config = {
-    channelAccessToken: channel_access_token,
-    channelSecret: channel_secret,
+    channelAccessToken: configfile.lineChannelAccessToken,
+    channelSecret: configfile.lineChannelSecret
 };
 
 const lineclient = new line.Client(config);
@@ -169,9 +161,7 @@ function handleEvent(event) {
                 });
             }
 
-
-
-            var recastrequest = new rc.request(recast_request_token);
+            var recastrequest = new rc.request(configfile.recastRequestToken);
             handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
@@ -232,10 +222,10 @@ function handleEvent(event) {
                 // Call function convert month to format mm
                 
                 if (intent == "tour-search") {
-                    APIUrl = APIUrl & "&mode=searchresultsproduct"
+                    APIUrl = configfile.apiUrl & "&mode=searchresultsproduct"
                 }
                 if (entities.value){
-                    APIUrl = APIUrl & "&country_slug=japan"
+                    APIUrl = configfile.apiUrl & "&country_slug=japan"
                 }
                 handleError("[Main] APIUrl?: " + APIUrl, "INFO");
 

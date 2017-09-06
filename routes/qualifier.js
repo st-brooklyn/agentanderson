@@ -6,15 +6,14 @@ var router = express.Router();
 const line = require('@line/bot-sdk');
 const db = require('../data/database');
 var Mapping = require('../models/mapping');
+const configfile = require('../data/config');
 
 const qualifier_controller = require('../controllers/qualifiercontroller');
 
-const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
-const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
 
 const config = {
-    channelAccessToken: channel_access_token,
-    channelSecret: channel_secret,
+    channelAccessToken: configfile.lineChannelAccessToken,
+    channelSecret: configfile.lineChannelSecret
 };
 
 const lineclient = new line.Client(config);

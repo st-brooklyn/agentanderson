@@ -231,7 +231,13 @@ function handleEvent(event) {
 
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
-                var mockup_products = require('apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan');
+                var mockup_products = null
+
+                var api_request = require('request');
+                api_request('apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan', (errapi, apiResponse, apiBody) => {
+                    handleError("[API Mockup]" + JSON.stringify(apiBody), "DEBUG");
+                    mockup_products = apiBody;
+                });                
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);

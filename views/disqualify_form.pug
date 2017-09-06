@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  form(method='POST' action='')
+    .form-group
+      input(type='hidden' name='mappingId' value=mappingId)
+      label(for='fd_intent') Intent:
+      input#intent.form-control(type='text', placeholder='description of the field' name='fd_intent' value=(undefined===intent ? '' : intent))
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!=error.msg

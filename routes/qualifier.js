@@ -7,6 +7,8 @@ const line = require('@line/bot-sdk');
 const db = require('../data/database');
 var Mapping = require('../models/mapping');
 
+const qualifier_controller = require('../controllers/qualifiercontroller');
+
 const channel_access_token = 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=';
 const channel_secret = '912ad53b5e85ed684a9c52ac621d77e9';
 
@@ -25,6 +27,9 @@ function handleError(err, level) {
         console.log("ERROR: " + err.stack);
     }
 }
+
+router.get('/disqualify/:id', qualifier_controller.disqualify_get);
+router.post('/disqualify', qualifier_controller.disqualify_post);
 
 /* GET home page. */
 router.get('/qualify/:id', function (req, res, next) {
@@ -53,39 +58,39 @@ router.get('/qualify/:id', function (req, res, next) {
     });
 });
 
-router.get('/disqualify/:id', function(req, res) {
-    // Update the database that this is not correct
-    Mapping.findById(id)
-    .then((foundone) => {
-        // get the message and send back to the room
-        var roomId = foundone.roomId;
-        var reply = foundone.replyMessage;
-        var sender = foundone.userId;
+// router.get('/disqualify/:id', function(req, res) {
+//     // Update the database that this is not correct
+//     Mapping.findById(id)
+//     .then((foundone) => {
+//         // get the message and send back to the room
+//         var roomId = foundone.roomId;
+//         var reply = foundone.replyMessage;
+//         var sender = foundone.userId;
 
-        var message = {"type": "text", "text": "Disqualified"};
+//         var message = {"type": "text", "text": "Disqualified"};
 
-        handleError("[Disqualification] Message is incorrect.", "WARNING");
+//         handleError("[Disqualification] Message is incorrect.", "WARNING");
 
-        lineclient.pushMessage(sender, message)
-        .then(() => {
-            handleError("[Push after qualify] Message sent", "DEBUG");
-        })
-        .catch((pushError) => {
-            handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
-        });
+//         lineclient.pushMessage(sender, message)
+//         .then(() => {
+//             handleError("[Push after qualify] Message sent", "DEBUG");
+//         })
+//         .catch((pushError) => {
+//             handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
+//         });
 
-        // // send message to room
-        // lineclient.pushMessage(roomId, JSON.parse(reply))
-        // .then(() => {
-        //     handleError("[Push after qualify] Message sent", "DEBUG");
-        // })
-        // .catch((pushError) => {
-        //     handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
-        // });
-    })
-    .catch((finderror) => {
-        handleError("[Find one for Disqualification] " + finderror.stack, "ERROR");
-    });
-});
+//         // // send message to room
+//         // lineclient.pushMessage(roomId, JSON.parse(reply))
+//         // .then(() => {
+//         //     handleError("[Push after qualify] Message sent", "DEBUG");
+//         // })
+//         // .catch((pushError) => {
+//         //     handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
+//         // });
+//     })
+//     .catch((finderror) => {
+//         handleError("[Find one for Disqualification] " + finderror.stack, "ERROR");
+//     });
+// });
 
 module.exports = router;

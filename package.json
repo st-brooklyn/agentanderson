@@ -28,6 +28,7 @@
     "pg-promise": "^6.5.1",
     "pug": "^2.0.0-beta6",
     "recastai": "^3.4.1",
+    "request": "^2.81.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {

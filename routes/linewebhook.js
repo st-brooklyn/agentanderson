@@ -235,8 +235,8 @@ function handleEvent(event) {
 
                 var api_request = require('request');
                 api_request('apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan', (errapi, apiResponse, apiBody) => {
-                    handleError("[API Mockup]" + JSON.stringify(apiBody), "DEBUG");
-                    mockup_products = apiBody;
+                    handleError("[API Mockup]" + apiBody, "DEBUG");
+                    mockup_products = JSON.parse(apiBody);
                 });                
 
                 //const linehelper = require('../controllers/LineMessageController');

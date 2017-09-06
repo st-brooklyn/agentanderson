@@ -235,7 +235,7 @@ function handleEvent(event) {
 
                 var api_request = require('request');
                 api_request.get({
-                    url: 'apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
+                    url: 'http://apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
                     json: true,
                     headers: {'User-Agent': 'request'}
                 }, (apierr, apiresponse, apidata) => {

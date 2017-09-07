@@ -221,21 +221,13 @@ function handleEvent(event) {
                 // Call function convert date to format date yyyy-mm-dd
                 // Call function convert month to format mm
                 
-                if (intent == "tour-search") {
-                    APIUrl = configfile.apiUrl & "&mode=searchresultsproduct"
-                }
-                if (entities.value){
-                    APIUrl = configfile.apiUrl & "&country_slug=japan"
-                }
-                handleError("[Main] APIUrl?: " + APIUrl, "INFO");
-
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
 
                 var api_request = require('request');
                 api_request.get({
-                    url: 'http://apitest.softsq.com:9001/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan&pagesize=1&pagenumber=1',
+                    url: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx?apikey=APImushroomtravel&mode=loadproductchatbot&lang=th&url_request=outbound/china&pagesize=1&pagenumber=1',
                     json: true
                     //headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
                 }, (apierr, apiresponse, apidata) => {
@@ -243,9 +235,9 @@ function handleEvent(event) {
                     handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
                     mockup_products = apidata;
 
-                    if(mockup_products == null) {
-                        mockup_products = require('./products.json');
-                    }
+                    //if(mockup_products == null) {
+                    //    mockup_products = require('./products.json');
+                    //}
                 })
 
                 //const linehelper = require('../controllers/LineMessageController');

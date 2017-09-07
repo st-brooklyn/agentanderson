@@ -251,6 +251,35 @@ function handleEvent(event) {
                     mockup_products = repos;
                     isdone = true;
                 })
+                .then(() => {
+                    if(mockup_products == null) {
+                        handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                        mockup_products = require('./products.json');
+                    }
+
+                    //const linehelper = require('../controllers/LineMessageController');
+                    var reply_carousel = createProductCarousel(mockup_products);
+                    var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                    var reply_confirm = createConfirmation(mappingId);
+
+
+                    var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
+                    if(reply == null) {
+                        reply = '[Error]\n' + recast_response.conversationToken;
+                    }
+
+                    var reply_text = {
+                        "type": "text",
+                        "text": reply
+                    };
+            
+                    const messages = [];                
+                    messages.push(reply_carousel);
+                    messages.push(reply_details);
+                    messages.push(reply_confirm);
+
+                    handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+                })
                 .catch((rperr) => {
                     handleError("[API Mockup] " + rperr.stack, "ERROR");
                 });
@@ -278,33 +307,33 @@ function handleEvent(event) {
                     if(isdone == true);
                 }
 
-                if(mockup_products == null) {
-                    handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
-                    mockup_products = require('./products.json');
-                }
+                // if(mockup_products == null) {
+                //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                //     mockup_products = require('./products.json');
+                // }
 
-                //const linehelper = require('../controllers/LineMessageController');
-                var reply_carousel = createProductCarousel(mockup_products);
-                var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                var reply_confirm = createConfirmation(mappingId);
+                // //const linehelper = require('../controllers/LineMessageController');
+                // var reply_carousel = createProductCarousel(mockup_products);
+                // var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                // var reply_confirm = createConfirmation(mappingId);
 
 
-                var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
-                if(reply == null) {
-                    reply = '[Error]\n' + recast_response.conversationToken;
-                }
+                // var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
+                // if(reply == null) {
+                //     reply = '[Error]\n' + recast_response.conversationToken;
+                // }
 
-                var reply_text = {
-                    "type": "text",
-                    "text": reply
-                };
+                // var reply_text = {
+                //     "type": "text",
+                //     "text": reply
+                // };
         
-                const messages = [];                
-                messages.push(reply_carousel);
-                messages.push(reply_details);
-                messages.push(reply_confirm);
+                // const messages = [];                
+                // messages.push(reply_carousel);
+                // messages.push(reply_details);
+                // messages.push(reply_confirm);
 
-                handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+                // handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
 
                 // Send reply to the sender --> reservation //
                 // 1. Get the sender by the mappingId

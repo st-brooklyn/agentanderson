@@ -274,7 +274,7 @@ function handleEvent(event) {
                     };
             
                     const messages = [];                
-                    messages.push(reply_carousel);
+                    //messages.push(reply_carousel);
                     messages.push(reply_details);
                     messages.push(reply_confirm);
 
@@ -288,7 +288,7 @@ function handleEvent(event) {
                             senderId = senderMapping.userId;
                             handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                             
-                            lineclient.pushMessage(senderId, reply_confirm)
+                            lineclient.pushMessage(senderId, messages)
                             .then(() => {
                                 // process after push message to Line
                                 handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");

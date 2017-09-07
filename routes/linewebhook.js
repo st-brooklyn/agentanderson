@@ -263,7 +263,6 @@ function handleEvent(event) {
                     var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
                     var reply_confirm = createConfirmation(mappingId);
 
-
                     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                     if(reply == null) {
                         reply = '[Error]\n' + recast_response.conversationToken;
@@ -289,7 +288,7 @@ function handleEvent(event) {
                             senderId = senderMapping.userId;
                             handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                             
-                            lineclient.pushMessage(senderId, messages)
+                            lineclient.pushMessage(senderId, reply_carousel)
                             .then(() => {
                                 // process after push message to Line
                                 handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
@@ -339,11 +338,6 @@ function handleEvent(event) {
                 // .catch((apierr) => {
                 //     handleError("[API Mockup] " + apierr.stack, "ERROR");
                 // });
-
-                while(false)
-                {
-                    if(isdone == true);
-                }
 
                 // if(mockup_products == null) {
                 //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");

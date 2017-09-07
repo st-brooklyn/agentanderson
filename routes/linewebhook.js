@@ -231,7 +231,7 @@ function handleEvent(event) {
                     uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                     qs: {
                         apikey: 'APImushroomtravel',
-                        mode: 'loadproductchatbot',
+                        mode: 'loadlandingpage',
                         lang: 'th',
                         url_request: 'outbound/china',
                         pagesize: '1',

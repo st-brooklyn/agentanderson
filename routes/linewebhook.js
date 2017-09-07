@@ -279,6 +279,43 @@ function handleEvent(event) {
                     messages.push(reply_confirm);
 
                     handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+
+                    var senderId = '';
+
+                    Mapping.findById(mappingId)
+                    .then((senderMapping) => {
+                        if(senderMapping) {
+                            senderId = senderMapping.userId;
+                            handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                            
+                            lineclient.pushMessage(senderId, messages)
+                            .then(() => {
+                                // process after push message to Line
+                                handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+
+                                // Save the response back to the mapping -> replyMessage [JSON.stringify]
+                                Mapping.findByIdAndUpdate(mappingId, 
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                                    {new: true})
+                                .then((mappingUpdateReply) => {                                
+                                    handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                })
+                                .catch((errupdate) => {
+                                    handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                });
+                            })
+                            .catch((errPushCarousel) => {
+                                // error handling
+                                handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                            });
+                        }
+                        else {
+                            handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                        }                    
+                    })
+                    .catch((errfind) => {
+                        handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
+                    });
                 })
                 .catch((rperr) => {
                     handleError("[API Mockup] " + rperr.stack, "ERROR");
@@ -337,42 +374,42 @@ function handleEvent(event) {
 
                 // Send reply to the sender --> reservation //
                 // 1. Get the sender by the mappingId
-                var senderId = '';
+                // var senderId = '';
 
-                Mapping.findById(mappingId)
-                .then((senderMapping) => {
-                    if(senderMapping) {
-                        senderId = senderMapping.userId;
-                        handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                // Mapping.findById(mappingId)
+                // .then((senderMapping) => {
+                //     if(senderMapping) {
+                //         senderId = senderMapping.userId;
+                //         handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(senderId, messages)
-                        .then(() => {
-                            // process after push message to Line
-                            handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                //         lineclient.pushMessage(senderId, messages)
+                //         .then(() => {
+                //             // process after push message to Line
+                //             handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
 
-                            // Save the response back to the mapping -> replyMessage [JSON.stringify]
-                            Mapping.findByIdAndUpdate(mappingId, 
-                                {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
-                                {new: true})
-                            .then((mappingUpdateReply) => {                                
-                                handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                            })
-                            .catch((errupdate) => {
-                                handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                            });
-                        })
-                        .catch((errPushCarousel) => {
-                            // error handling
-                            handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
-                        });
-                    }
-                    else {
-                        handleError("[Find for sender] Mapping for sender not found", "WARNING");
-                    }                    
-                })
-                .catch((errfind) => {
-                    handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
-                });
+                //             // Save the response back to the mapping -> replyMessage [JSON.stringify]
+                //             Mapping.findByIdAndUpdate(mappingId, 
+                //                 {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                //                 {new: true})
+                //             .then((mappingUpdateReply) => {                                
+                //                 handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                //             })
+                //             .catch((errupdate) => {
+                //                 handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                //             });
+                //         })
+                //         .catch((errPushCarousel) => {
+                //             // error handling
+                //             handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                //         });
+                //     }
+                //     else {
+                //         handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                //     }                    
+                // })
+                // .catch((errfind) => {
+                //     handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
+                // });
             }) // End then findById
             .catch((err) => {
                 handleError(err);

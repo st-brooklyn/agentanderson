@@ -45,7 +45,7 @@ function createProductCarousel(products) {
 
     parsedProducts.data.products.forEach((product) => {
         var column = {
-            "thumbnailImageUrl": product.url_pic,
+            "thumbnailImageUrl": product.url_pic.replace('http','https'),
             "title": product.product_name.substr(0, 40),
             "text": "Fix Text",
             "actions": [                
@@ -274,7 +274,7 @@ function handleEvent(event) {
                     };
             
                     const messages = [];                
-                    //messages.push(reply_carousel);
+                    messages.push(reply_carousel);
                     messages.push(reply_details);
                     messages.push(reply_confirm);
 

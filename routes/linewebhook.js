@@ -231,11 +231,12 @@ function handleEvent(event) {
                     uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                     qs: {
                         apikey: 'APImushroomtravel',
-                        mode: 'loadlandingpage',
+                        mode: 'searchresultsproduct',
                         lang: 'th',
-                        url_request: 'outbound/china',
+                        country_slug: 'hong-kong',
                         pagesize: '1',
-                        pagenumber: '1'
+                        pagenumber: '1',
+                        searchword: 'MUSH151377'
                     },
                     headers: {
                         'User-Agent': 'Request-Promise'

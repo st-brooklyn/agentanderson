@@ -228,7 +228,7 @@ function handleEvent(event) {
 
 
                 var rpoptions = {
-                    uri: 'http://192.168.20.149:9001/JsonSOA/getdata.ashx',
+                    uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                     qs: {
                         apikey: 'APImushroomtravel',
                         mode: 'loadproductchatbot',

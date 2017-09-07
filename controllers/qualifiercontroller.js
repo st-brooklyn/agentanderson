@@ -25,6 +25,11 @@ exports.disqualify_post = function(req, res, next) {
     // var genre = new Genre(
     //   { name: req.body.name }
     // );
+
+    // const lh = require('../LineHelper');
+    // var hh = new lh();
+    // var name = hh.getUserDisplayName('userid');
+    
     
     if (hasError) {
         //If there are errors render the form again, passing the previously entered values and errors

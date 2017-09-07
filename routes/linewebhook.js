@@ -243,13 +243,17 @@ function handleEvent(event) {
                     json: true // Automatically parses the JSON string in the response
                 };
 
+                var isdone = false;
+
                 rp(rpoptions)
                 .then((repos) => {
-                    handleError("[API Mockup] Ropos: " + JSON.stringify(repos), "DEBUG");
+                    handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
                     mockup_products = repos;
+                    isdone = true;
                 })
                 .catch((rperr) => {
                     handleError("[API Mockup] " + rperr.stack, "ERROR");
+                    isdone = true;
                 });
 
                 // var api_request = require('request');
@@ -269,6 +273,11 @@ function handleEvent(event) {
                 // .catch((apierr) => {
                 //     handleError("[API Mockup] " + apierr.stack, "ERROR");
                 // });
+
+                while(true)
+                {
+                    if(isdone == true) break;
+                }
 
                 if(mockup_products == null) {
                     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");

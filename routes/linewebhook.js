@@ -257,7 +257,7 @@ function handleEvent(event) {
                         handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
                         mockup_products = require('./products.json');
                     } else {
-                        if (mockup_products.products){
+                        if (mockup_products.data.results == 0){
                             mockup_products = require('./products.json');
                         }
                     }

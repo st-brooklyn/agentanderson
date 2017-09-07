@@ -45,19 +45,19 @@ function createProductCarousel(products) {
 
     parsedProducts.data.products.forEach((product) => {
         var column = {
-            "thumbnailImageUrl": product.url_pic,
+            "thumbnailImageUrl": product.url_pic.replace('http', 'https'),
             "title": product.product_name.substr(0, 40),
             "text": "Fix Text",
             "actions": [                
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "www.google.com"
+                    "uri": "http://www.google.com"
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": "www.facebook.com"
+                    "uri": "http://www.facebook.com"
                 }
             ]
         };

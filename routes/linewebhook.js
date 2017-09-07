@@ -52,12 +52,12 @@ function createProductCarousel(products) {
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": ''+product.url_pic_multisize.tourdetail
+                    "uri": ''+product.product_slug
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": ''+product.url_pic_multisize.itemslide 
+                    "uri": ''+product.product_slug
                 }
             ]
         };

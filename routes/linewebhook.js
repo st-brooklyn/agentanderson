@@ -249,7 +249,7 @@ function handleEvent(event) {
                 rp(rpoptions)
                 .then((repos) => {
                     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                    //mockup_products = repos;
+                    mockup_products = repos;
                     isdone = true;
                 })
                 .then(() => {

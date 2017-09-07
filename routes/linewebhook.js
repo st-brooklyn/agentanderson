@@ -235,7 +235,7 @@ function handleEvent(event) {
 
                 var api_request = require('request');
                 api_request.get({
-                    url: 'http://192.168.20.149:9001/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
+                    url: 'http://apitest.softsq.com:9001/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
                     json: true
                     //headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
                 }, (apierr, apiresponse, apidata) => {

@@ -256,6 +256,10 @@ function handleEvent(event) {
                     if(mockup_products == null) {
                         handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
                         mockup_products = require('./products.json');
+                    } else {
+                        if (mockup_products.products.length() > 0){
+                            mockup_products = require('./products.json');
+                        }
                     }
 
                     //const linehelper = require('../controllers/LineMessageController');

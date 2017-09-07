@@ -5,6 +5,7 @@ const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
 const configfile = require('../data/config');
+const rp = require('request-promise');
 
 var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
@@ -225,20 +226,54 @@ function handleEvent(event) {
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
 
-                var api_request = require('request');
-                api_request.get({
-                    url: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx?apikey=APImushroomtravel&mode=loadproductchatbot&lang=th&url_request=outbound/china&pagesize=1&pagenumber=1',
-                    json: true
-                    //headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
-                }, (apierr, apiresponse, apidata) => {
-                    if(apierr) return handleError("[API Mockup] " + apierr.stack, "ERROR");
-                    handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
-                    mockup_products = apidata;
 
-                    //if(mockup_products == null) {
-                    //    mockup_products = require('./products.json');
-                    //}
+                var rpoptions = {
+                    uri: 'http://192.168.20.149:9001/JsonSOA/getdata.ashx',
+                    qs: {
+                        apikey: 'APImushroomtravel',
+                        mode: 'loadproductchatbot',
+                        lang: 'th',
+                        url_request: 'outbound/china',
+                        pagesize: '1',
+                        pagenumber: '1'
+                    },
+                    headers: {
+                        'User-Agent': 'Request-Promise'
+                    },
+                    json: true // Automatically parses the JSON string in the response
+                };
+
+                rp(rpoptions)
+                .then((repos) => {
+                    handleError("[API Mockup] Ropos: " + JSON.stringify(repos), "DEBUG");
+                    mockup_products = repos;
                 })
+                .catch((rperr) => {
+                    handleError("[API Mockup] " + rperr.stack, "ERROR");
+                });
+
+                // var api_request = require('request');
+                // api_request.get({
+                //     url: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx?apikey=APImushroomtravel&mode=loadproductchatbot&lang=th&url_request=outbound/china&pagesize=1&pagenumber=1',
+                //     json: true
+                //     //headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
+                // })
+                // .then((apiresponse, apidata) => {
+                //     handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
+                //     mockup_products = apidata;
+
+                //     //if(mockup_products == null) {
+                //     //    mockup_products = require('./products.json');
+                //     //}
+                // })
+                // .catch((apierr) => {
+                //     handleError("[API Mockup] " + apierr.stack, "ERROR");
+                // });
+
+                if(mockup_products == null) {
+                    handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                    mockup_products = require('./products.json');
+                }
 
                 //const linehelper = require('../controllers/LineMessageController');
                 var reply_carousel = createProductCarousel(mockup_products);

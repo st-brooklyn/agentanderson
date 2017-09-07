@@ -5,6 +5,7 @@ const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
 const configfile = require('../data/config');
+const rp = require('request-promise');
 
 var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
@@ -45,18 +46,18 @@ function createProductCarousel(products) {
     parsedProducts.data.products.forEach((product) => {
         var column = {
             "thumbnailImageUrl": product.url_pic,
-            "title": product.product_name,
-            "text": product.highlight,
+            "title": product.product_name.substr(0, 40),
+            "text": "Fix Text",
             "actions": [                
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": ''+product.url_pic_multisize.tourdetail
+                    "uri": "www.google.com"
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": ''+product.url_pic_multisize.itemslide 
+                    "uri": "www.facebook.com"
                 }
             ]
         };
@@ -221,94 +222,189 @@ function handleEvent(event) {
                 // Call function convert date to format date yyyy-mm-dd
                 // Call function convert month to format mm
                 
-                if (intent == "tour-search") {
-                    APIUrl = configfile.apiUrl & "&mode=searchresultsproduct"
-                }
-                if (entities.value){
-                    APIUrl = configfile.apiUrl & "&country_slug=japan"
-                }
-                handleError("[Main] APIUrl?: " + APIUrl, "INFO");
-
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
 
-                var api_request = require('request');
-                api_request.get({
-                    url: 'http://apiwowtest.softsq.com/jsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=searchresultsproduct&country_slug=japan',
-                    json: true,
-                    headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
-                }, (apierr, apiresponse, apidata) => {
-                    if(apierr) return handleError("[API Mockup] " + apierr.stack, "ERROR");
-                    handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
-                    mockup_products = apidata;
-                })
 
-                if(mockup_products == null) {
-                    mockup_products = require('./products.json');
-                }
-
-                //const linehelper = require('../controllers/LineMessageController');
-                var reply_carousel = createProductCarousel(mockup_products);
-                var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                var reply_confirm = createConfirmation(mappingId);
-
-
-                var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
-                if(reply == null) {
-                    reply = '[Error]\n' + recast_response.conversationToken;
-                }
-
-                var reply_text = {
-                    "type": "text",
-                    "text": reply
+                var rpoptions = {
+                    uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                    qs: {
+                        apikey: 'APImushroomtravel',
+                        mode: 'searchresultsproduct',
+                        lang: 'th',
+                        country_slug: 'hong-kong',
+                        pagesize: '1',
+                        pagenumber: '1',
+                        searchword: 'MUSH151377'
+                    },
+                    headers: {
+                        'User-Agent': 'Request-Promise'
+                    },
+                    json: true // Automatically parses the JSON string in the response
                 };
-        
-                const messages = [];                
-                messages.push(reply_carousel);
-                messages.push(reply_details);
-                messages.push(reply_confirm);
 
-                handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+                var isdone = false;
+
+                rp(rpoptions)
+                .then((repos) => {
+                    handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                    //mockup_products = repos;
+                    isdone = true;
+                })
+                .then(() => {
+                    if(mockup_products == null) {
+                        handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                        mockup_products = require('./products.json');
+                    }
+
+                    //const linehelper = require('../controllers/LineMessageController');
+                    var reply_carousel = createProductCarousel(mockup_products);
+                    var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                    var reply_confirm = createConfirmation(mappingId);
+
+                    var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
+                    if(reply == null) {
+                        reply = '[Error]\n' + recast_response.conversationToken;
+                    }
+
+                    var reply_text = {
+                        "type": "text",
+                        "text": reply
+                    };
+            
+                    const messages = [];                
+                    messages.push(reply_carousel);
+                    messages.push(reply_details);
+                    messages.push(reply_confirm);
+
+                    handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+
+                    var senderId = '';
+
+                    Mapping.findById(mappingId)
+                    .then((senderMapping) => {
+                        if(senderMapping) {
+                            senderId = senderMapping.userId;
+                            handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                            
+                            lineclient.pushMessage(senderId, messages)
+                            .then(() => {
+                                // process after push message to Line
+                                handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+
+                                // Save the response back to the mapping -> replyMessage [JSON.stringify]
+                                Mapping.findByIdAndUpdate(mappingId, 
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                                    {new: true})
+                                .then((mappingUpdateReply) => {                                
+                                    handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                })
+                                .catch((errupdate) => {
+                                    handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                });
+                            })
+                            .catch((errPushCarousel) => {
+                                // error handling
+                                handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                            });
+                        }
+                        else {
+                            handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                        }                    
+                    })
+                    .catch((errfind) => {
+                        handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
+                    });
+                })
+                .catch((rperr) => {
+                    handleError("[API Mockup] " + rperr.stack, "ERROR");
+                });
+
+                // var api_request = require('request');
+                // api_request.get({
+                //     url: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx?apikey=APImushroomtravel&mode=loadproductchatbot&lang=th&url_request=outbound/china&pagesize=1&pagenumber=1',
+                //     json: true
+                //     //headers: {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
+                // })
+                // .then((apiresponse, apidata) => {
+                //     handleError("[API Mockup]" + JSON.stringify(apidata), "DEBUG");                    
+                //     mockup_products = apidata;
+
+                //     //if(mockup_products == null) {
+                //     //    mockup_products = require('./products.json');
+                //     //}
+                // })
+                // .catch((apierr) => {
+                //     handleError("[API Mockup] " + apierr.stack, "ERROR");
+                // });
+
+                // if(mockup_products == null) {
+                //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                //     mockup_products = require('./products.json');
+                // }
+
+                // //const linehelper = require('../controllers/LineMessageController');
+                // var reply_carousel = createProductCarousel(mockup_products);
+                // var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                // var reply_confirm = createConfirmation(mappingId);
+
+
+                // var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
+                // if(reply == null) {
+                //     reply = '[Error]\n' + recast_response.conversationToken;
+                // }
+
+                // var reply_text = {
+                //     "type": "text",
+                //     "text": reply
+                // };
+        
+                // const messages = [];                
+                // messages.push(reply_carousel);
+                // messages.push(reply_details);
+                // messages.push(reply_confirm);
+
+                // handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
 
                 // Send reply to the sender --> reservation //
                 // 1. Get the sender by the mappingId
-                var senderId = '';
+                // var senderId = '';
 
-                Mapping.findById(mappingId)
-                .then((senderMapping) => {
-                    if(senderMapping) {
-                        senderId = senderMapping.userId;
-                        handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                // Mapping.findById(mappingId)
+                // .then((senderMapping) => {
+                //     if(senderMapping) {
+                //         senderId = senderMapping.userId;
+                //         handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         
-                        lineclient.pushMessage(senderId, messages)
-                        .then(() => {
-                            // process after push message to Line
-                            handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                //         lineclient.pushMessage(senderId, messages)
+                //         .then(() => {
+                //             // process after push message to Line
+                //             handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
 
-                            // Save the response back to the mapping -> replyMessage [JSON.stringify]
-                            Mapping.findByIdAndUpdate(mappingId, 
-                                {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
-                                {new: true})
-                            .then((mappingUpdateReply) => {                                
-                                handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                            })
-                            .catch((errupdate) => {
-                                handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                            });
-                        })
-                        .catch((errPushCarousel) => {
-                            // error handling
-                            handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
-                        });
-                    }
-                    else {
-                        handleError("[Find for sender] Mapping for sender not found", "WARNING");
-                    }                    
-                })
-                .catch((errfind) => {
-                    handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
-                });
+                //             // Save the response back to the mapping -> replyMessage [JSON.stringify]
+                //             Mapping.findByIdAndUpdate(mappingId, 
+                //                 {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                //                 {new: true})
+                //             .then((mappingUpdateReply) => {                                
+                //                 handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                //             })
+                //             .catch((errupdate) => {
+                //                 handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                //             });
+                //         })
+                //         .catch((errPushCarousel) => {
+                //             // error handling
+                //             handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                //         });
+                //     }
+                //     else {
+                //         handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                //     }                    
+                // })
+                // .catch((errfind) => {
+                //     handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
+                // });
             }) // End then findById
             .catch((err) => {
                 handleError(err);

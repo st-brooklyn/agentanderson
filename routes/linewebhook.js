@@ -47,7 +47,7 @@ function createProductCarousel(products) {
         var column = {
             "thumbnailImageUrl": product.url_pic,
             "title": product.product_name,
-            "text": product.highlight,
+            "text": "Fix Text",
             "actions": [                
                 {
                     "type": "uri",

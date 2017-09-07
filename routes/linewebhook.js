@@ -45,7 +45,7 @@ function createProductCarousel(products) {
 
     parsedProducts.data.products.forEach((product) => {
         var column = {
-            "thumbnailImageUrl": product.url_pic.replace('http', 'https'),
+            "thumbnailImageUrl": product.url_pic,
             "title": product.product_name.substr(0, 40),
             "text": "Fix Text",
             "actions": [                

@@ -253,7 +253,6 @@ function handleEvent(event) {
                 })
                 .catch((rperr) => {
                     handleError("[API Mockup] " + rperr.stack, "ERROR");
-                    isdone = true;
                 });
 
                 // var api_request = require('request');
@@ -274,9 +273,9 @@ function handleEvent(event) {
                 //     handleError("[API Mockup] " + apierr.stack, "ERROR");
                 // });
 
-                while(true)
+                while(false)
                 {
-                    if(isdone == true) break;
+                    if(isdone == true);
                 }
 
                 if(mockup_products == null) {

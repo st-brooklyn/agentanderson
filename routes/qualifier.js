@@ -28,7 +28,7 @@ function handleError(err, level) {
 }
 
 router.get('/disqualify/:id', qualifier_controller.disqualify_get);
-router.post('/disqualify', qualifier_controller.disqualify_post);
+router.post('/disqualify/:id', qualifier_controller.disqualify_post);
 
 /* GET home page. */
 router.get('/qualify/:id', function (req, res, next) {

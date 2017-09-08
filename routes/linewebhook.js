@@ -47,9 +47,7 @@ function createProductCarousel(products) {
         var column = {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
-            "text": product.period.forEach((p) => {
-                 p.price
-            }) ,
+            "text": "Fix Text",
             "actions": [                
                 {
                     "type": "uri",

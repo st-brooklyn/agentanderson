@@ -6,7 +6,8 @@ var MappingSchema = new mongoose.Schema({
     createdDate: String,
     modifiedDate: String,
     originalMessage: String,
-    replyMessage: String
+    replyMessage: String,
+    action: String
 });
 
 mongoose.model('Mapping', MappingSchema);

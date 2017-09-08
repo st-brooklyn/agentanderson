@@ -151,7 +151,8 @@ function handleEvent(event) {
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
                     originalMessage: originalMessage,
-                    replyMessage: null
+                    replyMessage: null,
+                    action: null,
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
@@ -299,7 +300,7 @@ function handleEvent(event) {
 
                                 // Save the response back to the mapping -> replyMessage [JSON.stringify]
                                 Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel), action: true}}, 
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");

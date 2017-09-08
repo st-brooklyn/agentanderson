@@ -27,7 +27,7 @@ function handleError(err, level) {
     }
 }
 
-router.get('/disqualify/:id', qualifier_controller.disqualify_get, 
+router.get('/disqualify/:id', function (req, res, next) {
     Mapping.findById(req.params.id)
     .then((foundone) => {
         // get the message and send back to the room
@@ -46,8 +46,9 @@ router.get('/disqualify/:id', qualifier_controller.disqualify_get,
         .catch((pushError) => {
             handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
         });
-    })
-);
+    });
+    qualifier_controller.disqualify_get
+});
 
 router.post('/disqualify/:id', qualifier_controller.disqualify_post);
 

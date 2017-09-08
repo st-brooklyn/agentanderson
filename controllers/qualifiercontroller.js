@@ -1,31 +1,4 @@
-var Mapping = require('../models/mapping');
-
 exports.disqualify_get = function(req, res, next) {
-    var id = req.params.id;
-
-    console.log("[DisQualifier ID] => " + id);
-    Mapping.findById(id)
-    .then((foundone) => {
-        // get the message and send back to the room
-        console.log("Found: " + JSON.stringify(foundone));
-        var roomId = foundone.roomId;
-        var reply = foundone.replyMessage;
-
-        // send message to room
-        lineclient.pushMessage(roomId, JSON.parse(reply))
-        Mapping.findByIdAndUpdate(id, 
-            {$set: {action: "NO"}}, 
-            {new: true})
-        .then(() => {
-            handleError("[Push after qualify] Message sent", "DEBUG");
-        })
-        .catch((pushError) => {
-            handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
-        });
-    })
-    .catch((finderror) => {
-        handleError("[Find one for Qualification] " + finderror.stack, "ERROR");
-    });
     res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 

@@ -300,10 +300,13 @@ function handleEvent(event) {
 
                                 // Save the response back to the mapping -> replyMessage [JSON.stringify]
                                 Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(reply_carousel), action: true}}, 
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    Mapping.findByIdAndUpdate(mappingId, 
+                                        {$set: {action: reply_confirm.event}}, 
+                                        {new: true})
                                 })
                                 .catch((errupdate) => {
                                     handleError('[Find to update reply] ' + errupdate.stack, "ERROR");

@@ -45,7 +45,7 @@ function createProductCarousel(products) {
 
     parsedProducts.data.products.forEach((product) => {
         var column = {
-            "thumbnailImageUrl": product.url_pic,
+            "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
             "text": "Fix Text",
             "actions": [                
@@ -234,10 +234,10 @@ function handleEvent(event) {
                         apikey: 'APImushroomtravel',
                         mode: 'searchresultsproduct',
                         lang: 'th',
-                        country_slug: 'hong-kong',
+                        country_slug: 'japan',
                         pagesize: '1',
                         pagenumber: '1',
-                        searchword: 'MUSH151377'
+                        searchword: 'MUSH160496'
                     },
                     headers: {
                         'User-Agent': 'Request-Promise'

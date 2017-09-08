@@ -27,29 +27,7 @@ function handleError(err, level) {
     }
 }
 
-router.get('/disqualify/:id', function (req, res, next) {
-    Mapping.findById(req.params.id)
-    .then((foundone) => {
-        // get the message and send back to the room
-        console.log("Found: " + JSON.stringify(foundone));
-        var roomId = foundone.roomId;
-        var reply = foundone.replyMessage;
-
-        // send message to room
-        lineclient.pushMessage(roomId, JSON.parse(reply))
-        Mapping.findByIdAndUpdate(id, 
-            {$set: {action: "YES"}}, 
-            {new: true})
-        .then(() => {
-            handleError("[Push after qualify] Message sent", "DEBUG");
-        })
-        .catch((pushError) => {
-            handleError('[Push after qualify] ' + pushError.stack, "DEBUG")
-        });
-    });
-    qualifier_controller.disqualify_get
-});
-
+router.get('/disqualify/:id', qualifier_controller.disqualify_get);
 router.post('/disqualify/:id', qualifier_controller.disqualify_post);
 
 /* GET home page. */

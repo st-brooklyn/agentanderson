@@ -52,12 +52,12 @@ function createProductCarousel(products) {
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "www.google.com"
+                    "uri": "http://www.google.com"
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": "www.facebook.com"
+                    "uri": "http://www.facebook.com"
                 }
             ]
         };
@@ -249,13 +249,17 @@ function handleEvent(event) {
                 rp(rpoptions)
                 .then((repos) => {
                     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                    //mockup_products = repos;
+                    mockup_products = repos;
                     isdone = true;
                 })
                 .then(() => {
                     if(mockup_products == null) {
                         handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
                         mockup_products = require('./products.json');
+                    } else {
+                        if (mockup_products.data.results == 0){
+                            mockup_products = require('./products.json');
+                        }
                     }
 
                     //const linehelper = require('../controllers/LineMessageController');

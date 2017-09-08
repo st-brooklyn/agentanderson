@@ -9,7 +9,8 @@ exports.disqualify_post = function(req, res, next) {
     var hasError = false;
 
     // Check if Mapping Id is passed
-    req.checkBody('mappingId', 'No mapping ID found').notEmpty();
+    //req.checkBody('mappingId', 'No mapping ID found').notEmpty();
+    console.log("Mapping ID: " + req.body.mappinId);
 
     // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
@@ -39,5 +40,7 @@ exports.disqualify_post = function(req, res, next) {
     else {
         // Data from the form is valid.
         // Continue with the logic to disqualify
+
+        res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
     }
 };

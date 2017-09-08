@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  p Mapping Id: #{mappingId}
+
+  if errors
+    ul
+      for error in errors
+        li!=error.msg

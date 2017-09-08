@@ -45,6 +45,9 @@ router.get('/qualify/:id', function (req, res, next) {
 
         // send message to room
         lineclient.pushMessage(roomId, JSON.parse(reply))
+        Mapping.findByIdAndUpdate(id, 
+            {$set: {action: "YES"}}, 
+            {new: true})
         .then(() => {
             handleError("[Push after qualify] Message sent", "DEBUG");
         })

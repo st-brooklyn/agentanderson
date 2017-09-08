@@ -304,9 +304,6 @@ function handleEvent(event) {
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                                    Mapping.findByIdAndUpdate(mappingId, 
-                                        {$set: {action: reply_confirm.event}}, 
-                                        {new: true})
                                 })
                                 .catch((errupdate) => {
                                     handleError('[Find to update reply] ' + errupdate.stack, "ERROR");

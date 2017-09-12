@@ -1,14 +1,10 @@
 extends layout
 
 block content
-.main.container
-    .row
-      .col-md-6.col-md-offset-3
-        h1.display-4.m-b-2 Sign Up
-  //- h1= title
-  //- p Welcome to #{title}
+  h1= title
+  p Welcome to #{title}
 
-  form(method='POST' action='/disqualify_form')
+  form(method='POST' action='')
       div.form-group
       input(type='hidden' name='mappingId' value=mappingId)
       //- label(for='fd_intent') Intent:
@@ -19,6 +15,7 @@ block content
       div.form-group
       label(for='code') productCode:
             input#code.form-control(type='text', placeholder='product code' name='productCode')
+
     button.btn.btn-primary(type='submit') Submit
 
   if errors

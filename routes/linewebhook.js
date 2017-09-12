@@ -275,7 +275,7 @@ function handleEvent(event) {
 
                     const messages = [];    
                     var replyToClient = null            
- 
+                    var reply_confirm = null
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
                         var reply_carousel = createProductCarousel(mockup_products);
@@ -286,8 +286,12 @@ function handleEvent(event) {
                         messages.push(reply_details);
                     }             
 
-                    var reply_confirm = createConfirmation(mappingId, replyToClient.text);
-
+                    if (replyToClient == null){
+                        reply_confirm = createConfirmation(mappingId, '');
+                    } else {
+                        reply_confirm = createConfirmation(mappingId, replyToClient.text);
+                    }
+                
                     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                     if(reply == null) {
                         reply = '[Error]\n' + recast_response.conversationToken;

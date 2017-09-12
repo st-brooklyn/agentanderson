@@ -12,6 +12,9 @@ block content
       div.form-group
       label(for='fd_country') CountryName:
       input#country.form-control(type='text', placeholder='country name' name='fd_country' value=(undefined===country ? '' : country))
+      div.form-group
+      label(for='fd_code') ProductCode:
+      input#code.form-control(type='text', placeholder='product code' name='fd_code' value=(undefined===code ? '' : code))
       button.btn.btn-primary(type='submit') Submit
 
   if errors

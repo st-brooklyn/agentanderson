@@ -10,9 +10,9 @@ exports.disqualify_post = function(req, res, next) {
 
     // Check if Mapping Id is passed
     //req.checkBody('mappingId', 'No mapping ID found').notEmpty();
-    console.log("Mapping ID: " + res.body.mappingId);
-    console.log("Country Name: " + req.body.country);
-    console.log("Product Code: " + req.body.code);
+    console.log("Mapping ID: " + req.mappingId);
+    console.log("Country Name: " + req.country);
+    console.log("Product Code: " + req.code);
  
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();

@@ -70,13 +70,17 @@ function createProductCarousel(products) {
     return carousel;
 }
 
-function createConfirmation(mappingId) {
+function createConfirmation(mappingId, replyToClient) {
+    if (replyToClient == null ){
+
+
+    }
     var confirm = {
         "type": "template",
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": "Message correct?",
+            "text": replyToClient + "Message correct?",
             "actions": [
                 {
                   "type": "postback",
@@ -268,13 +272,13 @@ function handleEvent(event) {
                             mockup_products = require('./products.json');
                         }
                     }
-
                  
                     if (JSON.stringify(entities) == "{}"){
                         mockup_products = null
                     } 
 
-                    const messages = [];                
+                    const messages = [];    
+                    var replyToClient = null            
  
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
@@ -282,12 +286,11 @@ function handleEvent(event) {
                         messages.push(reply_carousel);
                     } else {
                         var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                        var replyToClient = createReplyMessage(recast_response.reply());
+                        replyToClient = createReplyMessage(recast_response.reply());
                         messages.push(reply_details);
-                        messages.push(replyToClient);
                     }             
 
-                    var reply_confirm = createConfirmation(mappingId);
+                    var reply_confirm = createConfirmation(mappingId, replyToClient);
 
                     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                     if(reply == null) {

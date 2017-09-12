@@ -48,7 +48,7 @@ function createProductCarousel(products) {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
             "text": product.periods.forEach((period) =>{
-                   period_start(0) + '-' + period_end(0)
+                   period.period_start[0] + '-' + period. period_end[0]
                 }) ,
             "actions": [                
                 {

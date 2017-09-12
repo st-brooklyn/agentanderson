@@ -1,10 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+.main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Sign Up
+  //- h1= title
+  //- p Welcome to #{title}
 
-  form(method='POST' action='')
+  form(method='POST' action='/disqualify_form')
       div.form-group
       input(type='hidden' name='mappingId' value=mappingId)
       //- label(for='fd_intent') Intent:

@@ -105,6 +105,13 @@ function createAiResultMessage(intent, converseToken, replyFromAi, sourceMessage
     };
 }
 
+function createReplyMessage(replyFromAi) {
+    return {
+        "type" : "text",
+        "text" : replyFromAi
+    };
+}
+
 function handleEvent(event) {
     // Process only text message
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -275,7 +282,9 @@ function handleEvent(event) {
                         messages.push(reply_carousel);
                     } else {
                         var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                        var replyToClient = createReplyMessage(recast_response.reply());
                         messages.push(reply_details);
+                        messages.push(replyToClient);
                     }             
 
                     var reply_confirm = createConfirmation(mappingId);
@@ -308,7 +317,7 @@ function handleEvent(event) {
                                 handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
                                 if (reply_carousel == null){
                                     Mapping.findByIdAndUpdate(mappingId, 
-                                        {$set: {replyMessage: JSON.stringify(reply_details)}}, 
+                                        {$set: {replyMessage: JSON.stringify(replyToClient)}}, 
                                         {new: true})
                                     .then((mappingUpdateReply) => {                                
                                         handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");

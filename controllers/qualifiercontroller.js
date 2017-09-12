@@ -10,7 +10,7 @@ exports.disqualify_post = function(req, res, next) {
 
     // Check if Mapping Id is passed
     //req.checkBody('mappingId', 'No mapping ID found').notEmpty();
-    console.log("req:" + req.body);
+    console.log("req:" + JSON.stringify(req));
     console.log("Mapping ID: " + req.body.mappingId);
     console.log("Country Name: " + req.country);
     console.log("Product Code: " + req.code);

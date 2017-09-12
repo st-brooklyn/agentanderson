@@ -47,17 +47,19 @@ function createProductCarousel(products) {
         var column = {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
-            "text": "Fix Text",
+            "text": product.periods.forEach((period) =>{
+                    period.period_start
+                }) ,
             "actions": [                
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "http://www.google.com"
+                    "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": "http://www.facebook.com"
+                    "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
                 }
             ]
         };
@@ -234,7 +236,6 @@ function handleEvent(event) {
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
                 var rpoptions = {
-                        // http://localhost:36975/JsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=loadproductchatbot&lang=th&pagesize=3&pagenumber=1&country_slug=japan
                         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                         qs: {
                             apikey: 'APImushroomtravel',
@@ -242,8 +243,7 @@ function handleEvent(event) {
                             lang: 'th',
                             country_slug: 'japan',
                             pagesize: '1',
-                            pagenumber: '1',
-                            searchword: 'MUSH160496'
+                            pagenumber: '1'
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

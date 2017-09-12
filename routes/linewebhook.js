@@ -229,6 +229,7 @@ function handleEvent(event) {
 
 
                 var rpoptions = {
+                    // http://localhost:36975/JsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=loadproductchatbot&lang=th&pagesize=3&pagenumber=1&country_slug=japan
                     uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                     qs: {
                         apikey: 'APImushroomtravel',

@@ -71,10 +71,6 @@ function createProductCarousel(products) {
 }
 
 function createConfirmation(mappingId, replyToClient) {
-    if (replyToClient == null ){
-
-
-    }
     var confirm = {
         "type": "template",
         "altText": "this is a confirm template",
@@ -290,7 +286,7 @@ function handleEvent(event) {
                         messages.push(reply_details);
                     }             
 
-                    var reply_confirm = createConfirmation(mappingId, replyToClient);
+                    var reply_confirm = createConfirmation(mappingId, replyToClient.text);
 
                     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                     if(reply == null) {

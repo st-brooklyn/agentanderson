@@ -226,12 +226,7 @@ function handleEvent(event) {
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
-                 
-                if (JSON.stringify(entities) == "{}"){
-
-
-                } else{
-                    var rpoptions = {
+                var rpoptions = {
                         // http://localhost:36975/JsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=loadproductchatbot&lang=th&pagesize=3&pagenumber=1&country_slug=japan
                         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                         qs: {
@@ -248,7 +243,6 @@ function handleEvent(event) {
                         },
                         json: true // Automatically parses the JSON string in the response
                     };
-                }
 
                 var isdone = false;
 
@@ -268,6 +262,11 @@ function handleEvent(event) {
                         }
                     }
 
+                 
+                    if (JSON.stringify(entities) == "{}"){
+                        mockup_products = null
+                    } 
+                    
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
                         var reply_carousel = createProductCarousel(mockup_products);

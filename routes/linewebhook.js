@@ -48,8 +48,7 @@ function createProductCarousel(products) {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
             "text": product.periods.forEach((period) =>{
-                   console.log(period.period_start[0] + '-' + period. period_end[0])
-                
+                   console.log(period.period_start + '-' + period. period_end)
                 }) ,
             "actions": [                
                 {
@@ -244,7 +243,9 @@ function handleEvent(event) {
                             lang: 'th',
                             country_slug: 'japan',
                             pagesize: '1',
-                            pagenumber: '1'
+                            pagenumber: '1',
+                            startdate: '2018-01-05',
+                            enddate: '2018-01-09'
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

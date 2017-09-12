@@ -266,12 +266,16 @@ function handleEvent(event) {
                     if (JSON.stringify(entities) == "{}"){
                         mockup_products = null
                     } 
-                    
+
+                    const messages = [];                
+ 
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
                         var reply_carousel = createProductCarousel(mockup_products);
+                        messages.push(reply_carousel);
                     } else {
                         var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                        messages.push(reply_details);
                     }             
 
                     var reply_confirm = createConfirmation(mappingId);
@@ -286,9 +290,6 @@ function handleEvent(event) {
                         "text": reply
                     };
             
-                    const messages = [];                
-                    messages.push(reply_carousel);
-                    messages.push(reply_details);
                     messages.push(reply_confirm);
 
                     handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");

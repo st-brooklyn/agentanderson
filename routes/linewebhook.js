@@ -226,16 +226,20 @@ function handleEvent(event) {
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
+                
+                if (JSON.stringify(entities) != null){
 
+
+                }
 
                 var rpoptions = {
                     // http://localhost:36975/JsonSOA/getdata.ashx?APIKey=APImushroomtravel&mode=loadproductchatbot&lang=th&pagesize=3&pagenumber=1&country_slug=japan
                     uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                     qs: {
                         apikey: 'APImushroomtravel',
-                        mode: 'searchresultsproduct',
+                        mode: 'loadproductchatbot',
                         lang: 'th',
-                        country_slug: 'japan',
+                        country_slug: '' + japan + '',
                         pagesize: '1',
                         pagenumber: '1',
                         searchword: 'MUSH160496'
@@ -265,8 +269,12 @@ function handleEvent(event) {
                     }
 
                     //const linehelper = require('../controllers/LineMessageController');
-                    var reply_carousel = createProductCarousel(mockup_products);
-                    var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                    if (mockup_products != null){
+                        var reply_carousel = createProductCarousel(mockup_products);
+                    } else {
+                        var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                    }             
+
                     var reply_confirm = createConfirmation(mappingId);
 
                     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
@@ -298,17 +306,33 @@ function handleEvent(event) {
                             .then(() => {
                                 // process after push message to Line
                                 handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                                if (reply_carousel == null){
+                                    Mapping.findByIdAndUpdate(mappingId, 
+                                        {$set: {replyMessage: JSON.stringify(reply_details)}}, 
+                                        {new: true})
+                                    .then((mappingUpdateReply) => {                                
+                                        handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    })
+                                    .catch((errupdate) => {
+                                        handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    });
+
+                                } else {
+                                    Mapping.findByIdAndUpdate(mappingId, 
+                                        {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
+                                        {new: true})
+                                    .then((mappingUpdateReply) => {                                
+                                        handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    })
+                                    .catch((errupdate) => {
+                                        handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    });
+                                        
+                                }
+
 
                                 // Save the response back to the mapping -> replyMessage [JSON.stringify]
-                                Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
-                                    {new: true})
-                                .then((mappingUpdateReply) => {                                
-                                    handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                                })
-                                .catch((errupdate) => {
-                                    handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                });
+                               
                             })
                             .catch((errPushCarousel) => {
                                 // error handling

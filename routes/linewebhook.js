@@ -227,6 +227,12 @@ function handleEvent(event) {
                 var memory = recast_response.memory;
                 // Call function convert country to country_slug 
                 handleError("[Main] memory?: " + JSON.stringify(memory), "INFO");
+                var destination = memory.destination.value;
+                var period = memory.period.value;
+                var tourcode = memory.tourcode.value;
+
+                handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode, "INFO");
+
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
                 // Call function convert date to format date yyyy-mm-dd

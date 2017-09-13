@@ -42,29 +42,34 @@ function createProductCarousel(products) {
             "columns": []
         }
     };
+    
+    var checkData = parsedProducts.data
+     console.log("DEBUG: [checkData] " + JSON.stringify(checkData));
+    if (checkData == '' ) {
+         console.log("DEBUG: [checkData] " + JSON.stringify(checkData));
+    } else {
+        parsedProducts.data.products.forEach((product) => {
+            var column = {
+                "thumbnailImageUrl": product.url_pic.replace("http","https"),
+                "title": product.product_name.substr(0, 40),
+                "text": product.periods[0].period_start + '-'  + product.periods[0].period_end,
+                "actions": [                
+                    {
+                        "type": "uri",
+                        "label": "View detail",
+                        "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
+                    },
+                    {
+                        "type": "uri",
+                        "label": "View Slide",
+                        "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
+                    }
+                ]
+            };
 
-    parsedProducts.data.products.forEach((product) => {
-        var column = {
-            "thumbnailImageUrl": product.url_pic.replace("http","https"),
-            "title": product.product_name.substr(0, 40),
-            "text": product.periods[0].period_start + '-'  + product.periods[0].period_end,
-            "actions": [                
-                {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
-                },
-                {
-                    "type": "uri",
-                    "label": "View Slide",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/hong-kong/mush172141-goe0626-macao-3d-2n-by-fd"
-                }
-            ]
-        };
-
-          carousel.template.columns.push(column);
-    }, this);
-
+            carousel.template.columns.push(column);
+        }, this);
+    }
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
     return carousel;

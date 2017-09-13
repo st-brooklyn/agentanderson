@@ -233,20 +233,20 @@ function handleEvent(event) {
                 var departuredate = null
                 var returndate = null
 
-                if (memory.destination != null) {
-                    destination = memory.destination.value;
+                if (entities.destination != null) {
+                    destination = entities.destination.value;
                 }
-                if (memory.tourcode != null) {
-                    tourcode =  memory.tourcode.value;
+                if (entities.tourcode != null) {
+                    tourcode =  entities.tourcode.value;
                 } 
-                if (memory.departuredate != null) {
-                    tourcode =  memory.departuredate.value;
+                if (entities.departuredate != null) {
+                    tourcode =  entities.departure-date.value;
                 } 
-                if (memory.returndate != null) {
-                    tourcode =  memory.returndate.value;
+                if (entities.returndate != null) {
+                    tourcode =  entities.returndate.value;
                 }
-                if (memory.period != null) {
-                    period =  memory.period.value;
+                if (entities.period != null) {
+                    period =  entities.period.value;
                 } 
 
                 handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate, "INFO");

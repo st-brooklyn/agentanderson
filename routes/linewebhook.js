@@ -224,7 +224,7 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities.country.value ? null : entities.country.value
+                var country = entities.country == undefined ? null : entities.country.value
                 // Call function convert country to country_slug 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code

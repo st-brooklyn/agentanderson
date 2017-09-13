@@ -260,34 +260,30 @@ function handleEvent(event) {
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
                 var rpoptions  = null
-                if (destination != null && period != null){
-                    rpoptions = {
-                        uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
-                        qs: {
-                            apikey: 'APImushroomtravel',
-                            mode: 'loadproductchatbot',
-                            lang: 'th',
-                            pagesize: '1',
-                            pagenumber: '1',
-                            country_slug: destination,
-                            startdate: departuredate,
-                            enddate: returndate,
-                            searchword: tourcode,
-                            month: period
-                        },
-                        headers: {
-                            'User-Agent': 'Request-Promise'
-                        },
-                        json: true // Automatically parses the JSON string in the response
-                    };
+              
+                rpoptions = {
+                    uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                    qs: {
+                        apikey: 'APImushroomtravel',
+                        mode: 'loadproductchatbot',
+                        lang: 'th',
+                        pagesize: '1',
+                        pagenumber: '1',
+                        country_slug: destination,
+                        startdate: departuredate,
+                        enddate: returndate,
+                        searchword: tourcode,
+                        month: period
+                    },
+                    headers: {
+                        'User-Agent': 'Request-Promise'
+                    },
+                    json: true // Automatically parses the JSON string in the response
+                };
 
-                    var isdone = false;
+                var isdone = false;
 
-                } else {
-                    rpoptions  = null
-                    var isdone = false;
-                }
-
+            
                 rp(rpoptions)
                 .then((repos) => {
                     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
@@ -304,9 +300,9 @@ function handleEvent(event) {
                         }
                     }
                  
-                    if (JSON.stringify(entities) == "{}"){
-                        mockup_products = null
-                    } 
+                    // if (JSON.stringify(entities) == "{}"){
+                    //     mockup_products = null
+                    // } 
 
                     const messages = [];    
                     var replyToClient = null            

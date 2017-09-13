@@ -237,6 +237,9 @@ function handleEvent(event) {
                 // Call function convert month to format mm
                 
                 // Construct the reply message
+
+
+
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
                 var rpoptions = {
@@ -245,7 +248,7 @@ function handleEvent(event) {
                             apikey: 'APImushroomtravel',
                             mode: 'loadproductchatbot',
                             lang: 'th',
-                            pagesize: '1',
+                            pagesize: '3',
                             pagenumber: '1',
                             country_slug: country,
                            // startdate: departuredate,

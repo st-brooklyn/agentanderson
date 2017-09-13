@@ -213,8 +213,8 @@ function handleEvent(event) {
                 }
 
                 // Extract the reply from recast
-                var intent = recast_response.action.slug;
-                handleError("[Main] Intent: " + intent, "INFO");
+                // var intent = recast_response.action.slug;
+                // handleError("[Main] Intent: " + intent, "INFO");
 
                 var isdone = recast_response.action.done;
                 handleError("[Main] Done?: " + isdone, "INFO");

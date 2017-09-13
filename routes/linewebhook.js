@@ -232,14 +232,20 @@ function handleEvent(event) {
                 var tourcode = null
                 if (memory.destination != null) {
                     destination = memory.destination.value;
+                } else {
+                    destination =''
                 }
 
                 if (memory.period != null) {
                     period =  memory.period.value;
+                } else {
+                    period = ''
                 }
                 
                  if (memory.tourcode != null) {
                     tourcode =  memory.tourcode.value;
+                } else{
+                    tourcode = ''
                 }
 
                 handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode, "INFO");
@@ -260,10 +266,10 @@ function handleEvent(event) {
                             lang: 'th',
                             pagesize: '1',
                             pagenumber: '1',
-                            country_slug: 'japan',
+                            country_slug: destination,
                             startdate: '2018-01-05',
                             enddate: '2018-01-09',
-                            searchword: '',
+                            searchword: tourcode,
                             month: ''
                         },
                         headers: {

@@ -224,7 +224,9 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
+                var memory = recast_response.memory;
                 // Call function convert country to country_slug 
+                handleError("[Main] memory?: " + JSON.stringify(memory), "INFO");
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
                 // Call function convert date to format date yyyy-mm-dd
@@ -239,11 +241,13 @@ function handleEvent(event) {
                             apikey: 'APImushroomtravel',
                             mode: 'loadproductchatbot',
                             lang: 'th',
-                            country_slug: 'japan',
                             pagesize: '1',
                             pagenumber: '1',
+                            country_slug: 'japan',
                             startdate: '2018-01-05',
-                            enddate: '2018-01-09'
+                            enddate: '2018-01-09',
+                            searchword: '',
+                            month: ''
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

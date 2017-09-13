@@ -313,8 +313,7 @@ function handleEvent(event) {
                     var reply_confirm = null
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
-                         handleError('[Main] check data : ' + JSON.stringify(mockup_products.data), "DEBUG");
-                         if (mockup_products.data == '' ){
+                         if (mockup_products.data.products == '' ){
                                 replyToClient = createReplyMessage('ไม่มี data จาก api');
                                 messages.push(reply_details);
                         } else {

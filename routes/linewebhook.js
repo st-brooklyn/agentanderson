@@ -226,7 +226,7 @@ function handleEvent(event) {
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 var country = entities.country == undefined ? null : entities.country.value
                 var tourcode = entities.tourcode == undefined ? null : entities.tourcode.value
-                //var departuredate = entities.departure-date == undefined ? null : entities.departure-date.value
+                var departuredate = entities['departure-date'] == undefined ? null : entities['departure-date'].value
                 //var returndate = entities.returndate == undefined ? null : entities.returndate.value
                 var month = entities.month == undefined ? null : entities.month.value
                 var traveler = entities.traveler_child == undefined ? null : entities.traveler_child.value

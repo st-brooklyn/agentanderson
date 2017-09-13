@@ -224,12 +224,12 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities.country == undefined ? null : entities.country.value
-                var tourcode = entities.tourcode == undefined ? null : entities.tourcode.value
+                var country = entities['country'] == undefined ? null : entities['country'].value
+                var tourcode = entities['tourcode'] == undefined ? null : entities['tourcode'].value
                 var departuredate = entities['departure-date'] == undefined ? null : entities['departure-date'].value
-                //var returndate = entities.returndate == undefined ? null : entities.returndate.value
-                var month = entities.month == undefined ? null : entities.month.value
-                var traveler = entities.traveler_child == undefined ? null : entities.traveler_child.value
+                var returndate = entities['returndate'] == undefined ? null : entities['returndate'].value
+                var month = entities['month'] == undefined ? null : entities['month'].value
+                var traveler = entities['traveler'] == undefined ? null : entities['traveler'].value
                 // Call function convert country to country_slug 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
@@ -237,8 +237,7 @@ function handleEvent(event) {
                 // Call function convert month to format mm
                 
                 // Construct the reply message
-
-
+                handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
 
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
@@ -251,8 +250,8 @@ function handleEvent(event) {
                             pagesize: '3',
                             pagenumber: '1',
                             country_slug: country,
-                           // startdate: departuredate,
-                           // enddate: returndate,
+                            startdate: departuredate,
+                            enddate: returndate,
                             month: month,
                             searchword: tourcode
                         },

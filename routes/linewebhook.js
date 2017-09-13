@@ -76,7 +76,7 @@ function createConfirmation(mappingId, replyToClient) {
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": replyToClient + "Message correct?",
+            "text": replyToClient + "  Message correct?",
             "actions": [
                 {
                   "type": "postback",

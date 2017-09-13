@@ -42,7 +42,7 @@ function createProductCarousel(products) {
             "columns": []
         }
     };
-   
+
     parsedProducts.data.products.forEach((product) => {
         var column = {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
@@ -62,9 +62,9 @@ function createProductCarousel(products) {
             ]
         };
 
-        carousel.template.columns.push(column);
+          carousel.template.columns.push(column);
     }, this);
-    
+
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
     return carousel;
@@ -76,7 +76,7 @@ function createConfirmation(mappingId, replyToClient) {
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": replyToClient + "  Message correct?",
+            "text": replyToClient + " Message correct?",
             "actions": [
                 {
                   "type": "postback",
@@ -212,45 +212,20 @@ function handleEvent(event) {
                     // No need to update
                 }
 
-                // // Extract the reply from recast
-                // var intent = recast_response.action.slug;
-                // handleError("[Main] Intent: " + intent, "INFO");
+                // Extract the reply from recast
+                var intent = recast_response.action.slug;
+                handleError("[Main] Intent: " + intent, "INFO");
 
-                // var isdone = recast_response.action.done;
-                // handleError("[Main] Done?: " + isdone, "INFO");
+                var isdone = recast_response.action.done;
+                handleError("[Main] Done?: " + isdone, "INFO");
 
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var memory = recast_response.memory;
+                var country = entities.country.value ? null : entities.country.value
                 // Call function convert country to country_slug 
-                handleError("[Main] memory?: " + JSON.stringify(memory), "INFO");
-                var destination = null
-                var period = null
-                var tourcode = null
-                var departuredate = null
-                var returndate = null
-
-                if (entities.destination != null) {
-                    destination = entities.destination.value;
-                }
-                if (entities.tourcode != null) {
-                    tourcode =  entities.tourcode.value;
-                } 
-                if (entities.departuredate != null) {
-                    tourcode =  entities.departure-date.value;
-                } 
-                if (entities.returndate != null) {
-                    tourcode =  entities.returndate.value;
-                }
-                if (entities.period != null) {
-                    period =  entities.period.value;
-                } 
-
-                handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate, "INFO");
-
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
                 // Call function convert date to format date yyyy-mm-dd
@@ -259,31 +234,27 @@ function handleEvent(event) {
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
-                var rpoptions  = null
-              
-                rpoptions = {
-                    uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
-                    qs: {
-                        apikey: 'APImushroomtravel',
-                        mode: 'loadproductchatbot',
-                        lang: 'th',
-                        pagesize: '1',
-                        pagenumber: '1',
-                        country_slug: destination,
-                        startdate: departuredate,
-                        enddate: returndate,
-                        searchword: tourcode,
-                        month: period
-                    },
-                    headers: {
-                        'User-Agent': 'Request-Promise'
-                    },
-                    json: true // Automatically parses the JSON string in the response
-                };
+                var rpoptions = {
+                        uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                        qs: {
+                            apikey: 'APImushroomtravel',
+                            mode: 'loadproductchatbot',
+                            lang: 'th',
+                            country_slug: country,
+                            pagesize: '1',
+                            pagenumber: '1',
+                            startdate: '',
+                            enddate: '',
+                            searchword: ''
+                        },
+                        headers: {
+                            'User-Agent': 'Request-Promise'
+                        },
+                        json: true // Automatically parses the JSON string in the response
+                    };
 
                 var isdone = false;
 
-            
                 rp(rpoptions)
                 .then((repos) => {
                     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
@@ -300,22 +271,17 @@ function handleEvent(event) {
                         }
                     }
                  
-                    // if (JSON.stringify(entities) == "{}"){
-                    //     mockup_products = null
-                    // } 
+                    if (JSON.stringify(entities) == "{}"){
+                        mockup_products = null
+                    } 
 
                     const messages = [];    
                     var replyToClient = null            
                     var reply_confirm = null
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
-                         if (mockup_products.data.products == '' ){
-                                replyToClient = createReplyMessage('ไม่มี data จาก api');
-                                messages.push(reply_details);
-                        } else {
-                            var reply_carousel = createProductCarousel(mockup_products);
-                            messages.push(reply_carousel);
-                        }
+                        var reply_carousel = createProductCarousel(mockup_products);
+                        messages.push(reply_carousel);
                     } else {
                         var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
                         replyToClient = createReplyMessage(recast_response.reply());

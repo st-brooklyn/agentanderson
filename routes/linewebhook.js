@@ -269,8 +269,8 @@ function handleEvent(event) {
                             country_slug: destination,
                             startdate: '2018-01-05',
                             enddate: '2018-01-09',
-                            searchword: tourcode,
-                            month: ''
+                            //searchword: tourcode,
+                            //month: ''
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

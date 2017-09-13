@@ -43,9 +43,8 @@ function createProductCarousel(products) {
         }
     };
     
-    var checkData = parsedProducts.data
-     console.log("DEBUG: [checkData] " + JSON.stringify(checkData));
-    if (checkData == '' ) {
+    var checkData = parsedProducts.data;
+    if (checkData == '[]' ) {
          console.log("DEBUG: [checkData] " + JSON.stringify(checkData));
     } else {
         parsedProducts.data.products.forEach((product) => {

@@ -307,7 +307,8 @@ function handleEvent(event) {
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
                          if (mockup_products.data == '' ){
-                            reply_confirm = createConfirmation(mappingId, "ไม่มี data จาก api");
+                              replyToClient = createReplyMessage('ไม่มี data จาก api');
+                                messages.push(reply_details);
                         } else {
                             var reply_carousel = createProductCarousel(mockup_products);
                             messages.push(reply_carousel);

@@ -227,9 +227,20 @@ function handleEvent(event) {
                 var memory = recast_response.memory;
                 // Call function convert country to country_slug 
                 handleError("[Main] memory?: " + JSON.stringify(memory), "INFO");
-                var destination = memory.destination.value;
-                var period = memory.period? null : memory.period.value;
-                var tourcode = memory.tourcode? null : memory.tourcode.value;
+                var destination = null
+                var period = null
+                var tourcode = null
+                if (memory.destination != null) {
+                    destination = memory.destination.value;
+                }
+
+                if (memory.period != null) {
+                    period =  memory.period.value;
+                }
+                
+                 if (memory.tourcode != null) {
+                    tourcode =  memory.tourcode.value;
+                }
 
                 handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode, "INFO");
 

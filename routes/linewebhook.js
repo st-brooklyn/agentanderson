@@ -227,7 +227,7 @@ function handleEvent(event) {
                 var country = entities.country == undefined ? null : entities.country.value
                 var tourcode = entities.tourcode == undefined ? null : entities.tourcode.value
                 //var departuredate = entities.departure-date == undefined ? null : entities.departure-date.value
-                var returndate = entities.returndate == undefined ? null : entities.returndate.value
+                //var returndate = entities.returndate == undefined ? null : entities.returndate.value
                 var month = entities.month == undefined ? null : entities.month.value
                 var traveler = entities.traveler_child == undefined ? null : entities.traveler_child.value
                 // Call function convert country to country_slug 
@@ -248,8 +248,8 @@ function handleEvent(event) {
                             pagesize: '1',
                             pagenumber: '1',
                             country_slug: country,
-                            startdate: departuredate,
-                            enddate: returndate,
+                           // startdate: departuredate,
+                           // enddate: returndate,
                             month: month,
                             searchword: tourcode
                         },

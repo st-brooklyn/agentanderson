@@ -247,7 +247,7 @@ function handleEvent(event) {
                             apikey: 'APImushroomtravel',
                             mode: 'loadproductchatbot',
                             lang: 'th',
-                            pagesize: '3',
+                            pagesize: '2',
                             pagenumber: '1',
                             country_slug: country,
                             startdate: departuredate,
@@ -262,6 +262,7 @@ function handleEvent(event) {
                     };
 
                 var isdone = false;
+                handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
 
                 rp(rpoptions)
                 .then((repos) => {

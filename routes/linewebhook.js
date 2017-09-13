@@ -259,7 +259,9 @@ function handleEvent(event) {
                 // Construct the reply message
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
-                var rpoptions = {
+                var rpoptions  = null
+                if (destination != null && period != null){
+                    rpoptions = {
                         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                         qs: {
                             apikey: 'APImushroomtravel',
@@ -279,7 +281,12 @@ function handleEvent(event) {
                         json: true // Automatically parses the JSON string in the response
                     };
 
-                var isdone = false;
+                    var isdone = false;
+
+                } else {
+                    rpoptions  = null
+                    var isdone = false;
+                }
 
                 rp(rpoptions)
                 .then((repos) => {
@@ -308,7 +315,7 @@ function handleEvent(event) {
                     if (mockup_products != null){
                          handleError('[Main] check data : ' + JSON.stringify(mockup_products.data), "DEBUG");
                          if (mockup_products.data == '' ){
-                              replyToClient = createReplyMessage('ไม่มี data จาก api');
+                                replyToClient = createReplyMessage('ไม่มี data จาก api');
                                 messages.push(reply_details);
                         } else {
                             var reply_carousel = createProductCarousel(mockup_products);

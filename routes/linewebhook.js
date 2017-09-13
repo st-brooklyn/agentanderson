@@ -230,25 +230,26 @@ function handleEvent(event) {
                 var destination = null
                 var period = null
                 var tourcode = null
+                var departuredate = null
+                var returndate = null
+
                 if (memory.destination != null) {
                     destination = memory.destination.value;
-                } else {
-                    destination =''
                 }
-
+                if (memory.tourcode != null) {
+                    tourcode =  memory.tourcode.value;
+                } 
+                if (memory.departuredate != null) {
+                    tourcode =  memory.departuredate.value;
+                } 
+                if (memory.returndate != null) {
+                    tourcode =  memory.returndate.value;
+                }
                 if (memory.period != null) {
                     period =  memory.period.value;
-                } else {
-                    period = ''
-                }
-                
-                 if (memory.tourcode != null) {
-                    tourcode =  memory.tourcode.value;
-                } else{
-                    tourcode = ''
-                }
+                } 
 
-                handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode, "INFO");
+                handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate, "INFO");
 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
@@ -267,10 +268,10 @@ function handleEvent(event) {
                             pagesize: '1',
                             pagenumber: '1',
                             country_slug: destination,
-                            startdate: '2018-01-05',
-                            enddate: '2018-01-09',
-                            //searchword: tourcode,
-                            //month: ''
+                            startdate: departuredate,
+                            enddate: returndate,
+                            searchword: tourcode,
+                            month: period
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

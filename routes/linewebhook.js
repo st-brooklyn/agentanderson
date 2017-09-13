@@ -228,8 +228,8 @@ function handleEvent(event) {
                 // Call function convert country to country_slug 
                 handleError("[Main] memory?: " + JSON.stringify(memory), "INFO");
                 var destination = memory.destination.value;
-                var period = memory.period.value;
-                var tourcode = memory.tourcode.value;
+                var period = memory.period? null : memory.period.value;
+                var tourcode = memory.tourcode? null : memory.tourcode.value;
 
                 handleError("[Main] value ?: destination = " + destination + " period = " + period + " tourcode = " + tourcode, "INFO");
 

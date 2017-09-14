@@ -233,14 +233,14 @@ function handleEvent(event) {
                     var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
-                var entities = recast_response.entities;
-                handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities['country'] ? entities['country'][0] ? null : entities.country[0].value : null
-                var tourcode = entities['tourcode'] ? entities['tourcode'][0] ? null : entities.tourcode[0].value : null
-                var departuredate = entities['departure-date'] ? entities['departure-date'][0] ? null : entities['departure-date'][0].value : null
-                var returndate = entities['returndate'] ? entities['returndate'][0] ? null : entities.returndate[0].value : null
-                var month = entities['month'] ? entities['month'][0] ? null : entities.month[0].value : null
-                var traveler = entities['traveler'] ? entities['traveler'][0] ? null : entities.traveler[0].value : null
+                var entity = recast_response['entities'];
+                handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
+                var country = entity['country'] ? entity['country'][0] ? null : entity.country[0].value : null
+                var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? null : entity.tourcode[0].value : null
+                var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? null : entity['departure-date'][0].value : null
+                var returndate = entity['returndate'] ? entity['returndate'][0] ? null : entity.returndate[0].value : null
+                var month = entity['month'] ? entity['month'][0] ? null : entity.month[0].value : null
+                var traveler = entity['traveler'] ? entity['traveler'][0] ? null : entity.traveler[0].value : null
                 
                 // Construct the reply message
                 const apitour = require('../controllers/tourapicontroller');
@@ -308,7 +308,7 @@ function handleEvent(event) {
                     intent = '-';
                 }
                  
-                    if (entities == null){
+                    if (entity == null){
                         mockup_products = null
                     } 
 

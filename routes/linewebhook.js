@@ -50,8 +50,8 @@ function createProductCarousel(products) {
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
         var column = {
-            //"thumbnailImageUrl": product.url_pic.replace("http","https"),
-            "thumbnailImageUrl": product.url_pic,
+            "thumbnailImageUrl": product.url_pic.replace("http","https"),
+            //"thumbnailImageUrl": product.url_pic,
             "title": product.product_name.substr(0, 40),
             "text":  periodText.substr(0, 60),
             "actions": [                

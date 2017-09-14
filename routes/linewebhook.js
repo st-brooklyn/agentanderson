@@ -238,7 +238,8 @@ function handleEvent(event) {
                 
                 // Construct the reply message
                 const apitour = require('../controllers/tourapicontroller');
-
+                var mockup_products = null
+                
                 if (country && departuredate && returndate && month){
                     mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
                     isdone = true;

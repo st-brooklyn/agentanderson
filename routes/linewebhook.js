@@ -271,7 +271,8 @@ function handleEvent(event) {
                     };
 
                 var isdone = false;
-                handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                //handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                handleError("[API] Before Param: coountry = " + country + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
 
                 rp(rpoptions)
                 .then((repos) => {

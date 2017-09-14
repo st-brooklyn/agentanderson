@@ -15,7 +15,7 @@ module.exports.searchtour = function(country, tourcode){
                             startdate: departuredate,
                             enddate: returndate,
                             month: month,
-                            searchword: tourcode
+                            // searchword: tourcode
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

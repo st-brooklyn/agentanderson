@@ -241,13 +241,15 @@ function handleEvent(event) {
               
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
-
-                if (country && departuredate && returndate && month)
-                {       
-                    const ta = require('../controllers/tourapicontroller');
+                const ta = require('../controllers/tourapicontroller');
                     mockup_products = ta.searchtour;
-                    //handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                }
+
+                // if (country && departuredate && returndate && month)
+                // {       
+                //     const ta = require('../controllers/tourapicontroller');
+                //     mockup_products = ta.searchtour;
+                //     //handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                // }
                 // var rpoptions = {
                 //         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
                 //         qs: {

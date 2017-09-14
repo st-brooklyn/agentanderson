@@ -2,8 +2,8 @@
 const rp = require('request-promise');
 const configs = require('../data/config');
 const log = require('./logcontroller');
-
-module.exports.searchtour = function(country, departuredate, returndate, month, tourcode){
+const deasync = require('deasync');
+module.exports.searchtour = deasync(function(country, departuredate, returndate, month, tourcode){
     var rpoptions = {
                 uri: configs.apiUrl,
                 qs: {
@@ -33,4 +33,4 @@ module.exports.searchtour = function(country, departuredate, returndate, month, 
         .catch((error)=> {
             log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
         })
-}
+});

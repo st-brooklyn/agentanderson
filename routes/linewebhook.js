@@ -229,7 +229,8 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response['entities'];
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities['country'] == null ? null : entities['country']['value']
+                var country = entities['country']['value'] == null ? null : entities['country']['value']
+                var country = entities.country.value
                 // var tourcode = entities.tourcode == null ? null : entities.tourcode.value
                 // var departuredate = entities['departure-date'] == null ? null : entities['departure-date'].value
                 // var returndate = entities.returndate == null ? null : entities.returndate.value

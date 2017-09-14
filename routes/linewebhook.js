@@ -240,11 +240,13 @@ function handleEvent(event) {
                 const apitour = require('../controllers/tourapicontroller');
 
                 if (country && departuredate && returndate && month){
-                    apitour.searchtour(country, departuredate, returndate, month, '');
+                    mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+                    isdone = true;
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                 } else {
                     if (tourcode) {
-                        apitour.searchtour('', '', '', '', tourcode);
+                        mockup_products = apitour.searchtour('', '', '', '', tourcode);
+                        isdone = true;
                         handleError("[API] Before Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     }
                 }

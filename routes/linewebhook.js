@@ -230,12 +230,12 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities['country'] ? entities['country'][0] == null ? null : entities.country[0].value : null
-                //var tourcode = entities['tourcode'][0] == null ? null : entities.tourcode[0].value
-                // var departuredate = entities['departure-date'][0] == null ? null : entities['departure-date'][0].value
-                // var returndate = entities.returndate[0] == null ? null : entities.returndate[0].value
-                // var month = entities.month[0] == null ? null : entities.month[0].value
-                //var traveler = entities.traveler[0] == null ? null : entities.traveler[0].value
+                var country = entities['country'] ? entities['country'][0] ? null : entities.country[0].value : null
+                var tourcode = entities['tourcode'] ? entities['tourcode'][0] ? null : entities.tourcode[0].value : null
+                var departuredate = entities['departure-date'] ? entities['departure-date'][0] ? null : entities['departure-date'][0].value : null
+                var returndate = entities['returndate'] ? entities['returndate'][0] ? null : entities.returndate[0].value : null
+                var month = entities['month'] ? entities['month'][0] ? null : entities.month[0].value : null
+                var traveler = entities['traveler'] ? entities['traveler'][0] ? null : entities.traveler[0].value : null
                 
                 // Construct the reply message
   
@@ -255,10 +255,10 @@ function handleEvent(event) {
                             pagesize: '1',
                             pagenumber: '1',
                             country_slug: country,
-                            // startdate: departuredate,
-                            // enddate: returndate,
-                            // month: month,
-                            //searchword: tourcode
+                            startdate: departuredate,
+                            enddate: returndate,
+                            month: month,
+                            searchword: tourcode
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

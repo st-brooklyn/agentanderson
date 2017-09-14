@@ -257,7 +257,7 @@ function handleEvent(event) {
                             startdate: departuredate,
                             enddate: returndate,
                             month: month,
-                            searchword: tourcode
+                            //searchword: tourcode
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'

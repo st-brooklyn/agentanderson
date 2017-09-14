@@ -48,7 +48,7 @@ function createProductCarousel(products) {
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '/n'
         });
-        console.log("DEBUG: [createProductCarousel] " + periodText);
+        console.log("DEBUG: [Carousel for period] : " + periodText);
         var column = {
             "thumbnailImageUrl": product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
@@ -230,28 +230,23 @@ function handleEvent(event) {
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 var country = entities.country[0].value == null ? null : entities.country[0].value 
-                //var tourcode = entities.tourcode[0].value == null ? null : entities.tourcode[0].value
-                var departuredate = entities['departure-date'][0].value == null ? null : entities['departure-date'][0].value
-                var returndate = entities.returndate[0].value == null ? null : entities.returndate[0].value
-                var month = entities.month[0].value == null ? null : entities.month[0].value
-                //var traveler = entities.traveler[0].value == null ? null : entities.traveler[0].value
+                var tourcode = entities.tourcode[0] == null ? null : entities.tourcode[0].value
+                var departuredate = entities['departure-date'][0] == null ? null : entities['departure-date'][0].value
+                var returndate = entities.returndate[0] == null ? null : entities.returndate[0].value
+                var month = entities.month[0] == null ? null : entities.month[0].value
+                var traveler = entities.traveler[0] == null ? null : entities.traveler[0].value
                 
                 // Construct the reply message
-                //handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-              
+  
+                if (country && departuredate && returndate && month){
+                    handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                }
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
+                const config = require('../data/config');
                 var mockup_products = null
-                // const ta = require('../controllers/tourapicontroller');
-                //     mockup_products = ta.searchtour;
-
-                // if (country && departuredate && returndate && month)
-                // {       
-                //     const ta = require('../controllers/tourapicontroller');
-                //     mockup_products = ta.searchtour;
-                //     //handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                // }
                 var rpoptions = {
-                        uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                        //uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                        uri: config.apiUrl,
                         qs: {
                             apikey: 'APImushroomtravel',
                             mode: 'loadproductchatbot',
@@ -262,7 +257,7 @@ function handleEvent(event) {
                             startdate: departuredate,
                             enddate: returndate,
                             month: month,
-                            //searchword: tourcode
+                            searchword: tourcode
                         },
                         headers: {
                             'User-Agent': 'Request-Promise'
@@ -271,8 +266,7 @@ function handleEvent(event) {
                     };
 
                 var isdone = false;
-                //handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                handleError("[API] Before Param: coountry = " + country + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month , "DEBUG");
+                handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
 
                 rp(rpoptions)
                 .then((repos) => {
@@ -280,16 +274,15 @@ function handleEvent(event) {
                     mockup_products = repos;
                     isdone = true;
                 })
-
-
-                    // if(mockup_products == null) {
-                    //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
-                    //     mockup_products = require('./products.json');
-                    // } else {
-                    //     if (mockup_products.data.results == 0){
-                    //         mockup_products = require('./products.json');
-                    //     }
-                    // }
+                .then(() => {
+                    if(mockup_products == null) {
+                        handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                        mockup_products = require('./products.json');
+                    } else {
+                        if (mockup_products.data.results == 0){
+                            mockup_products = require('./products.json');
+                        }
+                    }
                  
                     if (JSON.stringify(entities) == "{}"){
                         mockup_products = null
@@ -380,110 +373,10 @@ function handleEvent(event) {
                     .catch((errfind) => {
                         handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
                     });
-
-                // .then(() => {
-                //     if(mockup_products == null) {
-                //         handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
-                //         mockup_products = require('./products.json');
-                //     } else {
-                //         if (mockup_products.data.results == 0){
-                //             mockup_products = require('./products.json');
-                //         }
-                //     }
-                 
-                //     if (JSON.stringify(entities) == "{}"){
-                //         mockup_products = null
-                //     } 
-
-                //     const messages = [];    
-                //     var replyToClient = null            
-                //     var reply_confirm = null
-                //     //const linehelper = require('../controllers/LineMessageController');
-                //     if (mockup_products != null){
-                //         var reply_carousel = createProductCarousel(mockup_products);
-                //         messages.push(reply_carousel);
-                //     } else {
-                //         var reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                //         replyToClient = createReplyMessage(recast_response.reply());
-                //         messages.push(reply_details);
-                //     }             
-
-                //     if (replyToClient == null){
-                //         reply_confirm = createConfirmation(mappingId, '');
-                //     } else {
-                //         reply_confirm = createConfirmation(mappingId, replyToClient.text);
-                //     }
-                
-                //     var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
-                //     if(reply == null) {
-                //         reply = '[Error]\n' + recast_response.conversationToken;
-                //     }
-
-                //     var reply_text = {
-                //         "type": "text",
-                //         "text": reply
-                //     };
-            
-                //     messages.push(reply_confirm);
-
-                //     handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
-
-                //     var senderId = '';
-
-                //     Mapping.findById(mappingId)
-                //     .then((senderMapping) => {
-                //         if(senderMapping) {
-                //             senderId = senderMapping.userId;
-                //             handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
-                            
-                //             lineclient.pushMessage(senderId, messages)
-                //             .then(() => {
-                //                 // process after push message to Line
-                //                 handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
-                //                 if (reply_carousel == null){
-                //                     Mapping.findByIdAndUpdate(mappingId, 
-                //                         {$set: {replyMessage: JSON.stringify(replyToClient)}}, 
-                //                         {new: true})
-                //                     .then((mappingUpdateReply) => {                                
-                //                         handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                //                     })
-                //                     .catch((errupdate) => {
-                //                         handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                //                     });
-
-                //                 } else {
-                //                     Mapping.findByIdAndUpdate(mappingId, 
-                //                         {$set: {replyMessage: JSON.stringify(reply_carousel)}}, 
-                //                         {new: true})
-                //                     .then((mappingUpdateReply) => {                                
-                //                         handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                //                     })
-                //                     .catch((errupdate) => {
-                //                         handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                //                     });
-                                        
-                //                 }
-
-
-                //                 // Save the response back to the mapping -> replyMessage [JSON.stringify]
-                               
-                //             })
-                //             .catch((errPushCarousel) => {
-                //                 // error handling
-                //                 handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
-                //             });
-                //         }
-                //         else {
-                //             handleError("[Find for sender] Mapping for sender not found", "WARNING");
-                //         }                    
-                //     })
-                //     .catch((errfind) => {
-                //         handleError("[Find for sender] Find sender failed. " + errfind.stack, "ERROR");
-                //     });
-                // })
-                // .catch((rperr) => {
-                //     handleError("[API Mockup] " + rperr.stack, "ERROR");
-                // });
+                })
+                .catch((rperr) => {
+                    handleError("[API Mockup] " + rperr.stack, "ERROR");
+                });
 
                 // var api_request = require('request');
                 // api_request.get({

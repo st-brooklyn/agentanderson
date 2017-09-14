@@ -1,6 +1,7 @@
 'use strict';
 const rp = require('request-promise');
 const configs = require('../data/config');
+const log = require('./logcontroller');
 
 module.exports.searchtour = function(country, departuredate, returndate, month, tourcode){
     var rpoptions = {
@@ -24,12 +25,12 @@ module.exports.searchtour = function(country, departuredate, returndate, month, 
             };
         rp(rpoptions)
         .then((repos) => {
-            handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
             // mockup_products = repos;
             // isdone = true;
             return repos;
         })
         .catch((error)=> {
-            handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
         })
 }

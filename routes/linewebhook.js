@@ -50,8 +50,8 @@ function createProductCarousel(products) {
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
         var column = {
-            "thumbnailImageUrl": product.url_pic.replace("http","https"),
-            //"thumbnailImageUrl": product.url_pic,
+            //"thumbnailImageUrl": product.url_pic.replace("http","https"),
+            "thumbnailImageUrl": product.url_pic,
             "title": product.product_name.substr(0, 40),
             "text":  periodText.substr(0, 60),
             "actions": [                
@@ -252,7 +252,7 @@ function handleEvent(event) {
                             apikey: 'APImushroomtravel',
                             mode: 'loadproductchatbot',
                             lang: 'th',
-                            pagesize: '2',
+                            pagesize: '1',
                             pagenumber: '1',
                             country_slug: country,
                             // startdate: departuredate,

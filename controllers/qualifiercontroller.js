@@ -42,7 +42,9 @@ exports.disqualify_post = function(req, res, next) {
     else {
         // Data from the form is valid.
         // Continue with the logic to disqualify
+        const ta = require('../controllers/tourapicontroller');
+            mockup_products = ta.searchtour;
+        //res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
 
-        res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
     }
 };

@@ -230,17 +230,12 @@ function handleEvent(event) {
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 var country = entities.country === 'undefined' ? null : entities.country.value
-                //var tourcode = entities.tourcode === 'undefined' ? null : entities.tourcode.value
-                //var departuredate = entities['departure-date'] === 'undefined' ? null : entities['departure-date'].value
+                var tourcode = null //entities.tourcode === 'undefined' ? null : entities.tourcode.value
+                var departuredate = null //entities['departure-date'] === 'undefined' ? null : entities['departure-date'].value
                 var returndate = entities.returndate === 'undefined' ? null : entities.returndate.value
                 var month = entities.month === 'undefined' ? null : entities.month.value
-                //var traveler = entities.traveler === 'undefined' ? null : entities.traveler.value
-                // Call function convert country to country_slug 
-                // Call function convert city to city_slug 
-                // Call function convert airline name to airline code
-                // Call function convert date to format date yyyy-mm-dd
-                // Call function convert month to format mm
-                
+                var traveler = null //entities.traveler === 'undefined' ? null : entities.traveler.value
+
                 // Construct the reply message
                 handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
               

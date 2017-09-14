@@ -224,21 +224,13 @@ function handleEvent(event) {
                 var intent = '';
 
                 if(recast_response.action){
-                     intent = recast_response.action.slug;
+                    intent = recast_response.action.slug;
                     handleError("[Main] Intent: " + intent, "INFO");
 
-                
-                
-                handleError("[Main] Intent: " + intent, "INFO");
+                    var isdone = recast_response.action.done;
+                    handleError("[Main] Done?: " + isdone, "INFO");
 
-
-                var intent = recast_response.action.slug;
-                handleError("[Main] Intent: " + intent, "INFO");
-
-                var isdone = recast_response.action.done;
-                handleError("[Main] Done?: " + isdone, "INFO");
-
-                var actual_token = recast_response.conversationToken;
+                    var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
                 var entities = recast_response.entities;
@@ -253,7 +245,9 @@ function handleEvent(event) {
                 // Construct the reply message
                 const apitour = require('../controllers/tourapicontroller');
                 var mockup_products = null
-
+                
+                handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                
                 if (country && departuredate && returndate && month){
                     mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
                     isdone = true;

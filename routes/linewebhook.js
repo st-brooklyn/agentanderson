@@ -46,7 +46,7 @@ function createProductCarousel(products) {
     parsedProducts.data.products.forEach((product) => {
         var periodText = "";
         product.periods.forEach((period) => {
-            periodText += period.period_start + ' - ' + period.period_end + '/n'
+            periodText += period.period_start + ' - ' + period.period_end + '\n'
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
         var column = {
@@ -58,12 +58,12 @@ function createProductCarousel(products) {
                 {
                     "type": "uri",
                     "label": "View detail",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_slug
+                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
                 },
                 {
                     "type": "uri",
                     "label": "View Slide",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_slug
+                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
                 }
             ]
         };
@@ -230,7 +230,7 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities['country'][0] == null ? null : entities.country[0].value 
+                var country = entities['country'] ? entities['country'][0] == null ? null : entities.country[0].value : null
                 //var tourcode = entities['tourcode'][0] == null ? null : entities.tourcode[0].value
                 // var departuredate = entities['departure-date'][0] == null ? null : entities['departure-date'][0].value
                 // var returndate = entities.returndate[0] == null ? null : entities.returndate[0].value

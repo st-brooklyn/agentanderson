@@ -241,8 +241,8 @@ function handleEvent(event) {
               
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
-                const ta = require('../controllers/tourapicontroller');
-                    mockup_products = ta.searchtour;
+                // const ta = require('../controllers/tourapicontroller');
+                //     mockup_products = ta.searchtour;
 
                 // if (country && departuredate && returndate && month)
                 // {       
@@ -250,35 +250,35 @@ function handleEvent(event) {
                 //     mockup_products = ta.searchtour;
                 //     //handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                 // }
-                // var rpoptions = {
-                //         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
-                //         qs: {
-                //             apikey: 'APImushroomtravel',
-                //             mode: 'loadproductchatbot',
-                //             lang: 'th',
-                //             pagesize: '2',
-                //             pagenumber: '1',
-                //             country_slug: country,
-                //             startdate: departuredate,
-                //             enddate: returndate,
-                //             month: month,
-                //             searchword: tourcode
-                //         },
-                //         headers: {
-                //             'User-Agent': 'Request-Promise'
-                //         },
-                //         json: true // Automatically parses the JSON string in the response
-                //     };
+                var rpoptions = {
+                        uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
+                        qs: {
+                            apikey: 'APImushroomtravel',
+                            mode: 'loadproductchatbot',
+                            lang: 'th',
+                            pagesize: '2',
+                            pagenumber: '1',
+                            country_slug: country,
+                            startdate: departuredate,
+                            enddate: returndate,
+                            month: month,
+                            //searchword: tourcode
+                        },
+                        headers: {
+                            'User-Agent': 'Request-Promise'
+                        },
+                        json: true // Automatically parses the JSON string in the response
+                    };
 
-                // var isdone = false;
-                // handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                var isdone = false;
+                handleError("[API] Before Param: coountry = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
 
-                // rp(rpoptions)
-                // .then((repos) => {
-                //     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                //     mockup_products = repos;
-                //     isdone = true;
-                // })
+                rp(rpoptions)
+                .then((repos) => {
+                    handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                    mockup_products = repos;
+                    isdone = true;
+                })
 
 
                     // if(mockup_products == null) {

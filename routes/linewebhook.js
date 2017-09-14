@@ -235,12 +235,39 @@ function handleEvent(event) {
                 // Call api tour    
                 var entity = recast_response['entities'];
                 handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
-                var country = entity['country'] ? entity['country'][0] ? null : entity.country[0].value : null
-                var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? null : entity.tourcode[0].value : null
-                var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? null : entity['departure-date'][0].value : null
-                var returndate = entity['returndate'] ? entity['returndate'][0] ? null : entity.returndate[0].value : null
-                var month = entity['month'] ? entity['month'][0] ? null : entity.month[0].value : null
-                var traveler = entity['traveler'] ? entity['traveler'][0] ? null : entity.traveler[0].value : null
+
+                if(entity['country']) {
+                    console.log("COUNTRY!!!!!!");
+
+                    if(entity['country'][0]) {
+                        console.log("COUNTRY 01 !!!!!!");
+                        console.log(entity['country'][0]['value'])
+                    }
+                    else {
+                        console.log("NO COUNTRY VALUE 01 !!!!!!");
+                    }
+                }
+                else
+                {
+                    console.log("COUNTRY!!!!!!");
+                    if (entity.country)
+                    {
+                        console.log("COUNTRY 2 !!!!!!");
+                    }
+                    else {
+                        console.log("NO COUNTRY 2 !!!!!!");
+                    }
+                }
+
+
+
+
+                var country = entity['country'] ? entity['country'][0] ? null : entity['country'][0]['value'] : null
+                var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? null : entity['tourcode'][0]['value'] : null
+                var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? null : entity['departure-date'][0]['value'] : null
+                var returndate = entity['returndate'] ? entity['returndate'][0] ? null : entity['returndate'][0]['value'] : null
+                var month = entity['month'] ? entity['month'][0] ? null : entity['month'][0]['value'] : null
+                var traveler = entity['traveler'] ? entity['traveler'][0] ? null : entity['traveler'][0]['value'] : null
                 
                 // Construct the reply message
                 const apitour = require('../controllers/tourapicontroller');

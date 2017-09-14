@@ -217,7 +217,21 @@ function handleEvent(event) {
                     // No need to update
                 }
 
+                const messages = [];    
+                var replyToClient = null            
+                var reply_confirm = null
                 // Extract the reply from recast
+                var intent = '';
+
+                if(recast_response.action){
+                     intent = recast_response.action.slug;
+                    handleError("[Main] Intent: " + intent, "INFO");
+
+                
+                
+                handleError("[Main] Intent: " + intent, "INFO");
+
+
                 var intent = recast_response.action.slug;
                 handleError("[Main] Intent: " + intent, "INFO");
 
@@ -293,14 +307,17 @@ function handleEvent(event) {
                 //         mockup_products = require('./products.json');
                 //     }
                 // }
+                }
+                else
+                {
+                    //reply_details = createReplyMessage(recast_response.reply());
+                    intent = '-';
+                }
                  
-                    if (JSON.stringify(entities) == "{}"){
+                    if (entities == null){
                         mockup_products = null
                     } 
 
-                    const messages = [];    
-                    var replyToClient = null            
-                    var reply_confirm = null
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){
                         var reply_carousel = createProductCarousel(mockup_products);

@@ -230,11 +230,11 @@ function handleEvent(event) {
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 var country = entities.country.value
-                var tourcode = entities.tourcode.value
+                //var tourcode = entities.tourcode.value
                 var departuredate = entities['departure-date'].value
                 var returndate = entities.returndate.value
                 var month = entities.month.value
-                var traveler = entities.traveler.value
+                //var traveler = entities.traveler.value
                 // Call function convert country to country_slug 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code

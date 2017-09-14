@@ -50,8 +50,7 @@ function createProductCarousel(products) {
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
         var column = {
-            "thumbnailImageUrl": product.url_pic.replace("http","https"),
-            //"thumbnailImageUrl": product.url_pic,
+            "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),
             "text":  periodText.substr(0, 60),
             "actions": [                
@@ -239,9 +238,9 @@ function handleEvent(event) {
                 
                 // Construct the reply message
   
-                //if (country && departuredate && returndate && month){
-                    //handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                //}
+                if (country && departuredate && returndate && month){
+                    handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                }
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 const config = require('../data/config');
                 var mockup_products = null

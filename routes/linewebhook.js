@@ -239,7 +239,7 @@ function handleEvent(event) {
                 // Construct the reply message
                 const apitour = require('../controllers/tourapicontroller');
                 var mockup_products = null
-                
+
                 if (country && departuredate && returndate && month){
                     mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
                     isdone = true;
@@ -285,14 +285,14 @@ function handleEvent(event) {
                 //     isdone = true;
                 // })
                 // .then(() => {
-                    if(mockup_products == null) {
-                        handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
-                        mockup_products = require('./products.json');
-                    } else {
-                        if (mockup_products.data.results == 0){
-                            mockup_products = require('./products.json');
-                        }
-                    }
+                // if(mockup_products == null) {
+                //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
+                //     mockup_products = require('./products.json');
+                // } else {
+                //     if (mockup_products.data.results == 0){
+                //         mockup_products = require('./products.json');
+                //     }
+                // }
                  
                     if (JSON.stringify(entities) == "{}"){
                         mockup_products = null

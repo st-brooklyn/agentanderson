@@ -239,9 +239,9 @@ function handleEvent(event) {
                 
                 // Construct the reply message
   
-                if (country && departuredate && returndate && month){
+                //if (country && departuredate && returndate && month){
                     //handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                }
+                //}
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 const config = require('../data/config');
                 var mockup_products = null

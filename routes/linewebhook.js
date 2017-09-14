@@ -230,14 +230,14 @@ function handleEvent(event) {
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
                 var country = entities.country[0].value == null ? null : entities.country[0].value 
-                var tourcode = entities.tourcode[0].value == null ? null : entities.tourcode[0].value
+                //var tourcode = entities.tourcode[0].value == null ? null : entities.tourcode[0].value
                 var departuredate = entities['departure-date'][0].value == null ? null : entities['departure-date'][0].value
                 var returndate = entities.returndate[0].value == null ? null : entities.returndate[0].value
                 var month = entities.month[0].value == null ? null : entities.month[0].value
-                var traveler = entities.traveler[0].value == null ? null : entities.traveler[0].value
+                //var traveler = entities.traveler[0].value == null ? null : entities.traveler[0].value
                 
                 // Construct the reply message
-                handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                //handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
               
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
@@ -246,7 +246,7 @@ function handleEvent(event) {
                 {       
                     const ta = require('../controllers/tourapicontroller');
                     mockup_products = ta.searchtour;
-                    handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    //handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                 }
                 // var rpoptions = {
                 //         uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',

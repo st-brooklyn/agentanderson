@@ -224,12 +224,12 @@ function handleEvent(event) {
                 // Call api tour    
                 var entities = recast_response.entities;
                 handleError("[Main] entities?: " + JSON.stringify(entities), "INFO");
-                var country = entities['country'].value == undefined ? null : entities['country'].value
-                var tourcode = entities['tourcode'].value == undefined ? null : entities['tourcode'].value
-                var departuredate = entities['departure-date'].value == undefined ? null : entities['departure-date'].value
-                var returndate = entities['returndate'].value == undefined ? null : entities['returndate'].value
-                var month = entities['month'].value == undefined ? null : entities['month'].value
-                var traveler = entities['traveler'].value == undefined ? null : entities['traveler'].value
+                var country = entities['country'] == undefined ? null : entities['country'].value
+                var tourcode = entities['tourcode'] == undefined ? null : entities['tourcode'].value
+                var departuredate = entities['departure-date'] == undefined ? null : entities['departure-date'].value
+                var returndate = entities['returndate'] == undefined ? null : entities['returndate'].value
+                var month = entities['month'] == undefined ? null : entities['month'].value
+                var traveler = entities['traveler'] == undefined ? null : entities['traveler'].value
                 // Call function convert country to country_slug 
                 // Call function convert city to city_slug 
                 // Call function convert airline name to airline code
@@ -238,7 +238,10 @@ function handleEvent(event) {
                 
                 // Construct the reply message
                 handleError("[API] Before Param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-
+                if (country && departuredate && returndate && month)
+                {
+                    handleError("[API] check param: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                }
                 // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 var mockup_products = null
                 var rpoptions = {

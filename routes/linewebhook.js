@@ -283,7 +283,6 @@ function handleEvent(event) {
                                 }
                             }
 
-
                             isdone = true;
                             handleError("[API] Before Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                         }

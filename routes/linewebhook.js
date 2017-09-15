@@ -174,7 +174,7 @@ function handleEvent(event) {
                     modifiedDate: new Date().toJSON(),
                     originalMessage: originalMessage,
                     replyMessage: null,
-                    fullMessage: null,
+                    fullMessage: originalMessage,
                     action: null,
                 })
                 .then((createdmapping) => {

@@ -1,10 +1,11 @@
-const log = require('./logcontroller');
+
 
 exports.disqualify_get = function(req, res, next) {
     res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 
 exports.disqualify_post = function(req, res, next) {
+    const log = require('./logcontroller');
     // Perform validation here form the submitted form data
     // req.body.<field_name>
 

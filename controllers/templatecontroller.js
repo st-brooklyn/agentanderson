@@ -18,6 +18,10 @@ module.exports.templateCarousel = function(products){
             periodText += period.period_start + ' - ' + period.period_end + '\n'
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
+
+        if (product.url_pic == '') {
+            product.url_pic = 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg'
+        }
         var column = {
             "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
             "title": product.product_name.substr(0, 40),

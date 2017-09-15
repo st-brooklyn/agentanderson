@@ -256,6 +256,10 @@ function handleEvent(event) {
 
                         while(requestSuccess == false)
                         {
+                            if(mockup_products) {
+                                requestSuccess = true;
+                            }
+                            
                             requestSuccess = mockup_products ? true : false;
                             console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
                             require('deasync').sleep(500);
@@ -275,7 +279,10 @@ function handleEvent(event) {
 
                             while(requestSuccess === false)
                             {
-                                requestSuccess = mockup_products ? true : false;
+                                if(mockup_products) {
+                                    requestSuccess = true;
+                                }
+                                
                                 console.log("Maikrob: Mockup Products: NULL: Good night.");
                                 require('deasync').sleep(500);
                                 timeout -= 500;

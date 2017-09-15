@@ -37,7 +37,7 @@ exports.disqualify_post = function(req, res, next) {
     var returndate = req.body.returndate;
     var country = req.body.country;
 
-    log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate)
+    log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate, "DEBUG")
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
     

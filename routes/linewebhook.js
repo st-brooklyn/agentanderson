@@ -155,6 +155,9 @@ function handleEvent(event) {
                 handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
+
+                handleError('[Data Mapping] fullMessage : ' + mapping.fullMessage + ' customerId : ' + mapping.customerId, "DEBUG");
+
                 mapping.fullMessage += ' ' + originalMessage;
                 if (mapping.userId != lineSender)
                 {

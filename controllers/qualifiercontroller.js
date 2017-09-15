@@ -12,6 +12,16 @@ exports.disqualify_post = function(req, res, next) {
 
     console.log("Payload: " + JSON.stringify(req.body));
 
+    // {
+    //     "mappingId":"59b62f882eb59000125491f5",
+    //     "intent":"tour-search",
+    //     "country":"ญี่ปุ่น",
+    //     "tourcode":"xxxxxx",
+    //     "departuredate":"2017-09-02",
+    //     "returndate":"2018-01-01",
+    //     "traveler": "2"
+    // }
+
     // Check if Mapping Id is passed
     //req.checkBody('mappingId', 'No mapping ID found').notEmpty();
     // console.log("Mapping ID: " + req.body.mappingId);
@@ -24,8 +34,9 @@ exports.disqualify_post = function(req, res, next) {
     var traveler = req.body.traveler;
     var departuredate = req.body.departuredate;
     var returndate = req.body.returndate;
+    var country = req.body.country;
 
-    //log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate)
+    log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate)
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
     

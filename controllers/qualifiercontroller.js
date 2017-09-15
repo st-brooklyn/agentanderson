@@ -10,6 +10,8 @@ exports.disqualify_post = function(req, res, next) {
 
     var hasError = false;
 
+    console.log("Payload: " + JSON.stringify(req.body));
+
     // Check if Mapping Id is passed
     //req.checkBody('mappingId', 'No mapping ID found').notEmpty();
     // console.log("Mapping ID: " + req.body.mappingId);
@@ -23,7 +25,7 @@ exports.disqualify_post = function(req, res, next) {
     var departuredate = req.body.departuredate;
     var returndate = req.body.returndate;
 
-    log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate)
+    //log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate)
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
     

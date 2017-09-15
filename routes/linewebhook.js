@@ -249,17 +249,19 @@ function handleEvent(event) {
                     
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
+                    var timeout = 10000;
 
                     if (country && departuredate && returndate && month){
                         mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
-                        while(requestSuccess === false)
+                        while(requestSuccess == false)
                         {
                             requestSuccess = mockup_products ? true : false;
-                            console.log("Mockup Products: NULL: Good night.");
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccesst + " " + timeout);
                             require('deasync').sleep(500);
+                            timeout -= 500;
 
-                            if (requestSuccess === true) {
+                            if (requestSuccess == true || timeout == 0) {
                                 console.log("Mockup Products: ARRIVED!!!!!");
                                 break;
                             }
@@ -274,10 +276,11 @@ function handleEvent(event) {
                             while(requestSuccess === false)
                             {
                                 requestSuccess = mockup_products ? true : false;
-                                console.log("Mockup Products: NULL: Good night.");
+                                console.log("Maikrob: Mockup Products: NULL: Good night.");
                                 require('deasync').sleep(500);
+                                timeout -= 500;
 
-                                if (requestSuccess === true) {
+                                if (requestSuccess === true || timeout == 0) {
                                     console.log("Mockup Products: ARRIVED!!!!!");
                                     break;
                                 }
@@ -329,12 +332,12 @@ function handleEvent(event) {
                 //         mockup_products = require('./products.json');
                 //     }
                 // }
-                }
-                else
-                {
-                    //reply_details = createReplyMessage(recast_response.reply());
-                    intent = '-';
-                }
+                    }
+                    else
+                    {
+                        //reply_details = createReplyMessage(recast_response.reply());
+                        intent = '-';
+                    }
                  
                     if (entity == null){
                         mockup_products = null
@@ -402,13 +405,10 @@ function handleEvent(event) {
                                     })
                                     .catch((errupdate) => {
                                         handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                    });
-                                        
+                                    });                                        
                                 }
 
-
-                                // Save the response back to the mapping -> replyMessage [JSON.stringify]
-                               
+                                // Save the response back to the mapping -> replyMessage [JSON.stringify]                               
                             })
                             .catch((errPushCarousel) => {
                                 // error handling

@@ -257,7 +257,7 @@ function handleEvent(event) {
                         while(requestSuccess == false)
                         {
                             requestSuccess = mockup_products ? true : false;
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccesst + " " + timeout);
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
                             require('deasync').sleep(500);
                             timeout -= 500;
 

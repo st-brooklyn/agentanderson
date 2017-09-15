@@ -6,6 +6,7 @@ const db = require('../data/database');
 const rc = require('recastai').default;
 const configfile = require('../data/config');
 const rp = require('request-promise');
+const log = require('../controllers/logcontroller');
 
 var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
@@ -249,18 +250,44 @@ function handleEvent(event) {
                     
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
-                    var timeout = 10000;
+                    var timeout = 5000;
 
                     if (country && departuredate && returndate && month){
-                        mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+
+                        var rpoptions = {
+                            uri: configs.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '2',
+                                pagenumber: '1',
+                                country_slug: country,
+                                startdate: departuredate,
+                                enddate: returndate,
+                                month: month,
+                                searchword: ""
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            mockup_products = repos;
+                            isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        });
 
                         while(requestSuccess == false)
-                        {
-                            if(mockup_products) {
-                                requestSuccess = true;
-                            }
-                            
-                            requestSuccess = mockup_products ? true : false;
+                        {                            
                             console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
                             require('deasync').sleep(500);
                             timeout -= 500;
@@ -275,13 +302,41 @@ function handleEvent(event) {
                         handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else {
                         if (tourcode) {
-                            mockup_products = apitour.searchtour('', '', '', '', tourcode);
+                            // mockup_products = apitour.searchtour('', '', '', '', tourcode);
+
+                            var rpoptions = {
+                            uri: configs.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '2',
+                                pagenumber: '1',
+                                country_slug: "",
+                                startdate: "",
+                                enddate: "",
+                                month: "",
+                                searchword: tourcode
+                            },
+                                headers: {
+                                    'User-Agent': 'Request-Promise'
+                                },
+                                json: true // Automatically parses the JSON string in the response
+                            };
+
+                            rp(rpoptions)
+                            .then((repos) => {
+                                log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                                mockup_products = repos;
+                                isdone = true;
+                                requestSuccess = true;
+                            })
+                            .catch((error)=> {
+                                log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            });
 
                             while(requestSuccess === false)
                             {
-                                if(mockup_products) {
-                                    requestSuccess = true;
-                                }
                                 
                                 console.log("Maikrob: Mockup Products: NULL: Good night.");
                                 require('deasync').sleep(500);
@@ -297,48 +352,6 @@ function handleEvent(event) {
                             handleError("[API] Before Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                         }
                     }
-                // // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
-                // const config = require('../data/config');
-                // var mockup_products = null
-                // var rpoptions = {
-                //         //uri: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
-                //         uri: config.apiUrl,
-                //         qs: {
-                //             apikey: 'APImushroomtravel',
-                //             mode: 'loadproductchatbot',
-                //             lang: 'th',
-                //             pagesize: '1',
-                //             pagenumber: '1',
-                //             country_slug: country,
-                //             startdate: departuredate,
-                //             enddate: returndate,
-                //             month: month,
-                //             searchword: tourcode
-                //         },
-                //         headers: {
-                //             'User-Agent': 'Request-Promise'
-                //         },
-                //         json: true // Automatically parses the JSON string in the response
-                //     };
-
-                // var isdone = false;
-                // //handleError("[API] Before Param: coountry = " + country + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month , "DEBUG");
-
-                // rp(rpoptions)
-                // .then((repos) => {
-                //     handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                //     mockup_products = repos;
-                //     isdone = true;
-                // })
-                // .then(() => {
-                // if(mockup_products == null) {
-                //     handleError("[API Mockup] No products found. Get it from file.", "DEBUG");
-                //     mockup_products = require('./products.json');
-                // } else {
-                //     if (mockup_products.data.results == 0){
-                //         mockup_products = require('./products.json');
-                //     }
-                // }
                     }
                     else
                     {
@@ -349,6 +362,8 @@ function handleEvent(event) {
                     if (entity == null){
                         mockup_products = null
                     } 
+
+                    console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
 
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null){

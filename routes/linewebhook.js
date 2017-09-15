@@ -223,7 +223,7 @@ function handleEvent(event) {
                 // Extract the reply from recast
                 var intent = '';
 
-                if(recast_response.action){
+                if(recast_response.action) {
                     intent = recast_response.action.slug;
                     handleError("[Main] Intent: " + intent, "INFO");
 
@@ -232,34 +232,62 @@ function handleEvent(event) {
 
                     var actual_token = recast_response.conversationToken;
 
-                // Call api tour    
-                var entity = recast_response['entities'];
-                handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
+                    // Call api tour    
+                    var entity = recast_response['entities'];
+                    handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
 
-                var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
-                var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
-                var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
-                var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
-                var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
-                var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
-                
-                // Construct the reply message
-                const apitour = require('../controllers/tourapicontroller');
-                var mockup_products = null
-                
-                handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                
-                if (country && departuredate && returndate && month){
-                    mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
-                    isdone = true;
+                    var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
+                    var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
+                    var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
+                    var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
+                    var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
+                    var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+                    
+                    // Construct the reply message
+                    const apitour = require('../controllers/tourapicontroller');
+                    var mockup_products = null
+                    
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                } else {
-                    if (tourcode) {
-                        mockup_products = apitour.searchtour('', '', '', '', tourcode);
+                    var requestSuccess = false;
+
+                    if (country && departuredate && returndate && month){
+                        mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+
+                        while(requestSuccess === false)
+                        {
+                            requestSuccess = mockup_products ? true : false;
+                            console.log("Mockup Products: NULL: Good night.");
+                            require('deasync').sleep(500);
+
+                            if (requestSuccess === true) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
+                            }
+                        }
+
                         isdone = true;
-                        handleError("[API] Before Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    } else {
+                        if (tourcode) {
+                            mockup_products = apitour.searchtour('', '', '', '', tourcode);
+
+                            while(requestSuccess === false)
+                            {
+                                requestSuccess = mockup_products ? true : false;
+                                console.log("Mockup Products: NULL: Good night.");
+                                require('deasync').sleep(500);
+
+                                if (requestSuccess === true) {
+                                    console.log("Mockup Products: ARRIVED!!!!!");
+                                    break;
+                                }
+                            }
+
+
+                            isdone = true;
+                            handleError("[API] Before Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        }
                     }
-                }
                 // // tourresuilt = tour.gettour(cpuntry, city, periond, pax)
                 // const config = require('../data/config');
                 // var mockup_products = null

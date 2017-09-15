@@ -57,25 +57,25 @@ exports.disqualify_post = function(req, res, next) {
 
         const rp = require('request-promise');
 
-        var rpoptions = {
-            uri: configfile.apiUrl,
-            qs: {
-                apikey: 'APImushroomtravel',
-                mode: 'loadproductchatbot',
-                lang: 'th',
-                pagesize: '1',
-                pagenumber: '1',
-                country_slug: country,
-                startdate: departuredate,
-                enddate: returndate,
-                month: month,
-                searchword: ""
-            },
-            headers: {
-                'User-Agent': 'Request-Promise'
-            },
-            json: true // Automatically parses the JSON string in the response
-        };
+        // var rpoptions = {
+        //     uri: configfile.apiUrl,
+        //     qs: {
+        //         apikey: 'APImushroomtravel',
+        //         mode: 'loadproductchatbot',
+        //         lang: 'th',
+        //         pagesize: '1',
+        //         pagenumber: '1',
+        //         country_slug: country,
+        //         startdate: departuredate,
+        //         enddate: returndate,
+        //         month: month,
+        //         searchword: ""
+        //     },
+        //     headers: {
+        //         'User-Agent': 'Request-Promise'
+        //     },
+        //     json: true // Automatically parses the JSON string in the response
+        // };
 
         // rp(rpoptions)
         // .then((repos) => {

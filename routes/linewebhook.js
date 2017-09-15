@@ -7,6 +7,7 @@ const rc = require('recastai').default;
 const configfile = require('../data/config');
 const rp = require('request-promise');
 const log = require('../controllers/logcontroller');
+const tp = require('../controllers/templatecontroller');
 
 var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
@@ -32,91 +33,91 @@ function handleError(err, level) {
     }
 }
 
-function createProductCarousel(products) {
-    var parsedProducts = products;
+// function createProductCarousel(products) {
+//     var parsedProducts = products;
     
-    var carousel = {
-        "type": "template",
-        "altText": "this is a carousel template",
-        "template": {   
-            "type": "carousel",
-            "columns": []
-        }
-    };
+//     var carousel = {
+//         "type": "template",
+//         "altText": "this is a carousel template",
+//         "template": {   
+//             "type": "carousel",
+//             "columns": []
+//         }
+//     };
 
-    parsedProducts.data.products.forEach((product) => {
-        var periodText = "";
-        product.periods.forEach((period) => {
-            periodText += period.period_start + ' - ' + period.period_end + '\n'
-        });
-        console.log("DEBUG: [Carousel for period] : " + periodText);
-        var column = {
-            "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-            "title": product.product_name.substr(0, 40),
-            "text":  periodText.substr(0, 60),
-            "actions": [                
-                {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                },
-                {
-                    "type": "uri",
-                    "label": "View Slide",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                }
-            ]
-        };
+//     parsedProducts.data.products.forEach((product) => {
+//         var periodText = "";
+//         product.periods.forEach((period) => {
+//             periodText += period.period_start + ' - ' + period.period_end + '\n'
+//         });
+//         console.log("DEBUG: [Carousel for period] : " + periodText);
+//         var column = {
+//             "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
+//             "title": product.product_name.substr(0, 40),
+//             "text":  periodText.substr(0, 60),
+//             "actions": [                
+//                 {
+//                     "type": "uri",
+//                     "label": "View detail",
+//                     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+//                 },
+//                 {
+//                     "type": "uri",
+//                     "label": "View Slide",
+//                     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+//                 }
+//             ]
+//         };
 
-          carousel.template.columns.push(column);
-    }, this);
+//           carousel.template.columns.push(column);
+//     }, this);
 
-    console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
+//     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
-    return carousel;
-}
+//     return carousel;
+// }
 
-function createConfirmation(mappingId, replyToClient) {
-    var confirm = {
-        "type": "template",
-        "altText": "this is a confirm template",
-        "template": {
-            "type": "confirm",
-            "text": replyToClient + " Message correct?",
-            "actions": [
-                {
-                  "type": "postback",
-                  "label": "Yes",
-                  "data": "qualify/" + mappingId,
-                  "text": "Message sent. :)"
-                },
-                {
-                  "type": "uri",
-                  "label": "No",
-                  "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
-                }
-            ]
-        }
-    };
+// function createConfirmation(mappingId, replyToClient) {
+//     var confirm = {
+//         "type": "template",
+//         "altText": "this is a confirm template",
+//         "template": {
+//             "type": "confirm",
+//             "text": replyToClient + " Message correct?",
+//             "actions": [
+//                 {
+//                   "type": "postback",
+//                   "label": "Yes",
+//                   "data": "qualify/" + mappingId,
+//                   "text": "Message sent. :)"
+//                 },
+//                 {
+//                   "type": "uri",
+//                   "label": "No",
+//                   "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
+//                 }
+//             ]
+//         }
+//     };
 
-    console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
+//     console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
 
-    return confirm;
-}
+//     return confirm;
+// }
 
-function createAiResultMessage(intent, converseToken, replyFromAi, sourceMessage) {
-    return {
-        "type" : "text",
-        "text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
-    };
-}
+// function createAiResultMessage(intent, converseToken, replyFromAi, sourceMessage) {
+//     return {
+//         "type" : "text",
+//         "text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+//     };
+// }
 
-function createReplyMessage(replyFromAi) {
-    return {
-        "type" : "text",
-        "text" : replyFromAi
-    };
-}
+// function createReplyMessage(replyFromAi) {
+//     return {
+//         "type" : "text",
+//         "text" : replyFromAi
+//     };
+// }
 
 function handleEvent(event) {
     // Process only text message
@@ -252,7 +253,7 @@ function handleEvent(event) {
                     var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
                     
                     // Construct the reply message
-                    const apitour = require('../controllers/tourapicontroller');
+                    // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
@@ -435,8 +436,7 @@ function handleEvent(event) {
                     replyToClient = createReplyMessage(recast_response.reply());
                     messages.push(reply_details);
                 }
-                    
-
+                
                 if (replyToClient == null){
                     reply_confirm = createConfirmation(mappingId, '');
                 } else {

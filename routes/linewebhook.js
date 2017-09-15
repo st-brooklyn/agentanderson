@@ -148,16 +148,13 @@ function handleEvent(event) {
         // });
 
         // Check if the conversation exists -- using roomId
-        Mapping.findOne({roomId: roomId}, 'roomId conversationToken')
+        Mapping.findOne({roomId: roomId})
         .then((mapping) => {
             if(mapping) {
                 // Mapping exists, set the converse token
                 handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
-
-                handleError('[Data Mapping] fullMessage : ' + mapping.fullMessage + ' customerId : ' + mapping.customerId, "DEBUG");
-
                 mapping.fullMessage += ' ' + originalMessage;
                 if (mapping.userId != lineSender)
                 {

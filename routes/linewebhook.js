@@ -14,8 +14,7 @@ var APIUrl = require('../data/api');
 
 const config = {
     channelAccessToken: configfile.lineChannelAccessToken,
-    channelSecret: configfile.lineChannelSecret,
-    connectionDB: configfile.connectionDB
+    channelSecret: configfile.lineChannelSecret
 };
 
 const lineclient = new line.Client(config);

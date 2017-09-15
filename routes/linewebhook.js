@@ -366,7 +366,7 @@ function handleEvent(event) {
                     console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
 
                     //const linehelper = require('../controllers/LineMessageController');
-                    if (mockup_products.data){
+                    if (mockup_products['success'] != 'False'){
                         var reply_carousel = createProductCarousel(mockup_products);
                         messages.push(reply_carousel);
                     } else {

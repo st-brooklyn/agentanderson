@@ -256,7 +256,7 @@ function handleEvent(event) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
                         var rpoptions = {
-                            uri: configs.apiUrl,
+                            uri: configfile.apiUrl,
                             qs: {
                                 apikey: 'APImushroomtravel',
                                 mode: 'loadproductchatbot',
@@ -305,7 +305,7 @@ function handleEvent(event) {
                             // mockup_products = apitour.searchtour('', '', '', '', tourcode);
 
                             var rpoptions = {
-                            uri: configs.apiUrl,
+                            uri: configfile.apiUrl,
                             qs: {
                                 apikey: 'APImushroomtravel',
                                 mode: 'loadproductchatbot',

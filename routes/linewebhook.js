@@ -14,7 +14,8 @@ var APIUrl = require('../data/api');
 
 const config = {
     channelAccessToken: configfile.lineChannelAccessToken,
-    channelSecret: configfile.lineChannelSecret
+    channelSecret: configfile.lineChannelSecret,
+    connectionDB: configfile.connectionDB
 };
 
 const lineclient = new line.Client(config);
@@ -132,6 +133,7 @@ function handleEvent(event) {
         var replyToken = event.replyToken;
         var originalMessage = event.message.text;
         var recastConversToken = null;
+        var lineSender = event.source.userId;
 
         var mappingId = '';
 
@@ -154,6 +156,12 @@ function handleEvent(event) {
                 handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
+                mapping.fullMessage += ' ' + originalMessage;
+                if (mapping.userId != lineSender)
+                {
+                    mapping.customerId = lineSender;
+                }
+                mapping.save();
             }
             else {
                 // No mapping -> create a new one [converse token is still null]
@@ -422,25 +430,25 @@ function handleEvent(event) {
                 //const linehelper = require('../controllers/LineMessageController');
                 if (mockup_products != null) {
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
-                        reply_details = createAiResultMessage(intent, recast_response.conversationToken, '', recast_response.source);
-                        var reply_carousel = createProductCarousel(mockup_products);
+                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);
+                        var reply_carousel = tp.templateConfirm(mockup_products);
                         messages.push(reply_details);
                         messages.push(reply_carousel);
                     } else {
-                        reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                        replyToClient = createReplyMessage(recast_response.reply());
+                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                        replyToClient = tp.templateReply(recast_response.reply());
                         messages.push(reply_details);
                     }
                 } else {
-                    reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
-                    replyToClient = createReplyMessage(recast_response.reply());
+                    reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                    replyToClient = tp.templateReply(recast_response.reply());
                     messages.push(reply_details);
                 }
                 
                 if (replyToClient == null){
-                    reply_confirm = createConfirmation(mappingId, '');
+                    reply_confirm = tp.templateConfirm(mappingId, '');
                 } else {
-                    reply_confirm = createConfirmation(mappingId, replyToClient.text);
+                    reply_confirm = tp.templateConfirm(mappingId, replyToClient.text);
                 }
             
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                

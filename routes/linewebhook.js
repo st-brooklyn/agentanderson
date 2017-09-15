@@ -371,7 +371,7 @@ function handleEvent(event) {
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products != null) {
                         if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
-                            reply_details = createAiResultMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
+                            reply_details = createAiResultMessage(intent, recast_response.conversationToken, '', recast_response.source);
                             var reply_carousel = createProductCarousel(mockup_products);
                             messages.push(reply_details);
                             messages.push(reply_carousel);

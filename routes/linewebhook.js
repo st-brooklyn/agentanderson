@@ -364,7 +364,7 @@ function handleEvent(event) {
                     } 
 
                     console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
-                    console.log("success: " + mockup_products['success'] + " resultsL " + mockup_products['data']['result'] );
+                    console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['result'] );
 
                     //const linehelper = require('../controllers/LineMessageController');
                     if (mockup_products['success'] == 'True' && mockup_products['data']['result'] > 0){

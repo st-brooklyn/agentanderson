@@ -5,16 +5,26 @@ block content
   p Welcome to #{title}
 
   form(method='POST' action='')
-      div.form-group
+    div.form-group
       input(type='hidden' name='mappingId' value=mappingId)
-      //- label(for='fd_intent') Intent:
-      //- input#intent.form-control(type='text', placeholder='description of the field' name='fd_intent' value=(undefined===intent ? '' : intent))
-      div.form-group
-      label(for='country') CountryName:
-      input#country.form-control(type='text', placeholder='country name' name='country' value=country)
-      div.form-group
-      label(for='code') ProductCode:
-      input#code.form-control(type='text', placeholder='product code' name='code' value=code)
+      label(for='fd_intent') Intent: 
+      input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value="tour-search")
+      br
+      label(for='country') Country:
+      input#country.form-control(type='text', placeholder='Country name...' name='country' value='')
+      br
+      label(for='tourcode') Product Code:
+      input#code.form-control(type='text', placeholder='Product code...' name='tourcode' value='')
+      br
+      label(for='departuredate') Departure:
+      input#code.form-control(type='text', placeholder='วันเดินทางไป 2017-06-20' name='departuredate' value='')
+      br
+      label(for='returndate') Return:
+      input#code.form-control(type='text', placeholder='วันเดินทางกลับ 2017-06-27' name='returndate' value='')
+      br
+      label(for='traveler') Number of passengers:
+      input#code.form-control(type='text', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value="2")
+      br
       button.btn.btn-primary(type='submit') Submit
 
   if errors

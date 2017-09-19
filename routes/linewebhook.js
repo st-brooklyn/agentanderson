@@ -10,6 +10,7 @@ const logger = require('../controllers/logcontroller');
 const tp = require('../controllers/templatecontroller');
 
 var Mapping = require('../models/mapping');
+var RecastResult = require('../models/recast');
 var APIUrl = require('../data/api');
 
 const config = {
@@ -161,6 +162,7 @@ function handleEvent(event) {
                 if (mapping.userId != lineSender)
                 {
                     mapping.customerId = lineSender;
+                    mapping.modifiedDate = new Date().toJSON();
                 }
                 mapping.save();
             }
@@ -192,9 +194,17 @@ function handleEvent(event) {
             handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
-            .then(function (recast_response) {                
+            .then(function (recast_response) {
                 handleError("[ConversText] Recast: " + JSON.stringify(recast_response), "DEBUG");
                 handleError("[ConversText] Mapping Id: " + mappingId, "DEBUG");
+
+                // Log the recast response to the database
+                RecastResult.create({
+                    mappingId: mappingId,
+                    responseMessage: recast_response,
+                    createdDate: new Date().toJSON(),
+                    modifiedDate: new Date().toJSON()                    
+                });
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token

@@ -137,9 +137,9 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
 
-        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // // for testing -> delete the entry
         // Mapping.findOneAndRemove({roomId: roomId})
@@ -204,6 +204,12 @@ function handleEvent(event) {
                     responseMessage: recast_response,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON()                    
+                })
+                .then((createdRecastResult) => {
+                    logger.debug("Created successfully.", {RecastResult: createdRecastResult});
+                })
+                .catch((createRecastError) => {
+                    logger.error("Failed to create recast result log.", {error: createRecastError.stack});
                 });
 
                 // Update conversation token back to the mapping 

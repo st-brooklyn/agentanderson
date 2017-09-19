@@ -277,7 +277,7 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    handleError("[API] country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -388,7 +388,7 @@ function handleEvent(event) {
 
                         isdone = true;
                         handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else if (country && month && traveler) {
+                    } else if ((country && month && traveler) && departuredate == null) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
                         var rpoptions = {
@@ -437,7 +437,7 @@ function handleEvent(event) {
                         }
 
                         isdone = true;
-                        handleError("[API] Param country / month / traveler : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        handleError("[API] Param country / month / traveler / departuredate is null : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else if (tourcode) {
                         // mockup_products = apitour.searchtour('', '', '', '', tourcode);
 
@@ -500,10 +500,10 @@ function handleEvent(event) {
                 }
 
                 console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
-                console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
 
                 //const linehelper = require('../controllers/LineMessageController');
-                if (mockup_products != null) {
+                if (mockup_products != null && mockup_products != undefined) {
+                    console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);
                         var reply_carousel = tp.templateCarousel(mockup_products);

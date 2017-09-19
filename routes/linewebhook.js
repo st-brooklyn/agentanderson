@@ -20,17 +20,13 @@ const config = {
 const lineclient = new line.Client(config);
 const router = express.Router();
 
-router.post('/webhook', line.middleware(config))
-.then((req, res) => {
+router.post('/webhook', line.middleware(config)), (req, res) => {
     Promise.all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
-    .catch((allerror) => {
-        logger.error("[Webhook-handleEvent]", allerror);
+    .catch((eventError) => {
+        logger.error('[Webhook]', eventError);
     });
-})
-.catch((hookerror) => {
-    logger.error('[Webhook]', hookerror);
-});
+};
 
 function handleError(err, level) {
     if (level){

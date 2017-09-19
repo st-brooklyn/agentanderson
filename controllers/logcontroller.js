@@ -15,7 +15,7 @@ var formattimestamp = () => {
 };
 
 var rotatefile = new winston.transports.DailyRotateFile({
-    filename: './log',
+    filename: './.log',
     datePattern: 'yyyy-MM-dd',
     prepend: true,
     localTime: true,

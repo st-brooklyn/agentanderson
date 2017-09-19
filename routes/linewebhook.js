@@ -126,7 +126,9 @@ function handleEvent(event) {
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data
-        var postbackdata = JSON.parse(event.postback.data);
+        var postbackdata = JSON.parse(event.postback.data, (key, value) => {
+            return value;
+        });
         logger.debug("[Postback] Data: ", postbackdata);
         var qualifier = require('../controllers/qualifiercontroller');
         

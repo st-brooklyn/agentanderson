@@ -351,8 +351,7 @@ function handleEvent(event) {
                             returndate: returndate,
                             month: month,
                             traveler: traveler
-                        });
-                        
+                        });                        
                     } else if (country && month && traveler && tourcode) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 

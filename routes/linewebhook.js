@@ -6,7 +6,7 @@ const db = require('../data/database');
 const rc = require('recastai').default;
 const configfile = require('../data/config');
 const rp = require('request-promise');
-const log = require('../controllers/logcontroller');
+const logger = require('../controllers/logcontroller');
 const tp = require('../controllers/templatecontroller');
 
 var Mapping = require('../models/mapping');
@@ -136,7 +136,9 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+
+        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // // for testing -> delete the entry
         // Mapping.findOneAndRemove({roomId: roomId})

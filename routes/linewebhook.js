@@ -120,12 +120,9 @@ function handleError(err, level) {
 // }
 
 function handleEvent(event) {
+    logger.silly('[Main]', event);
     // Process only text message
-    if (event.type !== 'message' || event.message.type !== 'text') {
-        return Promise.resolve(null);
-    }
-    else if (event.type === "postback")
-    {
+    if (event.type === 'postback') {
         // select action from the postback data
         var postbackdata = JSON.parse(event.postback.data);
         logger.debug("[Postback] Data: ", postbackdata);
@@ -135,9 +132,11 @@ function handleEvent(event) {
             qualifier.qualify_get(postbackdata.mappingId);
         }
     }
+    else if (event.type !== 'message' || event.message.type !== 'text') {
+        return Promise.resolve(null);
+    }
 
     // Extract the message
-    
     if (event.source.type === 'room')
     {
         var roomId = event.source.roomId;

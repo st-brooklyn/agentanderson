@@ -1,6 +1,7 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
 
+
 exports.qualify_get = function(id){
     logger.debug("[Qualify]", {mappingId: id});
 
@@ -12,6 +13,7 @@ exports.qualify_get = function(id){
         var reply = foundone.replyMessage;
 
         // send message to room
+        var lineclient = new require('@line/bot-sdk').Client(config);
         lineclient.pushMessage(roomId, JSON.parse(reply))
         Mapping.findByIdAndUpdate(id, 
             {$set: {action: "YES"}}, 

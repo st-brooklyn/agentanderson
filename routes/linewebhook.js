@@ -136,7 +136,7 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
 
         handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 

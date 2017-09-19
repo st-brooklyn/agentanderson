@@ -154,8 +154,9 @@ function handleEvent(event) {
         Mapping.findOne({roomId: roomId})
         .then((mapping) => {
             if(mapping) {
-                // Mapping exists, set the converse token
-                handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
+                // Mapping exists, set the converse token]
+                logger.debug('[Check room Id] Found a mapping.', {conversationToken: conversationToken});
+                
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
                 mapping.fullMessage += ' ' + originalMessage;
@@ -168,7 +169,8 @@ function handleEvent(event) {
             }
             else {
                 // No mapping -> create a new one [converse token is still null]
-                handleError('[Check room Id] No mapping found', "DEBUG");
+                log.debug('[Check room Id] No mapping found.')
+                
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
@@ -183,20 +185,19 @@ function handleEvent(event) {
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
-                    handleError("[Create mapping] Created with Id: " + createdmapping._id, "DEBUG");
+                    logger.debug('[Create mapping] Created successfully.', createdmapping);                    
                 })
                 .catch((errorcreate) => {
-                    handleError('[Create mapping] ' + errorcreate.stack, "ERROR");
+                    logger.error('[Create mapping]', errorcreate);                    
                 });
             }
 
             var recastrequest = new rc.request(configfile.recastRequestToken);
-            handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
+            logger.silly('[Main]', {recastConversToken: recastConversToken});            
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {
-                handleError("[ConversText] Recast: " + JSON.stringify(recast_response), "DEBUG");
-                handleError("[ConversText] Mapping Id: " + mappingId, "DEBUG");
+                logger.debug('[ConverseText]', [{mappingId: mappingId}, recast_response]);                
 
                 // Log the recast response to the database
                 RecastResult.create({
@@ -206,7 +207,7 @@ function handleEvent(event) {
                     modifiedDate: new Date().toJSON()                    
                 })
                 .then((createdRecastResult) => {
-                    logger.debug("Created successfully.", {RecastResult: createdRecastResult});
+                    logger.debug("Created successfully.", createdRecastResult);
                 })
                 .catch((createRecastError) => {
                     logger.error("Failed to create recast result log.", createRecastError);
@@ -218,7 +219,7 @@ function handleEvent(event) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
                         if(mappingtoupdate) {
-                            handleError("[Find when null token] Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
+                            logger.debug('[Find when null token]', mappingtoupdate);                            
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: recast_response.conversationToken}}, 
@@ -226,19 +227,18 @@ function handleEvent(event) {
                             .then((affected) => {
                                 // update the converse token
                                 recastConversToken = affected.conversationToken;
-                                handleError("[Find and update token] Affected: " + affected, "DEBUG");
-                                handleError("[Find and update token] Updated conversation token: " + recastConversToken, "DEBUG");
+                                logger.debug('[Find and update token]', [{recastConversToken: recastConversToken}, affected]);                                
                             })
                             .catch((errupdate) => {
-                                handleError('[Find and update token] ' + errupdate.stack, "ERROR");
+                                logger.error('[Find and update token]', errupdate);                                
                             });
                         }
                         else {
-                            return handleError("[Find and update token] Mapping not found.", "WARNING");
+                            return logger.warn('[Find and update token] Mapping not found.')                            
                         }
                     })
                     .catch((errfind) => {
-                        handleError('[Find when null token] ' + errfind.stack, "ERROR");
+                        logger.error('[Find when null token]', errfind);                        
                     });
                 }
                 else {
@@ -255,16 +255,17 @@ function handleEvent(event) {
 
                 if(recast_response.action) {
                     intent = recast_response.action.slug;
-                    handleError("[Main] Intent: " + intent, "INFO");
+                    logger.silly('[Main]', {intent: intent});                    
 
                     var isdone = recast_response.action.done;
-                    handleError("[Main] Done?: " + isdone, "INFO");
+                    logger.silly('[Main]', {isdone: isdone});                    
 
                     var actual_token = recast_response.conversationToken;
 
                     // Call api tour    
                     var entity = recast_response['entities'];
-                    handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
+                    logger.debug('[Main]', entity);
+                    //handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
 
                     if (entity == null){
                         mockup_products = null
@@ -281,7 +282,15 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    logger.debug("[API] Before Param exclude tourcode", {
+                        country:country, 
+                        tourcode: tourcode, 
+                        departuredate: departuredate, 
+                        returndate: returndate, 
+                        month: month, 
+                        traveler: traveler}
+                    );
+
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -318,23 +327,32 @@ function handleEvent(event) {
                         })
                         .catch((error)=> {
                             //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
+                            logger.error("[Find to return api]", error);
                         });
 
                         while(requestSuccess == false)
-                        {                            
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                        {
+                            logger.debug("[Krob] Mockup Products = NULL. Good night.", {requestSuccess: requestSuccess, timeout: timeout});
+                            
                             require('deasync').sleep(500);
                             timeout -= 500;
 
                             if (requestSuccess == true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
+                                logger.debug("[Krob] Mockup Products ARRIVED!!!")                                
                                 break;
                             }
                         }
 
                         isdone = true;
-                        handleError("[API] Before country / departuredate / returndate / month: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        logger.debug('[API] Before country / departuredate / returndate / month:', {
+                            country: country,
+                            tourcode: tourcode,
+                            departuredate: departuredate,
+                            returndate: returndate,
+                            month: month,
+                            traveler: traveler
+                        });
+                        
                     } else if (country && month && traveler && tourcode) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 

@@ -136,9 +136,9 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
 
-        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // // for testing -> delete the entry
         // Mapping.findOneAndRemove({roomId: roomId})

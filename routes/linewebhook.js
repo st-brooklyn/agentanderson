@@ -265,7 +265,7 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    handleError("[API] country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -425,7 +425,7 @@ function handleEvent(event) {
                         }
 
                         isdone = true;
-                        handleError("[API] Param country / month / traveler : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        handleError("[API] Param country / month / traveler / departuredate is null : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else if (tourcode) {
                         // mockup_products = apitour.searchtour('', '', '', '', tourcode);
 

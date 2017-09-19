@@ -21,7 +21,9 @@ const lineclient = new line.Client(config);
 const router = express.Router();
 
 router.post('/webhook', line.middleware(config), (req, res) => {
-    Promise.all(req.body.events.map(handleEvent)).then((result) => res.json(result));
+    Promise.all(req.body.events.map(handleEvent)).then((result) => res.json(result)).catch((err) => {
+        logger.error('[Webhook]', err);
+    });
 });
 
 function handleError(err, level) {
@@ -120,7 +122,7 @@ function handleError(err, level) {
 // }
 
 function handleEvent(event) {
-    logger.silly('[Main]', event);
+    logger.debug('[Main]', event);
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data

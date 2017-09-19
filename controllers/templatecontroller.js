@@ -60,7 +60,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient){
                 {
                   "type": "postback",
                   "label": "Yes",
-                  "data": "{action: 'qualify', mappingId: '" + mappingId + "'}",
+                  "data": "{'action': 'qualify', 'mappingId': '" + mappingId + "'}",
                   "text": "Message sent. :)"
                 },
                 {

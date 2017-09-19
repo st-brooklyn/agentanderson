@@ -318,7 +318,6 @@ function handleEvent(event) {
                         }
 
                         isdone = true;
-<<<<<<< HEAD
                         logger.debug('[API] Before country / departuredate / returndate / month:', {
                             country: country,
                             tourcode: tourcode,
@@ -327,9 +326,6 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });                        
-=======
-                        handleError("[API] Before country / departuredate / returndate / month: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
->>>>>>> 3873c4ac75529242bf4f009614e3d9ca81262b06
                     } else if (country && month && traveler && tourcode) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 

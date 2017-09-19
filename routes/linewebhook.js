@@ -177,6 +177,7 @@ function handleEvent(event) {
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
                 mapping.fullMessage += ' ' + originalMessage;
+                mapping.message = originalMessage;
                 if (mapping.userId != lineSender)
                 {
                     mapping.customerId = lineSender;

@@ -282,8 +282,67 @@ function handleEvent(event) {
                     var requestSuccess = false;
                     var timeout = 5000;
                     
+                    if (isdone) {
+                        var rpoptions = {
+                            uri: configfile.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '1',
+                                pagenumber: '1',
+                                sortby: 'mostpopular',
+                                country_slug: country,
+                                startdate: departuredate,
+                                enddate: returndate,
+                                month: month,
+                                searchword: tourcode
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
+                            mockup_products = repos;
+                            //isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
+                        });
+
+                        while(requestSuccess == false)
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+
+                            if (requestSuccess == true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
+                            }
+                        }
+
+                        //isdone = true;
+                        logger.debug('[API] get apiwow:', {
+                            country: country,
+                            tourcode: tourcode,
+                            departuredate: departuredate,
+                            returndate: returndate,
+                            month: month,
+                            traveler: traveler
+                        });   
+                    } else {
+                        handleError("[API] Case else of no entity condition ", "DEBUG");  
+                    }
+                    /*
                     if (country && departuredate && returndate && month) {
-                    //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
                         var rpoptions = {
                             uri: configfile.apiUrl,
@@ -350,6 +409,7 @@ function handleEvent(event) {
                                 lang: 'th',
                                 pagesize: '1',
                                 pagenumber: '1',
+                                sortby: 'mostpopular',
                                 country_slug: country,
                                 startdate: '',
                                 enddate: '',
@@ -400,6 +460,7 @@ function handleEvent(event) {
                                 lang: 'th',
                                 pagesize: '1',
                                 pagenumber: '1',
+                                sortby: 'mostpopular',
                                 country_slug: country,
                                 startdate: '',
                                 enddate: '',
@@ -439,7 +500,7 @@ function handleEvent(event) {
 
                         isdone = true;
                         handleError("[API] Param country / month / traveler / departuredate is null : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else if (tourcode) {
+                    } else if (tourcode && month && traveler) {
                         // mockup_products = apitour.searchtour('', '', '', '', tourcode);
 
                         var rpoptions = {
@@ -489,9 +550,10 @@ function handleEvent(event) {
                         }
                         isdone = true;
                         handleError("[API] Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else {
-                    handleError("[API] Case else of no entity condition ", "DEBUG");  
+                    } else { 
+                        handleError("[API] Case else of no entity condition ", "DEBUG");  
                     }
+                    */
                 }
 
                 if (mockup_products == null) 

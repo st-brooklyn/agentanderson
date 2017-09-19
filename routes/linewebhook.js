@@ -294,13 +294,15 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
                         });
 
                         while(requestSuccess == false)
@@ -342,13 +344,15 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
                         });
 
                         while(requestSuccess == false)
@@ -390,13 +394,15 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
                         });
 
                         while(requestSuccess === false)

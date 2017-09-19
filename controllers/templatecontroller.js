@@ -55,7 +55,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient){
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": replyToClient + " Message correct?",
+            "text": "Message correct?",
             "actions": [
                 {
                   "type": "postback",

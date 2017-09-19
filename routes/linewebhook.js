@@ -135,7 +135,7 @@ function handleEvent(event) {
             qualifier.qualify_get(postbackdata['mappingId']);            
         }
         else {
-            logger.warn("No action found.");
+            logger.warn("No action found.", {type: typeof(postbackdata)});
         }
     }
     else if (event.type !== 'message' || event.message.type !== 'text') {

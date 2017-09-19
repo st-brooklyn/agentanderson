@@ -1,4 +1,32 @@
+const logger = require('./logcontroller');
+const Mapping = require('../models/mapping');
 
+exports.qualify_get = function(id){
+    logger.debug("[Qualify]", {mappingId: id});
+
+    Mapping.findById(id)
+    .then((foundone) => {
+        // get the message and send back to the room
+        logger.silly("[Qualify] Found a mapping.", foundone);        
+        var roomId = foundone.roomId;
+        var reply = foundone.replyMessage;
+
+        // send message to room
+        lineclient.pushMessage(roomId, JSON.parse(reply))
+        Mapping.findByIdAndUpdate(id, 
+            {$set: {action: "YES"}}, 
+            {new: true})
+        .then(() => {
+            logger.debug("[Push after qualify] Message sent");            
+        })
+        .catch((pushError) => {
+            logger.error('[Push after qualify]', pushError);            
+        });
+    })
+    .catch((finderror) => {
+        logger.error("[Find one for Qualification]", finderror);        
+    });
+};
 
 exports.disqualify_get = function(req, res, next) {
     res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});

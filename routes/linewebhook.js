@@ -124,8 +124,20 @@ function handleEvent(event) {
     if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null);
     }
+    else if (event.type === "postback")
+    {
+        // select action from the postback data
+        var postbackdata = JSON.parse(event.postback.data);
+        logger.debug("[Postback] Data: ", postbackdata);
+        var qualifier = require('../controllers/qualifiercontroller');
+        
+        if (postbackdata.action === 'qualify') {
+            qualifier.qualify_get(postbackdata.mappingId);
+        }
+    }
 
     // Extract the message
+    
     if (event.source.type === 'room')
     {
         var roomId = event.source.roomId;

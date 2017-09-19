@@ -491,7 +491,7 @@ function handleEvent(event) {
                 console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
 
                 //const linehelper = require('../controllers/LineMessageController');
-                if (mockup_products != null) {
+                if (mockup_products != null && mockup_products != undefined) {
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);
                         var reply_carousel = tp.templateCarousel(mockup_products);

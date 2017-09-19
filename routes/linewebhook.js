@@ -376,7 +376,7 @@ function handleEvent(event) {
 
                         isdone = true;
                         handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else if (country && month && traveler) {
+                    } else if ((country && month && traveler) && departuredate == null) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
                         var rpoptions = {

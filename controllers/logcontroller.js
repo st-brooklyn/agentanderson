@@ -9,7 +9,7 @@ var logformat = (options) => {
       (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
 };
 
-var rotatefile = new winston.transport.DailyRotateFile({
+var rotatefile = new winston.transports.DailyRotateFile({
     filename: './log',
     datePattern: 'yyyy-MM-dd',
     prepend: true,

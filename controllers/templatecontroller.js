@@ -92,3 +92,10 @@ module.exports.templateReply = function(replyFromAi){
         "text" : replyFromAi
     };
 }
+
+module.exports.createApiPayload = (intent, country, tourcode, departedate) => {
+    return {
+        intent: intent,
+        country: country
+    };
+};

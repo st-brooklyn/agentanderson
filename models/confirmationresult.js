@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var ConfirmationResultSchema = new mongoose.Schema({
     mappingId: String,
+    intent: String,
     message: String,
     reservationId: String,
     result:Boolean,

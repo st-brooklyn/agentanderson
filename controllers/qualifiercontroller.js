@@ -1,5 +1,6 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
+const RecastResult = require('../models/recast');
 const configs = require('../data/config');
 const line = require('@line/bot-sdk');
 
@@ -12,6 +13,23 @@ exports.qualify_get = function(id){
         logger.silly("[Qualify] Found a mapping.", foundone);        
         var roomId = foundone.roomId;
         var reply = foundone.replyMessage;
+
+        RecastResult.create({
+            mappingId: id,
+            message: '',
+            reservationId: foundone.userId,
+            intent: foundone.intent,
+            result: true,
+            apiPayload: foundone.apiPayload,
+            createdDate: new Date().toJSON(),
+            modifiedDate: new Date().toJSON()
+        })
+        .then((created) => {
+            logger.debug("[Create Recast-YES]", created);
+        })
+        .catch((error) => {
+            logger.error("[Create Recast-NO", error);
+        });
 
         // send message to room
         var lineclient = new line.Client(configs.botmapping.default);

@@ -9,7 +9,8 @@ var MappingSchema = new mongoose.Schema({
     originalMessage: String,
     replyMessage: String,
     fullMessage: String,
-    action: String
+    action: String,
+    apiPayload: Object
 });
 
 mongoose.model('Mapping', MappingSchema);

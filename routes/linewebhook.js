@@ -198,6 +198,7 @@ function handleEvent(event) {
                     replyMessage: null,
                     fullMessage: originalMessage,
                     action: null,
+                    apiPayload: null
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
@@ -318,6 +319,23 @@ function handleEvent(event) {
                             mockup_products = repos;
                             //isdone = true;
                             requestSuccess = true;
+
+                            // Update payload back to the mapping
+                            // TODO:
+                            var payload = tp.createApiPayload(xx, xx, xx, xx);
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {
+                                    apiPayload: payload, 
+                                    modifiedDate: new Date().toJSON()}
+                                },
+                                {new: true}
+                            )
+                            .then((updated) => {
+                                logger.debug("[Update Payload]", updated);
+                            })
+                            .catch((updateerr) => {
+                                logger.error('[Update Payload]', updateerr);
+                            });
                         })
                         .catch((error)=> {
                             //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");

@@ -265,7 +265,8 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    logger.debug("Before Param exclude tourcode", {country: country, tourcode:tourcode, departuredate: departuredate, returndate:returndate, month: month, traveler: traveler})
+                    //handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     

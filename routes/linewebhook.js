@@ -136,7 +136,7 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
 
         handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
@@ -265,8 +265,7 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    logger.debug("Before Param exclude tourcode", {country: country, tourcode:tourcode, departuredate: departuredate, returndate:returndate, month: month, traveler: traveler})
-                    //handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -285,7 +284,7 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: month,
-                                searchword: ""
+                                searchword: ''
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -295,15 +294,13 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            logger.debug("[API Mockup]", {repos: repos});
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            logger.error("Find to return api", {stacktrace: error.stack});
-                            //handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
                         });
 
                         while(requestSuccess == false)
@@ -345,15 +342,13 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            logger.debug('[API Mockup]', {repos: repos});
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            logger.error('[Find to return api]', {stack: error.stack});
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
                         });
 
                         while(requestSuccess == false)
@@ -395,15 +390,13 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            logger.debug('[API Mockup', {repos: repos});
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;
                         })
                         .catch((error)=> {
-                            logger.error('[Find to return api]', {stacktrace: error.stack});
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
                         });
 
                         while(requestSuccess === false)
@@ -421,7 +414,7 @@ function handleEvent(event) {
                         isdone = true;
                         handleError("[API] Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else {
-                            handleError("[API] Case else of no entity condition ", "DEBUG");  
+                    handleError("[API] Case else of no entity condition ", "DEBUG");  
                     }
                 }
 
@@ -438,18 +431,20 @@ function handleEvent(event) {
                 if (mockup_products != null) {
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);
-                        var reply_carousel = tp.templateConfirm(mockup_products);
+                        var reply_carousel = tp.templateCarousel(mockup_products);
                         messages.push(reply_details);
                         messages.push(reply_carousel);
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
                         replyToClient = tp.templateReply(recast_response.reply());
                         messages.push(reply_details);
+                        messages.push(replyToClient);
                     }
                 } else {
                     reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source);
                     replyToClient = tp.templateReply(recast_response.reply());
                     messages.push(reply_details);
+                    messages.push(replyToClient);
                 }
                 
                 if (replyToClient == null){
@@ -470,7 +465,8 @@ function handleEvent(event) {
         
                 messages.push(reply_confirm);
 
-                handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+                //handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
+                logger.debug("[Main]",{message: messages});
 
                 var senderId = '';
 
@@ -478,21 +474,25 @@ function handleEvent(event) {
                 .then((senderMapping) => {
                     if(senderMapping) {
                         senderId = senderMapping.userId;
-                        handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                        //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                        logger.debug("[Find for sender]", {senderId: senderId});
                         
                         lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
-                            handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                            //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                            logger.debug("[Push messages] Carousel sent to the sender");
                             if (reply_carousel == null){
                                 Mapping.findByIdAndUpdate(mappingId, 
                                     {$set: {replyMessage: JSON.stringify(replyToClient)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
-                                    handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
                                 })
                                 .catch((errupdate) => {
-                                    handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
                                 });
 
                             } else {
@@ -500,10 +500,12 @@ function handleEvent(event) {
                                     {$set: {replyMessage: JSON.stringify(reply_carousel)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
-                                    handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
                                 })
                                 .catch((errupdate) => {
-                                    handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
                                 });                                        
                             }
 
@@ -511,11 +513,13 @@ function handleEvent(event) {
                         })
                         .catch((errPushCarousel) => {
                             // error handling
-                            handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                            //handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                            logger.error("[Push carousel]", {stack: errPushCarousel.stack});
                         });
                     }
                     else {
-                        handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                        //handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                        logger.warning("[Find for sender] Mapping for sender not found");
                     }                    
                 })
             }) // End then findById

@@ -268,108 +268,11 @@ function handleEvent(event) {
                     handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
+                    
+                    if (country && departuredate && returndate && month) {
+                    //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
-                    if (mockup_products != null) {
-                        if (country && departuredate && returndate && month) {
-                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
-
-                            var rpoptions = {
-                                uri: configfile.apiUrl,
-                                qs: {
-                                    apikey: 'APImushroomtravel',
-                                    mode: 'loadproductchatbot',
-                                    lang: 'th',
-                                    pagesize: '1',
-                                    pagenumber: '1',
-                                    country_slug: country,
-                                    startdate: departuredate,
-                                    enddate: returndate,
-                                    month: month,
-                                    searchword: ""
-                                },
-                                headers: {
-                                    'User-Agent': 'Request-Promise'
-                                },
-                                json: true // Automatically parses the JSON string in the response
-                            };
-
-                            rp(rpoptions)
-                            .then((repos) => {
-                                log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                                mockup_products = repos;
-                                isdone = true;
-                                requestSuccess = true;
-                            })
-                            .catch((error)=> {
-                                log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            });
-
-                            while(requestSuccess == false)
-                            {                            
-                                console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-                                require('deasync').sleep(500);
-                                timeout -= 500;
-
-                                if (requestSuccess == true || timeout == 0) {
-                                    console.log("Mockup Products: ARRIVED!!!!!");
-                                    break;
-                                }
-                            }
-
-                            isdone = true;
-                            handleError("[API] Before country / departuredate / returndate / month: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                        } else if (country && month && traveler && tourcode) {
-                            //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
-
-                            var rpoptions = {
-                                uri: configfile.apiUrl,
-                                qs: {
-                                    apikey: 'APImushroomtravel',
-                                    mode: 'loadproductchatbot',
-                                    lang: 'th',
-                                    pagesize: '1',
-                                    pagenumber: '1',
-                                    country_slug: country,
-                                    startdate: '',
-                                    enddate: '',
-                                    month: month,
-                                    searchword: tourcode
-                                },
-                                headers: {
-                                    'User-Agent': 'Request-Promise'
-                                },
-                                json: true // Automatically parses the JSON string in the response
-                            };
-
-                            rp(rpoptions)
-                            .then((repos) => {
-                                log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                                mockup_products = repos;
-                                isdone = true;
-                                requestSuccess = true;
-                            })
-                            .catch((error)=> {
-                                log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            });
-
-                            while(requestSuccess == false)
-                            {                            
-                                console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-                                require('deasync').sleep(500);
-                                timeout -= 500;
-
-                                if (requestSuccess == true || timeout == 0) {
-                                    console.log("Mockup Products: ARRIVED!!!!!");
-                                    break;
-                                }
-                            }
-
-                            isdone = true;
-                            handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                        } else if (tourcode) {
-                            // mockup_products = apitour.searchtour('', '', '', '', tourcode);
-
-                            var rpoptions = {
+                        var rpoptions = {
                             uri: configfile.apiUrl,
                             qs: {
                                 apikey: 'APImushroomtravel',
@@ -377,54 +280,150 @@ function handleEvent(event) {
                                 lang: 'th',
                                 pagesize: '1',
                                 pagenumber: '1',
-                                country_slug: "",
-                                startdate: "",
-                                enddate: "",
-                                month: "",
+                                country_slug: country,
+                                startdate: departuredate,
+                                enddate: returndate,
+                                month: month,
+                                searchword: ""
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            mockup_products = repos;
+                            isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        });
+
+                        while(requestSuccess == false)
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+
+                            if (requestSuccess == true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
+                            }
+                        }
+
+                        isdone = true;
+                        handleError("[API] Before country / departuredate / returndate / month: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    } else if (country && month && traveler && tourcode) {
+                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+
+                        var rpoptions = {
+                            uri: configfile.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '1',
+                                pagenumber: '1',
+                                country_slug: country,
+                                startdate: '',
+                                enddate: '',
+                                month: month,
                                 searchword: tourcode
                             },
-                                headers: {
-                                    'User-Agent': 'Request-Promise'
-                                },
-                                json: true // Automatically parses the JSON string in the response
-                            };
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
 
-                            rp(rpoptions)
-                            .then((repos) => {
-                                log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                                mockup_products = repos;
-                                isdone = true;
-                                requestSuccess = true;
-                            })
-                            .catch((error)=> {
-                                log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            });
+                        rp(rpoptions)
+                        .then((repos) => {
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            mockup_products = repos;
+                            isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        });
 
-                            while(requestSuccess === false)
-                            {
-                                
-                                console.log("Maikrob: Mockup Products: NULL: Good night.");
-                                require('deasync').sleep(500);
-                                timeout -= 500;
+                        while(requestSuccess == false)
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                            require('deasync').sleep(500);
+                            timeout -= 500;
 
-                                if (requestSuccess === true || timeout == 0) {
-                                    console.log("Mockup Products: ARRIVED!!!!!");
-                                    break;
-                                }
+                            if (requestSuccess == true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
                             }
-                                isdone = true;
-                                handleError("[API] Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                        }
+
+                        isdone = true;
+                        handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    } else if (tourcode) {
+                        // mockup_products = apitour.searchtour('', '', '', '', tourcode);
+
+                        var rpoptions = {
+                        uri: configfile.apiUrl,
+                        qs: {
+                            apikey: 'APImushroomtravel',
+                            mode: 'loadproductchatbot',
+                            lang: 'th',
+                            pagesize: '1',
+                            pagenumber: '1',
+                            country_slug: "",
+                            startdate: "",
+                            enddate: "",
+                            month: "",
+                            searchword: tourcode
+                        },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            mockup_products = repos;
+                            isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        });
+
+                        while(requestSuccess === false)
+                        {
+                            
+                            console.log("Maikrob: Mockup Products: NULL: Good night.");
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+
+                            if (requestSuccess === true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
                             }
+                        }
+                        isdone = true;
+                        handleError("[API] Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else {
-                           handleError("[API] Case else of no entity condition ", "DEBUG");  
+                            handleError("[API] Case else of no entity condition ", "DEBUG");  
                     }
                 }
-                else
+
+                if (mockup_products == null) 
                 {
                     //reply_details = createReplyMessage(recast_response.reply());
                     intent = '-';
                 }
-                 
+
                 console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
                 console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
 

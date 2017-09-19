@@ -33,7 +33,8 @@ exports.disqualify_get = function(req, res, next) {
 };
 
 exports.disqualify_post = function(req, res, next) {
-    const log = require('./logcontroller');
+    //const log = require('./logcontroller');
+    const messages = [];    
     // Perform validation here form the submitted form data
     // req.body.<field_name>
 
@@ -65,7 +66,7 @@ exports.disqualify_post = function(req, res, next) {
     var returndate = req.body.returndate;
     var country = req.body.country;
 
-    log.handleError(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate, "DEBUG")
+     logger.debug(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate, "DEBUG")
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
     
@@ -99,60 +100,117 @@ exports.disqualify_post = function(req, res, next) {
 
         const rp = require('request-promise');
 
-        // var rpoptions = {
-        //     uri: configfile.apiUrl,
-        //     qs: {
-        //         apikey: 'APImushroomtravel',
-        //         mode: 'loadproductchatbot',
-        //         lang: 'th',
-        //         pagesize: '1',
-        //         pagenumber: '1',
-        //         country_slug: country,
-        //         startdate: departuredate,
-        //         enddate: returndate,
-        //         month: month,
-        //         searchword: ""
-        //     },
-        //     headers: {
-        //         'User-Agent': 'Request-Promise'
-        //     },
-        //     json: true // Automatically parses the JSON string in the response
-        // };
+        var rpoptions = {
+            uri: configfile.apiUrl,
+            qs: {
+                apikey: 'APImushroomtravel',
+                mode: 'loadproductchatbot',
+                lang: 'th',
+                pagesize: '1',
+                pagenumber: '1',
+                country_slug: country,
+                startdate: departuredate,
+                enddate: returndate,
+                month: month,
+                searchword: tourcode
+            },
+            headers: {
+                'User-Agent': 'Request-Promise'
+            },
+            json: true // Automatically parses the JSON string in the response
+        };
 
-        // rp(rpoptions)
-        // .then((repos) => {
-        //     log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-        //     products = repos;
-        //     requestSuccess = true;
-        // })
-        // .catch((error)=> {
-        //     log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-        // });
+        rp(rpoptions)
+        .then((repos) => {
+            logger.debug("[API Mockup] Repos: ", {repos: repos});
+            products = repos;
+            requestSuccess = true;
+        })
+        .catch((error)=> {
+            logger.error('[Find to return api] ', {error: errupdate.stack});
+        });
 
-        // while(requestSuccess == false)
-        // {                            
-        //     console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-        //     require('deasync').sleep(500);
-        //     timeout -= 500;
+        while(requestSuccess == false)
+        {                            
+            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+            require('deasync').sleep(500);
+            timeout -= 500;
 
-        //     if (requestSuccess == true || timeout == 0) {
-        //         console.log("Mockup Products: ARRIVED!!!!!");
-        //         break;
-        //     }
-        // }
+            if (requestSuccess == true || timeout == 0) {
+                console.log("Mockup Products: ARRIVED!!!!!");
+                break;
+            }
+        }
 
-        // const tpc = require('./templatecontroller');
+        const tpc = require('./templatecontroller');
 
-        // if(products != null) {
-        //     if(products.data.results > 0) {
-        //         tpc.templateCarousel(products);
-        //     }
-        // }
-        // else {
+        if(products != null) {
+            if(products.data.results > 0) {
+                tpc.templateCarousel(products);
+                var reply_carousel = tpc.templateCarousel(products);
+                var reply_confirm = tpc.templateConfirm(mappingId, '');
+                messages.push(reply_carousel);
+                messages.push(reply_confirm);
+            }
 
-        // }        
+            Mapping.findById(mappingId)
+                .then((senderMapping) => {
+                    if(senderMapping) {
+                        senderId = senderMapping.userId;
+                        //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                        logger.debug("[Find for sender]", {senderId: senderId});
+                        
+                        lineclient.pushMessage(senderId, messages)
+                        .then(() => {
+                            // process after push message to Line
+                            //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
+                            logger.debug("[Push messages] Carousel sent to the sender");
+                            if (reply_carousel == null){
+                                Mapping.findByIdAndUpdate(mappingId, 
+                                    {$set: {replyMessage: JSON.stringify(replyToClient)}},
+                                    {new: true})
+                                .then((mappingUpdateReply) => {                                
+                                    //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
+                                })
+                                .catch((errupdate) => {
+                                    //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
+                                });
+
+                            } else {
+                                Mapping.findByIdAndUpdate(mappingId, 
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}},
+                                    {new: true})
+                                .then((mappingUpdateReply) => {                                
+                                    //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
+                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
+                                })
+                                .catch((errupdate) => {
+                                    //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
+                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
+                                });                                        
+                            }
+
+                            // Save the response back to the mapping -> replyMessage [JSON.stringify]                               
+                        })
+                        .catch((errPushCarousel) => {
+                            // error handling
+                            //handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
+                            logger.error("[Push carousel]", {stack: errPushCarousel.stack});
+                        });
+                    }
+                    else {
+                        //handleError("[Find for sender] Mapping for sender not found", "WARNING");
+                        logger.warning("[Find for sender] Mapping for sender not found");
+                    }                    
+                })
+        }
+        else {
+
+        }        
         
-        //res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
+        res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
 
     }
 };

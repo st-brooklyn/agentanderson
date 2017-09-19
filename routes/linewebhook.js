@@ -209,7 +209,7 @@ function handleEvent(event) {
                     logger.debug("Created successfully.", {RecastResult: createdRecastResult});
                 })
                 .catch((createRecastError) => {
-                    logger.error("Failed to create recast result log.", {error: createRecastError.stack});
+                    logger.error("Failed to create recast result log.", {error: createRecastError});
                 });
 
                 // Update conversation token back to the mapping 

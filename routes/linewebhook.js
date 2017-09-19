@@ -120,7 +120,7 @@ function handleError(err, level) {
 // }
 
 function handleEvent(event) {
-    logger.silly('[Main]', event);
+    logger.debug('[Main]', event);
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data

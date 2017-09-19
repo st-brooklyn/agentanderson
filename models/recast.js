@@ -6,5 +6,5 @@ var RecastResultSchema = new mongoose.Schema({
     modifiedDate: String
 });
 
-mongoose.model('recastresults', RecastResultSchema);
-module.exports = mongoose.model('RecastResult');
+mongoose.model('recastresult', RecastResultSchema);
+module.exports = mongoose.model('recastresult');

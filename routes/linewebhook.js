@@ -10,7 +10,6 @@ const logger = require('../controllers/logcontroller');
 const tp = require('../controllers/templatecontroller');
 
 var Mapping = require('../models/mapping');
-var RecastResult = require('../models/recast');
 var APIUrl = require('../data/api');
 
 const config = {
@@ -137,9 +136,9 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
 
-        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // // for testing -> delete the entry
         // Mapping.findOneAndRemove({roomId: roomId})
@@ -154,23 +153,20 @@ function handleEvent(event) {
         Mapping.findOne({roomId: roomId})
         .then((mapping) => {
             if(mapping) {
-                // Mapping exists, set the converse token]
-                logger.debug('[Check room Id] Found a mapping.', {conversationToken: conversationToken});
-                
+                // Mapping exists, set the converse token
+                handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
                 mapping.fullMessage += ' ' + originalMessage;
                 if (mapping.userId != lineSender)
                 {
                     mapping.customerId = lineSender;
-                    mapping.modifiedDate = new Date().toJSON();
                 }
                 mapping.save();
             }
             else {
                 // No mapping -> create a new one [converse token is still null]
-                log.debug('[Check room Id] No mapping found.')
-                
+                handleError('[Check room Id] No mapping found', "DEBUG");
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
@@ -185,33 +181,20 @@ function handleEvent(event) {
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
-                    logger.debug('[Create mapping] Created successfully.', createdmapping);                    
+                    handleError("[Create mapping] Created with Id: " + createdmapping._id, "DEBUG");
                 })
                 .catch((errorcreate) => {
-                    logger.error('[Create mapping]', errorcreate);                    
+                    handleError('[Create mapping] ' + errorcreate.stack, "ERROR");
                 });
             }
 
             var recastrequest = new rc.request(configfile.recastRequestToken);
-            logger.silly('[Main]', {recastConversToken: recastConversToken});            
+            handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
-            .then(function (recast_response) {
-                logger.debug('[ConverseText]', [{mappingId: mappingId}, recast_response]);                
-
-                // Log the recast response to the database
-                RecastResult.create({
-                    mappingId: mappingId,
-                    responseMessage: recast_response,
-                    createdDate: new Date().toJSON(),
-                    modifiedDate: new Date().toJSON()                    
-                })
-                .then((createdRecastResult) => {
-                    logger.debug("Created successfully.", createdRecastResult);
-                })
-                .catch((createRecastError) => {
-                    logger.error("Failed to create recast result log.", createRecastError);
-                });
+            .then(function (recast_response) {                
+                handleError("[ConversText] Recast: " + JSON.stringify(recast_response), "DEBUG");
+                handleError("[ConversText] Mapping Id: " + mappingId, "DEBUG");
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token
@@ -219,7 +202,7 @@ function handleEvent(event) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
                         if(mappingtoupdate) {
-                            logger.debug('[Find when null token]', mappingtoupdate);                            
+                            handleError("[Find when null token] Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: recast_response.conversationToken}}, 
@@ -227,18 +210,19 @@ function handleEvent(event) {
                             .then((affected) => {
                                 // update the converse token
                                 recastConversToken = affected.conversationToken;
-                                logger.debug('[Find and update token]', [{recastConversToken: recastConversToken}, affected]);                                
+                                handleError("[Find and update token] Affected: " + affected, "DEBUG");
+                                handleError("[Find and update token] Updated conversation token: " + recastConversToken, "DEBUG");
                             })
                             .catch((errupdate) => {
-                                logger.error('[Find and update token]', errupdate);                                
+                                handleError('[Find and update token] ' + errupdate.stack, "ERROR");
                             });
                         }
                         else {
-                            return logger.warn('[Find and update token] Mapping not found.')                            
+                            return handleError("[Find and update token] Mapping not found.", "WARNING");
                         }
                     })
                     .catch((errfind) => {
-                        logger.error('[Find when null token]', errfind);                        
+                        handleError('[Find when null token] ' + errfind.stack, "ERROR");
                     });
                 }
                 else {
@@ -255,17 +239,16 @@ function handleEvent(event) {
 
                 if(recast_response.action) {
                     intent = recast_response.action.slug;
-                    logger.silly('[Main]', {intent: intent});                    
+                    handleError("[Main] Intent: " + intent, "INFO");
 
                     var isdone = recast_response.action.done;
-                    logger.silly('[Main]', {isdone: isdone});                    
+                    handleError("[Main] Done?: " + isdone, "INFO");
 
                     var actual_token = recast_response.conversationToken;
 
                     // Call api tour    
                     var entity = recast_response['entities'];
-                    logger.debug('[Main]', entity);
-                    //handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
+                    handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
 
                     if (entity == null){
                         mockup_products = null
@@ -282,15 +265,7 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
                     
-                    logger.debug("[API] Before Param exclude tourcode", {
-                        country:country, 
-                        tourcode: tourcode, 
-                        departuredate: departuredate, 
-                        returndate: returndate, 
-                        month: month, 
-                        traveler: traveler}
-                    );
-
+                    handleError("[API] Before Param exclude tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -327,23 +302,23 @@ function handleEvent(event) {
                         })
                         .catch((error)=> {
                             //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", error);
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
                         });
 
                         while(requestSuccess == false)
-                        {
-                            logger.debug("[Krob] Mockup Products = NULL. Good night.", {requestSuccess: requestSuccess, timeout: timeout});
-                            
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
                             require('deasync').sleep(500);
                             timeout -= 500;
 
                             if (requestSuccess == true || timeout == 0) {
-                                logger.debug("[Krob] Mockup Products ARRIVED!!!")                                
+                                console.log("Mockup Products: ARRIVED!!!!!");
                                 break;
                             }
                         }
 
                         isdone = true;
+<<<<<<< HEAD
                         logger.debug('[API] Before country / departuredate / returndate / month:', {
                             country: country,
                             tourcode: tourcode,
@@ -352,6 +327,9 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });                        
+=======
+                        handleError("[API] Before country / departuredate / returndate / month: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+>>>>>>> 3873c4ac75529242bf4f009614e3d9ca81262b06
                     } else if (country && month && traveler && tourcode) {
                         //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
 
@@ -402,6 +380,56 @@ function handleEvent(event) {
 
                         isdone = true;
                         handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
+                    } else if (country && month && traveler) {
+                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
+
+                        var rpoptions = {
+                            uri: configfile.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '1',
+                                pagenumber: '1',
+                                country_slug: country,
+                                startdate: '',
+                                enddate: '',
+                                month: month,
+                                searchword: ''
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
+                            mockup_products = repos;
+                            isdone = true;
+                            requestSuccess = true;
+                        })
+                        .catch((error)=> {
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
+                        });
+
+                        while(requestSuccess == false)
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+
+                            if (requestSuccess == true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
+                            }
+                        }
+
+                        isdone = true;
+                        handleError("[API] Param country / month / traveler : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
                     } else if (tourcode) {
                         // mockup_products = apitour.searchtour('', '', '', '', tourcode);
 

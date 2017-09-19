@@ -295,7 +295,8 @@ function handleEvent(event) {
 
                         rp(rpoptions)
                         .then((repos) => {
-                            log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
                             mockup_products = repos;
                             isdone = true;
                             requestSuccess = true;

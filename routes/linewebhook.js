@@ -122,11 +122,11 @@ function handleError(err, level) {
 // }
 
 function handleEvent(event) {
-    logger.debug('[Main]', event);
+    logger.debug('[Main] Event:', event);
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data
-        var postbackdata = JSON.parse(event.postback.data);
+        var postbackdata = event.postback.data;
         logger.debug("[Postback] Data: ", postbackdata);
         var qualifier = require('../controllers/qualifiercontroller');
         

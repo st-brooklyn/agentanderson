@@ -130,8 +130,12 @@ function handleEvent(event) {
         logger.debug("[Postback] Data: ", postbackdata);
         var qualifier = require('../controllers/qualifiercontroller');
         
-        if (postbackdata.action === 'qualify') {
-            qualifier.qualify_get(postbackdata.mappingId);
+        if (postbackdata['action'] === 'qualify') {
+            logger.debug("Action", {action: postbackdata['action']});
+            qualifier.qualify_get(postbackdata['mappingId']);            
+        }
+        else {
+            logger.warn("No action found.");
         }
     }
     else if (event.type !== 'message' || event.message.type !== 'text') {

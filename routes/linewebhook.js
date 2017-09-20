@@ -251,7 +251,7 @@ function handleEvent(event) {
                     var requestSuccess = false;
                     var timeout = configs.apitimeout;
                     
-                    if (isdone) {
+                    if (isdone && intent == 'tour-search') {
                         var rpoptions = {
                             uri: configs.apiUrl,
                             qs: {

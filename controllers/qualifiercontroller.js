@@ -124,7 +124,7 @@ exports.disqualify_post = function(req, res, next) {
         // Continue with the logic to disqualify
         var products = null;
         var requestSuccess = false;
-        var timeout = 10000;
+        var timeout = configfile.apitimeout;
 
         const rp = require('request-promise');
 

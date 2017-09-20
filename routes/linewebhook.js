@@ -213,7 +213,7 @@ function handleEvent(event) {
                     });
                     
                     var requestSuccess = false;
-                    var timeout = 5000;
+                    var timeout = configfile.apitimeout;
                     
                     if (isdone) {
                         var rpoptions = {

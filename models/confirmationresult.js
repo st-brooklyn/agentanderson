@@ -10,5 +10,5 @@ var ConfirmationResultSchema = new mongoose.Schema({
     modifiedDate: String
 });
 
-mongoose.model('confirmationresult', RecastResultSchema);
+mongoose.model('confirmationresult', ConfirmationResultSchema);
 module.exports = mongoose.model('confirmationresult');

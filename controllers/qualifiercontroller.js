@@ -1,6 +1,6 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
-const RecastResult = require('../models/recast');
+const ConfirmationResult = require('../models/confirmationresult');
 const configs = require('../data/config');
 const line = require('@line/bot-sdk');
 
@@ -14,11 +14,11 @@ exports.qualify_get = function(id){
         var roomId = foundone.roomId;
         var reply = foundone.replyMessage;
 
-        RecastResult.create({
+        ConfirmationResult.create({
             mappingId: id,
+            intent: foundone.intent,
             message: '',
             reservationId: foundone.userId,
-            intent: foundone.intent,
             result: true,
             apiPayload: foundone.apiPayload,
             createdDate: new Date().toJSON(),

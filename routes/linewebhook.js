@@ -89,6 +89,7 @@ function handleEvent(event) {
                 {
                     mapping.customerId = lineSender;
                 }
+                mapping.modifiedDate = new Date().toJSON(),
                 mapping.save();
             }
             else {

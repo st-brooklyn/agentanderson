@@ -119,6 +119,7 @@ function handleEvent(event) {
                     profileTimeout--;
                 }
 
+                mapping.modifiedDate = new Date().toJSON(),
                 mapping.save();
             }
             else {

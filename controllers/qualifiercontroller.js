@@ -136,6 +136,7 @@ exports.disqualify_post = function(req, res, next) {
                 lang: 'th',
                 pagesize: '1',
                 pagenumber: '1',
+                sortby: 'mostpopular',
                 country_slug: country,
                 startdate: departuredate,
                 enddate: returndate,
@@ -234,10 +235,9 @@ exports.disqualify_post = function(req, res, next) {
                         logger.warning("[Find for sender] Mapping for sender not found");
                     }                    
                 })
-        }
-        else {
+            } else {
 
-        }        
+            }        
         
         res.render('disqualify_result', {title: 'Disqualify Result', mappingId: req.body.mappingId});
 

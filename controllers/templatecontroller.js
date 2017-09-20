@@ -25,8 +25,8 @@ module.exports.templateCarousel = function(products){
         }
         var column = {
             "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-            "title": product.product_name.substr(0, 40),
-            "text":  periodText.substr(0, 50) + '\n' + '[[seat]]',
+            "title": '[[seat]]' + product.product_name.substr(0, 40),
+            "text": periodText.substr(0, 50),
             "actions": [                
                 {
                     "type": "uri",

@@ -388,10 +388,10 @@ function handleEvent(event) {
                 .then((senderMapping) => {
                     if(senderMapping) {
                         reservationId = senderMapping.reservationId;
-                        //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
+                        
                         logger.debug("[Find for sender] Found a mapping.", senderMapping);
                         
-                        lineclient.pushMessage(senderId, messages)
+                        lineclient.pushMessage(reservationId, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");

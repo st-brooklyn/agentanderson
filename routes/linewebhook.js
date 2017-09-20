@@ -10,6 +10,7 @@ const logger = require('../controllers/logcontroller');
 const tp = require('../controllers/templatecontroller');
 
 var Mapping = require('../models/mapping');
+var RecastResult = require('../models/recast');
 var APIUrl = require('../data/api');
 
 const config = {
@@ -162,6 +163,20 @@ function handleEvent(event) {
                     {mappingId: mappingId},
                     recast_response
                 ]);
+
+                // Save the Recast response
+                RecastResult.create({
+                    mappingId: mappingId,
+                    responseMessage: recast_response,
+                    createdDate: new Date().toJSON(),
+                    modifiedDate: new Date().toJSON()
+                })
+                .then((createdRR) => {
+                    logger.debug("[Create Recast Result] Created successfully.", createdRR);
+                })
+                .catch((errCreateRR) => {
+                    logger.error("[Create Recast Result] Failed creating.", errCreateRR);
+                });
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token

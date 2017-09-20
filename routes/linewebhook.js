@@ -315,7 +315,7 @@ function handleEvent(event) {
                         rp(rpoptions)
                         .then((repos) => {
                             //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
+                            logger.debug("[API Mockup] Action", {repos: repos});
                             mockup_products = repos;
                             //isdone = true;
                             requestSuccess = true;
@@ -387,9 +387,9 @@ function handleEvent(event) {
                         rp(rpoptions)
                         .then((repos) => {
                             //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
+                            logger.debug("[API Mockup] Tourcode", {repos: repos});
                             mockup_products = repos;
-                            //isdone = true;
+                            isdone = true;
                             requestSuccess = true;
 
                             // Update payload back to the mapping
@@ -661,7 +661,7 @@ function handleEvent(event) {
                 console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
 
                 //const linehelper = require('../controllers/LineMessageController');
-                if (mockup_products != null && mockup_products != undefined) {
+                if (mockup_products != null) {
                     console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);

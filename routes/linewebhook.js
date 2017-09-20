@@ -130,6 +130,7 @@ function handleEvent(event) {
                     roomId: roomId,
                     reservationId: lineSender,
                     customerId: null,
+                    customerDisplayName: null,
                     conversationToken: null,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),

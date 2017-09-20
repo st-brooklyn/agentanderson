@@ -1,7 +1,7 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
 const ConfirmationResult = require('../models/confirmationresult');
-const configfile = require('../data/config');
+const configs = require('../data/config');
 const line = require('@line/bot-sdk');
 
 exports.qualify_get = function(id){
@@ -124,12 +124,12 @@ exports.disqualify_post = function(req, res, next) {
         // Continue with the logic to disqualify
         var products = null;
         var requestSuccess = false;
-        var timeout = configfile.apitimeout;
+        var timeout = configs.apitimeout;
 
         const rp = require('request-promise');
 
         var rpoptions = {
-            uri: configfile.apiUrl,
+            uri: configs.apiUrl,
             qs: {
                 apikey: 'APImushroomtravel',
                 mode: 'loadproductchatbot',

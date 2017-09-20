@@ -4,7 +4,7 @@ const line = require('@line/bot-sdk');
 const express = require('express');
 const db = require('../data/database');
 const rc = require('recastai').default;
-const configfile = require('../data/config');
+const configs = require('../data/config');
 const rp = require('request-promise');
 const logger = require('../controllers/logcontroller');
 const tp = require('../controllers/templatecontroller');
@@ -13,8 +13,8 @@ var Mapping = require('../models/mapping');
 var APIUrl = require('../data/api');
 
 const config = {
-    channelAccessToken: configfile.lineChannelAccessToken,
-    channelSecret: configfile.lineChannelSecret
+    channelAccessToken: configs.lineChannelAccessToken,
+    channelSecret: configs.lineChannelSecret
 };
 
 const lineclient = new line.Client(config);
@@ -117,7 +117,7 @@ function handleEvent(event) {
                 });
             }
 
-            var recastrequest = new rc.request(configfile.recastRequestToken);
+            var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
@@ -213,11 +213,11 @@ function handleEvent(event) {
                     });
                     
                     var requestSuccess = false;
-                    var timeout = configfile.apitimeout;
+                    var timeout = configs.apitimeout;
                     
                     if (isdone) {
                         var rpoptions = {
-                            uri: configfile.apiUrl,
+                            uri: configs.apiUrl,
                             qs: {
                                 apikey: 'APImushroomtravel',
                                 mode: 'loadproductchatbot',

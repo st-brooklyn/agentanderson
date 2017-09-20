@@ -362,6 +362,78 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });   
+                    } else if (tourcode) {
+                        var rpoptions = {
+                            uri: configfile.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: '1',
+                                pagenumber: '1',
+                                sortby: 'mostpopular',
+                                country_slug: country,
+                                startdate: departuredate,
+                                enddate: returndate,
+                                month: month,
+                                searchword: tourcode
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup]", {repos: repos});
+                            mockup_products = repos;
+                            //isdone = true;
+                            requestSuccess = true;
+
+                            // Update payload back to the mapping
+                            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {
+                                    apiPayload: payload, 
+                                    modifiedDate: new Date().toJSON()}
+                                },
+                                {new: true}
+                            )
+                            .then((updated) => {
+                                logger.debug("[Update Payload]", updated);
+                            })
+                            .catch((updateerr) => {
+                                logger.error('[Update Payload]', updateerr);
+                            });
+                        })
+                        .catch((error)=> {
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", {stack: errupdate.stack});
+                        });
+
+                        while(requestSuccess == false)
+                        {                            
+                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+
+                            if (requestSuccess == true || timeout == 0) {
+                                console.log("Mockup Products: ARRIVED!!!!!");
+                                break;
+                            }
+                        }
+
+                        //isdone = true;
+                        logger.debug('[API] get apiwow:', {
+                            country: country,
+                            tourcode: tourcode,
+                            departuredate: departuredate,
+                            returndate: returndate,
+                            month: month,
+                            traveler: traveler
+                        });
                     } else {
                         handleError("[API] Case else of no entity condition ", "DEBUG");  
                     }

@@ -153,6 +153,22 @@ exports.disqualify_post = function(req, res, next) {
             logger.debug("[Disqualify] Response from API: ", repos);
             products = repos;
             requestSuccess = true;
+
+            // Update payload back to the mapping
+            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+            Mapping.findByIdAndUpdate(mappingId, 
+                {$set: {
+                    apiPayload: payload, 
+                    modifiedDate: new Date().toJSON()}
+                },
+                {new: true}
+            )
+            .then((updated) => {
+                logger.debug("[Update Payload] Mapping updated,", updated);
+            })
+            .catch((updateerr) => {
+                logger.error('[Update Payload] Error updating mapping.', updateerr);
+            });
         })
         .catch((error)=> {
             logger.error('[Disqualify] Error sending request to API.', error);

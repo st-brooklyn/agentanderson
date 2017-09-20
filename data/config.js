@@ -15,5 +15,6 @@ module.exports = {
             channelAccessToken: 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=',
             channelSecret: '912ad53b5e85ed684a9c52ac621d77e9'
         }
-    }
+    },
+    confirmMessage: 'คำตอบที่ต้องการส่งหาลูกค้า?'
 }

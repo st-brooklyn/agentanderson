@@ -1,4 +1,5 @@
 'use strict';
+const configs = require('../data/config');
 
 module.exports.templateCarousel = function(products){
     var parsedProducts = products;
@@ -55,7 +56,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient){
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": "Message correct?",
+            "text": configs.confirmMessage,
             "actions": [
                 {
                   "type": "postback",
@@ -78,10 +79,11 @@ module.exports.templateConfirm = function(mappingId, replyToClient){
 }
 
 
-module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage){
+module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName){
     return {
         "type" : "text",
-        "text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+        "text" : 'ลูกค้า' +  customerDisplayName + 'คำถาม: ' + sourceMessage + '\nคำตอบ: ' + replyFromAi + '\nIntent: ' + intent
+        //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
     };
 }
 

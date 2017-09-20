@@ -74,17 +74,6 @@ function handleEvent(event) {
             RoomId: roomId
         });
 
-        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
-
-        // // for testing -> delete the entry
-        // Mapping.findOneAndRemove({roomId: roomId})
-        // .then((res) => {
-        //     handleError("[Remove an entry] Removed.", "DEBUG");
-        // })
-        // .catch((error) => {
-        //     handleError(error);
-        // });
-
         // Check if the conversation exists -- using roomId
         Mapping.findOne({roomId: roomId})
         .then((mapping) => {
@@ -214,7 +203,7 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
 
-                    logger.debug('[API] Extracted value.', {
+                    logger.debug('[API] Extracted values.', {
                         country: country,
                         tourcode: tourcode,
                         departuredate: departuredate,
@@ -266,10 +255,10 @@ function handleEvent(event) {
                                 {new: true}
                             )
                             .then((updated) => {
-                                logger.debug("[Update Payload]", updated);
+                                logger.debug("[Update Payload] Mapping updated,", updated);
                             })
                             .catch((updateerr) => {
-                                logger.error('[Update Payload]', updateerr);
+                                logger.error('[Update Payload] Error updating mapping.', updateerr);
                             });
                         })
                         .catch((error)=> {
@@ -305,232 +294,22 @@ function handleEvent(event) {
                     } else {
                         logger.debug('[API] No entity condition');                        
                     }
-                    /*
-                    if (country && departuredate && returndate && month) {
-
-                        var rpoptions = {
-                            uri: configfile.apiUrl,
-                            qs: {
-                                apikey: 'APImushroomtravel',
-                                mode: 'loadproductchatbot',
-                                lang: 'th',
-                                pagesize: '1',
-                                pagenumber: '1',
-                                country_slug: country,
-                                startdate: departuredate,
-                                enddate: returndate,
-                                month: month,
-                                searchword: ''
-                            },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
-                            mockup_products = repos;
-                            isdone = true;
-                            requestSuccess = true;
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
-                        });
-
-                        while(requestSuccess == false)
-                        {                            
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-
-                            if (requestSuccess == true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
-                                break;
-                            }
-                        }
-
-                        isdone = true;
-                        logger.debug('[API] Before country / departuredate / returndate / month:', {
-                            country: country,
-                            tourcode: tourcode,
-                            departuredate: departuredate,
-                            returndate: returndate,
-                            month: month,
-                            traveler: traveler
-                        });                        
-                    } else if (country && month && traveler && tourcode) {
-                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
-
-                        var rpoptions = {
-                            uri: configfile.apiUrl,
-                            qs: {
-                                apikey: 'APImushroomtravel',
-                                mode: 'loadproductchatbot',
-                                lang: 'th',
-                                pagesize: '1',
-                                pagenumber: '1',
-                                sortby: 'mostpopular',
-                                country_slug: country,
-                                startdate: '',
-                                enddate: '',
-                                month: month,
-                                searchword: tourcode
-                            },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
-                            mockup_products = repos;
-                            isdone = true;
-                            requestSuccess = true;
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
-                        });
-
-                        while(requestSuccess == false)
-                        {                            
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-
-                            if (requestSuccess == true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
-                                break;
-                            }
-                        }
-
-                        isdone = true;
-                        handleError("[API] Param country / month / traveler / tourcode: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else if ((country && month && traveler) && departuredate == null) {
-                        //mockup_products = apitour.searchtour(country, departuredate, returndate, month, '');
-
-                        var rpoptions = {
-                            uri: configfile.apiUrl,
-                            qs: {
-                                apikey: 'APImushroomtravel',
-                                mode: 'loadproductchatbot',
-                                lang: 'th',
-                                pagesize: '1',
-                                pagenumber: '1',
-                                sortby: 'mostpopular',
-                                country_slug: country,
-                                startdate: '',
-                                enddate: '',
-                                month: month,
-                                searchword: ''
-                            },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
-                            mockup_products = repos;
-                            isdone = true;
-                            requestSuccess = true;
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
-                        });
-
-                        while(requestSuccess == false)
-                        {                            
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-
-                            if (requestSuccess == true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
-                                break;
-                            }
-                        }
-
-                        isdone = true;
-                        handleError("[API] Param country / month / traveler / departuredate is null : country = " + country + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else if (tourcode && month && traveler) {
-                        // mockup_products = apitour.searchtour('', '', '', '', tourcode);
-
-                        var rpoptions = {
-                        uri: configfile.apiUrl,
-                        qs: {
-                            apikey: 'APImushroomtravel',
-                            mode: 'loadproductchatbot',
-                            lang: 'th',
-                            pagesize: '1',
-                            pagenumber: '1',
-                            country_slug: "",
-                            startdate: "",
-                            enddate: "",
-                            month: "",
-                            searchword: tourcode
-                        },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
-                            mockup_products = repos;
-                            isdone = true;
-                            requestSuccess = true;
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
-                        });
-
-                        while(requestSuccess === false)
-                        {
-                            
-                            console.log("Maikrob: Mockup Products: NULL: Good night.");
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-
-                            if (requestSuccess === true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
-                                break;
-                            }
-                        }
-                        isdone = true;
-                        handleError("[API] Param tourcode Only: country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
-                    } else { 
-                        handleError("[API] Case else of no entity condition ", "DEBUG");  
-                    }
-                    */
                 }
 
                 if (mockup_products == null) 
                 {
-                    //reply_details = createReplyMessage(recast_response.reply());
                     intent = '-';
                 }
 
-                logger.debug('[Mockup product]', mockup_products);
+                logger.debug('[Mockup product] Details:', mockup_products);
 
                 //const linehelper = require('../controllers/LineMessageController');
                 if (mockup_products != null) {
-                    console.log("success: " + mockup_products['success'] + " results: " + mockup_products['data']['results'] );
+                    logger.debug('[Mockp products] Results:', {
+                        success: mockup_products['success'], 
+                        results: mockup_products['data']['results']
+                    });
+                    
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source);
                         var reply_carousel = tp.templateCarousel(mockup_products);
@@ -577,13 +356,13 @@ function handleEvent(event) {
                     if(senderMapping) {
                         senderId = senderMapping.userId;
                         //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
-                        logger.debug("[Find for sender]", {senderId: senderId});
+                        logger.debug("[Find for sender] Found a mapping.", senderMapping);
                         
                         lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
-                            logger.debug("[Push messages] Carousel sent to the sender");
+                            logger.debug("[Push messages] Messages sent.");
                             if (reply_carousel == null){
                                 Mapping.findByIdAndUpdate(mappingId, 
                                     {$set: {replyMessage: JSON.stringify(replyToClient)}},
@@ -594,7 +373,7 @@ function handleEvent(event) {
                                 })
                                 .catch((errupdate) => {
                                     //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                    logger.error("[Find to update reply]", errupdate);
+                                    logger.error("[Find to update reply] Error updating mapping.", errupdate);
                                 });
 
                             } else {
@@ -603,11 +382,11 @@ function handleEvent(event) {
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
+                                    logger.debug("[Find to update reply] Mapping updated.", mappingUpdateReply);
                                 })
                                 .catch((errupdate) => {
                                     //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
+                                    logger.error("[Find to update reply] Error updating a mapping.", errupdate);
                                 });                                        
                             }
                             // Save the response back to the mapping -> replyMessage [JSON.stringify]                               
@@ -615,7 +394,7 @@ function handleEvent(event) {
                         .catch((errPushCarousel) => {
                             // error handling
                             //handleError("[Push carousel] Push failed. " + errPushCarousel.stack, "ERROR");
-                            logger.error("[Push carousel]", {stack: errPushCarousel.stack});
+                            logger.error("[Push Message] Error push message.", errPushCarousel);
                         });
                     }
                     else {
@@ -623,27 +402,15 @@ function handleEvent(event) {
                         logger.warning("[Find for sender] Mapping for sender not found");
                     }                    
                 })
-            }) // End then findById
-            .catch((err) => {
-                handleError(err);
-            });            
+            }) // End then converstext
+            .catch((errconverse) => {
+                logger.error("[Converse Text] Error conversetext.", errconverse);                
+            });
         }) // End then
-        .catch((errfindone) => {
-            handleError(errfindone);
+        .catch((errfindone) => {            
+            logger.error('[Find Mapping] Error finding a mapping.', errfindone);
         });
     }
-
-    //Extract data from line message
-
-    //// create a echoing text message
-    //const echo = { type: 'text', text: event.message.text };
-
-    //// use reply API
-    //return client.replyMessage(event.replyToken, echo);
-
-    // create data entries
-
-    // extract data
 }
 
 module.exports = router;

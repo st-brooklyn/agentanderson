@@ -1,8 +1,9 @@
 ﻿var mongoose = require('mongoose');
 var MappingSchema = new mongoose.Schema({    
     roomId: String,
-    userId: String,
+    reservationId: String,
     customerId: String,
+    customerDisplayName: String,
     conversationToken: String,
     createdDate: String,
     modifiedDate: String,

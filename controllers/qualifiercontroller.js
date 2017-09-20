@@ -18,7 +18,7 @@ exports.qualify_get = function(id){
             mappingId: id,
             intent: foundone.intent,
             message: '',
-            reservationId: foundone.userId,
+            reservationId: foundone.reservationId,
             result: true,
             apiPayload: foundone.apiPayload,
             createdDate: new Date().toJSON(),
@@ -185,12 +185,11 @@ exports.disqualify_post = function(req, res, next) {
             Mapping.findById(mappingId)
                 .then((senderMapping) => {
                     if(senderMapping) {
-                        senderId = senderMapping.userId;
-                        //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         logger.debug("[Disqualify] Found a mapping.", senderMapping);
-                        
+
+                        var reservationId = senderMapping.reservationId;                        
                         var lineclient = new line.Client(configs.botmapping.default);
-                        lineclient.pushMessage(senderId, messages)
+                        lineclient.pushMessage(reservationId, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");

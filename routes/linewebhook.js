@@ -17,7 +17,7 @@ const config = {
     channelSecret: configs.lineChannelSecret
 };
 
-const lineclient = new line.Client(config);
+const lineclient = new line.Client(configs.botmapping.default);
 const router = express.Router();
 
 router.post('/webhook', line.middleware(config), (req, res) => {
@@ -85,10 +85,40 @@ function handleEvent(event) {
                 mappingId = mapping._id;
                 mapping.fullMessage += ' ' + originalMessage;
                 mapping.message = originalMessage;
-                if (mapping.userId != lineSender)
-                {
-                    mapping.customerId = lineSender;
+                var customerDisplayName = null;
+                var gotProfile = false;
+
+                if (mapping.customerId == null) {
+                    if (lineSender != mapping.reservationId) {
+                        mapping.customerId = lineSender;
+
+                        // Get the customer display name
+                        lineclient.getProfile(lineSender)
+                        .then((profile) => {
+                            logger.debug("[Get Profile] Customer Profile:", profile);
+                            customerDisplayName = profile.displayName;
+                            gotProfile = true;
+                        })
+                        .catch((errProfile) => {
+                            logger.error("[Get Profile]: Error getting customer profile.", errProfile);
+                        });
+                    }
                 }
+
+                var profileTimeout = configs.apitimeout;
+
+                while(true) {
+                    if (gotProfile == true || profileTimeout == 0) {
+                        logger.silly("[Profile] Got profile.");
+                        break;
+                    }
+
+                    logger.silly('[Profile] Still waiting for Profile.', {gotProfile: gotProfile, profileTimeout: profileTimeout});
+
+                    require('deasync').sleep(500);
+                    profileTimeout--;
+                }
+
                 mapping.save();
             }
             else {
@@ -97,7 +127,7 @@ function handleEvent(event) {
                 
                 Mapping.create({
                     roomId: roomId,
-                    userId: event.source.userId,
+                    reservationId: lineSender,
                     customerId: null,
                     conversationToken: null,
                     createdDate: new Date().toJSON(),
@@ -349,12 +379,12 @@ function handleEvent(event) {
                 //handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
                 logger.debug("[Main] Messages to be sent.", messages);
 
-                var senderId = '';
+                var reservationId = '';
 
                 Mapping.findById(mappingId)
                 .then((senderMapping) => {
                     if(senderMapping) {
-                        senderId = senderMapping.userId;
+                        reservationId = senderMapping.reservationId;
                         //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         logger.debug("[Find for sender] Found a mapping.", senderMapping);
                         

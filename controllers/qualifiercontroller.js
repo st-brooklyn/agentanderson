@@ -1,7 +1,7 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
 const ConfirmationResult = require('../models/confirmationresult');
-const configs = require('../data/config');
+const configfile = require('../data/config');
 const line = require('@line/bot-sdk');
 
 exports.qualify_get = function(id){

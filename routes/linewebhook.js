@@ -97,6 +97,7 @@ function handleEvent(event) {
                         .then((profile) => {
                             logger.debug("[Get Profile] Customer Profile:", profile);
                             customerDisplayName = profile.displayName;
+                            mapping.customerDisplayName = customerDisplayName;
                             gotProfile = true;
                         })
                         .catch((errProfile) => {
@@ -109,7 +110,7 @@ function handleEvent(event) {
 
                 while(true) {
                     if (gotProfile == true || profileTimeout == 0) {
-                        logger.silly("[Profile] Got profile.");
+                        logger.silly("[Profile] Got profile.");                        
                         break;
                     }
 

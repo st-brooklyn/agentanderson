@@ -26,7 +26,7 @@ var rotatefile = new winston.transports.DailyRotateFile({
 });
 
 module.exports = new winston.Logger({
-    level: 'debug',
+    level: require('../data/config').loglevel,
     transports: [
         new winston.transports.Console({
             timestamp: formattimestamp,

@@ -189,6 +189,7 @@ exports.disqualify_post = function(req, res, next) {
                         //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
                         logger.debug("[Disqualify] Found a mapping.", senderMapping);
                         
+                        var lineclient = new line.Client(configs.botmapping.default);
                         lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line

@@ -105,19 +105,22 @@ function handleEvent(event) {
                         });
                     }
                 }
+                else{
+                    gotProfile = true;
+                }
 
                 var profileTimeout = configs.apitimeout;
 
                 while(true) {
                     if (gotProfile == true || profileTimeout == 0) {
-                        logger.silly("[Profile] Got profile.");                        
+                        logger.silly("[Profile] Got profile.");
                         break;
                     }
 
                     logger.silly('[Profile] Still waiting for Profile.', {gotProfile: gotProfile, profileTimeout: profileTimeout});
 
                     require('deasync').sleep(500);
-                    profileTimeout--;
+                    profileTimeout -= 500;
                 }
 
                 mapping.modifiedDate = new Date().toJSON(),
@@ -299,20 +302,19 @@ function handleEvent(event) {
                             logger.error("[Find to return api]", error);
                         });
 
-                        while(requestSuccess == false)
+                        while(true)
                         {
-                            logger.debug('Krob: Mockup Products: null. Good night.', {
-                                requestSuccess: requestSuccess,
-                                timeout: timeout
-                            });
-                            
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-
                             if (requestSuccess == true || timeout == 0) {
                                 logger.debug('[Mockup Product] Arrived!!')                                
                                 break;
                             }
+
+                            logger.debug('[API Product] Waiting for product.', {
+                                requestSuccess: requestSuccess,
+                                timeout: timeout
+                            });
+                            require('deasync').sleep(500);
+                            timeout -= 500;
                         }
 
                         //isdone = true;

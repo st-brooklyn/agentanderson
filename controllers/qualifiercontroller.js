@@ -174,19 +174,21 @@ exports.disqualify_post = function(req, res, next) {
             logger.error('[Disqualify] Error sending request to API.', error);
         });
 
-        while(requestSuccess == false)
+        while(true)
         {
-            logger.debug('[Disqualify] Wait for API response.', {requestSuccess: requestSuccess, timeout: timeout});
-            
-            require('deasync').sleep(500);
-            timeout -= 500;
-
             if (requestSuccess == true || timeout == 0) {
-                logger.debug('[Disqualify] products ARRIVED!!!')                
+                logger.debug('[Disquality] Products arrived!!')                                
                 break;
             }
-        }
 
+            logger.debug('[Disqualify] Waiting for product.', {
+                requestSuccess: requestSuccess,
+                timeout: timeout
+            });
+            require('deasync').sleep(500);
+            timeout -= 500;
+        }
+        
         const tpc = require('./templatecontroller');
 
         if(products != null) {

@@ -10,7 +10,7 @@ exports.qualify_get = function(id){
     Mapping.findById(id)
     .then((foundone) => {
         // get the message and send back to the room
-        logger.silly("[Qualify] Found a mapping.", foundone);        
+        logger.silly("[Qualify] Found a mapping.", foundone);
         var roomId = foundone.roomId;
         var reply = foundone.replyMessage;
 
@@ -60,8 +60,7 @@ exports.disqualify_post = function(req, res, next) {
     // req.body.<field_name>
 
     var hasError = false;
-
-    console.log("Payload: " + JSON.stringify(req.body));
+    logger.silly("[Disqualify Post] Payload", req.body);
 
     // {
     //     "mappingId":"59b62f882eb59000125491f5",
@@ -87,7 +86,14 @@ exports.disqualify_post = function(req, res, next) {
     var returndate = req.body.returndate;
     var country = req.body.country;
 
-     logger.debug(intent + " " + tourcode + "\n" + mappingId + "\n" + traveler + "\n" + departuredate + "\n" + returndate, "DEBUG")
+     logger.debug('[Disqualify Post] Extracted values.', {
+         intent: intent,
+         tourcode: tourcode,
+         mappingId: mappingId,
+         traveler, traveler,
+         departuredate: departuredate,
+         returndate: returndate
+     });
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
     
@@ -118,6 +124,7 @@ exports.disqualify_post = function(req, res, next) {
         // Continue with the logic to disqualify
         var products = null;
         var requestSuccess = false;
+        var timeout = 10000;
 
         const rp = require('request-promise');
 
@@ -143,22 +150,23 @@ exports.disqualify_post = function(req, res, next) {
 
         rp(rpoptions)
         .then((repos) => {
-            logger.debug("[API Mockup] Repos: ", {repos: repos});
+            logger.debug("[Disqualify] Response from API: ", repos);
             products = repos;
             requestSuccess = true;
         })
         .catch((error)=> {
-            logger.error('[Find to return api] ', {error: errupdate.stack});
+            logger.error('[Disqualify] Error sending request to API.', error);
         });
 
         while(requestSuccess == false)
-        {                            
-            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+        {
+            logger.debug('[Disqualify] Wait for API response.', {requestSuccess: requestSuccess, timeout: timeout});
+            
             require('deasync').sleep(500);
             timeout -= 500;
 
             if (requestSuccess == true || timeout == 0) {
-                console.log("Mockup Products: ARRIVED!!!!!");
+                logger.debug('[Disqualify] products ARRIVED!!!')                
                 break;
             }
         }
@@ -179,24 +187,24 @@ exports.disqualify_post = function(req, res, next) {
                     if(senderMapping) {
                         senderId = senderMapping.userId;
                         //handleError("[Find for sender] Sender Id: " + senderId, "DEBUG");
-                        logger.debug("[Find for sender]", {senderId: senderId});
+                        logger.debug("[Disqualify] Found a mapping.", senderMapping);
                         
                         lineclient.pushMessage(senderId, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
-                            logger.debug("[Push messages] Carousel sent to the sender");
+                            logger.debug("[Disqualify] Messages sent.");
                             if (reply_carousel == null){
                                 Mapping.findByIdAndUpdate(mappingId, 
                                     {$set: {replyMessage: JSON.stringify(replyToClient)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
+                                    logger.debug("[Disqualify] Mapping updatedg.", mappingUpdateReply);
                                 })
                                 .catch((errupdate) => {
                                     //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
+                                    logger.error("[Disqualify] Error updating a mapping", errupdate);
                                 });
 
                             } else {

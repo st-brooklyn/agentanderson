@@ -155,9 +155,12 @@ function handleEvent(event) {
 
         var mappingId = '';
 
-        //logger.debug('[Main]', {IncomingMessage: originalMessage, RoomId: roomId});
+        logger.debug('[Main]', {
+            IncomingMessage: originalMessage, 
+            RoomId: roomId
+        });
 
-        handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
+        //handleError('[Main] Incoming message: ' + originalMessage + '. Room Id: ' + roomId, "DEBUG");
 
         // // for testing -> delete the entry
         // Mapping.findOneAndRemove({roomId: roomId})
@@ -173,7 +176,8 @@ function handleEvent(event) {
         .then((mapping) => {
             if(mapping) {
                 // Mapping exists, set the converse token
-                handleError('[Check room Id] Found a mapping with a Token: ' + mapping.conversationToken, "DEBUG");
+                logger.debug('[Check room Id] Found a mapping.', mapping);
+                
                 recastConversToken = mapping.conversationToken;
                 mappingId = mapping._id;
                 mapping.fullMessage += ' ' + originalMessage;
@@ -186,7 +190,8 @@ function handleEvent(event) {
             }
             else {
                 // No mapping -> create a new one [converse token is still null]
-                handleError('[Check room Id] No mapping found', "DEBUG");
+                logger.debug('[Check room Id] No mapping found');
+                
                 Mapping.create({
                     roomId: roomId,
                     userId: event.source.userId,
@@ -202,20 +207,22 @@ function handleEvent(event) {
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
-                    handleError("[Create mapping] Created with Id: " + createdmapping._id, "DEBUG");
+                    logger.debug('[Create mapping] Mapping created.', createdmapping);                    
                 })
                 .catch((errorcreate) => {
-                    handleError('[Create mapping] ' + errorcreate.stack, "ERROR");
+                    logger.error('[Create mapping] Error creating a mapping', errorcreate);                    
                 });
             }
 
             var recastrequest = new rc.request(configfile.recastRequestToken);
-            handleError("[Main] recastConversToken: " + recastConversToken, "DEBUG");
+            logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
 
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
-            .then(function (recast_response) {                
-                handleError("[ConversText] Recast: " + JSON.stringify(recast_response), "DEBUG");
-                handleError("[ConversText] Mapping Id: " + mappingId, "DEBUG");
+            .then(function (recast_response) {
+                logger.debug('[ConversText] Response from Recast.',[
+                    {mappingId: mappingId},
+                    recast_response
+                ]);
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token
@@ -223,27 +230,31 @@ function handleEvent(event) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
                         if(mappingtoupdate) {
-                            handleError("[Find when null token] Found a mapping with Id: " + JSON.stringify(mappingtoupdate), "DEBUG");
+                            logger.debug('[Find when null token] Found a mapping', mappingtoupdate);                            
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: recast_response.conversationToken}}, 
                                 {new: true})
                             .then((affected) => {
                                 // update the converse token
-                                recastConversToken = affected.conversationToken;
-                                handleError("[Find and update token] Affected: " + affected, "DEBUG");
-                                handleError("[Find and update token] Updated conversation token: " + recastConversToken, "DEBUG");
+                                recastConversToken = affected.conversationToken;                                                                
+                                logger.debug('[Find and update token] Mapping updated.', [
+                                    {
+                                        recastConversToken: recastConversToken
+                                    },
+                                    affected
+                                ]);
                             })
                             .catch((errupdate) => {
-                                handleError('[Find and update token] ' + errupdate.stack, "ERROR");
+                                logger.error('[Find and update token]', errupdate);
                             });
                         }
                         else {
-                            return handleError("[Find and update token] Mapping not found.", "WARNING");
+                            logger.warn('[Find and update token] Mapping not found.');                            
                         }
                     })
                     .catch((errfind) => {
-                        handleError('[Find when null token] ' + errfind.stack, "ERROR");
+                        logger.erro('[Find when null token]', errfind);                        
                     });
                 }
                 else {
@@ -260,16 +271,19 @@ function handleEvent(event) {
 
                 if(recast_response.action) {
                     intent = recast_response.action.slug;
-                    handleError("[Main] Intent: " + intent, "INFO");
-
                     var isdone = recast_response.action.done;
-                    handleError("[Main] Done?: " + isdone, "INFO");
-
                     var actual_token = recast_response.conversationToken;
 
                     // Call api tour    
                     var entity = recast_response['entities'];
-                    handleError("[Main] Entity?: " + JSON.stringify(entity), "INFO");
+                    logger.info('[Main] Action date ', [
+                        entity,
+                        {
+                            intent: intent,
+                            isdone: isdone,
+                            actual_token: actual_token
+                        }
+                    ]);
 
                     if (entity == null){
                         mockup_products = null
@@ -285,8 +299,16 @@ function handleEvent(event) {
                     // Construct the reply message
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
+
+                    logger.debug('[API] Extracted value.', {
+                        country: country,
+                        tourcode: tourcode,
+                        departuredate: departuredate,
+                        returndate: returndate,
+                        month: month,
+                        traveler: traveler
+                    });
                     
-                    handleError("[API] country = " + country + " tourcode = " + tourcode + " departuredate = " + departuredate + " returndate = " + returndate + " month = " + month + " traveler = " + traveler, "DEBUG");
                     var requestSuccess = false;
                     var timeout = 5000;
                     
@@ -315,7 +337,7 @@ function handleEvent(event) {
                         rp(rpoptions)
                         .then((repos) => {
                             //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup]", {repos: repos});
+                            logger.debug("[API Mockup] API Response:", repos);
                             mockup_products = repos;
                             //isdone = true;
                             requestSuccess = true;
@@ -339,17 +361,21 @@ function handleEvent(event) {
                         })
                         .catch((error)=> {
                             //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", {stack: errupdate.stack});
+                            logger.error("[Find to return api]", error);
                         });
 
                         while(requestSuccess == false)
-                        {                            
-                            console.log("Krob: Mockup Products: NULL: Good night. " + requestSuccess + " " + timeout);
+                        {
+                            logger.debug('Krob: Mockup Products: null. Good night.', {
+                                requestSuccess: requestSuccess,
+                                timeout: timeout
+                            });
+                            
                             require('deasync').sleep(500);
                             timeout -= 500;
 
                             if (requestSuccess == true || timeout == 0) {
-                                console.log("Mockup Products: ARRIVED!!!!!");
+                                logger.debug('[Mockup Product] Arrived!!')                                
                                 break;
                             }
                         }
@@ -364,7 +390,7 @@ function handleEvent(event) {
                             traveler: traveler
                         });   
                     } else {
-                        handleError("[API] Case else of no entity condition ", "DEBUG");  
+                        logger.debug('[API] No entity condition');                        
                     }
                     /*
                     if (country && departuredate && returndate && month) {
@@ -587,7 +613,7 @@ function handleEvent(event) {
                     intent = '-';
                 }
 
-                console.log("[Mockup Product] " +  JSON.stringify(mockup_products));
+                logger.debug('[Mockup product]', mockup_products);
 
                 //const linehelper = require('../controllers/LineMessageController');
                 if (mockup_products != null && mockup_products != undefined) {
@@ -629,7 +655,7 @@ function handleEvent(event) {
                 messages.push(reply_confirm);
 
                 //handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
-                logger.debug("[Main]",{message: messages});
+                logger.debug("[Main] Messages to be sent.", messages);
 
                 var senderId = '';
 
@@ -651,11 +677,11 @@ function handleEvent(event) {
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");
-                                    logger.debug("[Find to update reply]", {mappingUpdateReply: mappingUpdateReply});
+                                    logger.debug("[Find to update reply] Mapping updated.", mappingUpdateReply);
                                 })
                                 .catch((errupdate) => {
                                     //handleError('[Find to update reply] ' + errupdate.stack, "ERROR");
-                                    logger.error("[Find to update reply]", {stack: errupdate.stack});
+                                    logger.error("[Find to update reply]", errupdate);
                                 });
 
                             } else {
@@ -671,7 +697,6 @@ function handleEvent(event) {
                                     logger.error("[Find to update reply]", {stack: errupdate.stack});
                                 });                                        
                             }
-
                             // Save the response back to the mapping -> replyMessage [JSON.stringify]                               
                         })
                         .catch((errPushCarousel) => {

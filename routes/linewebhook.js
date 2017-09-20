@@ -321,7 +321,6 @@ function handleEvent(event) {
                             requestSuccess = true;
 
                             // Update payload back to the mapping
-                            // TODO:
                             var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {

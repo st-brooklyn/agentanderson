@@ -93,9 +93,13 @@ module.exports.templateReply = function(replyFromAi){
     };
 }
 
-module.exports.createApiPayload = (intent, country, tourcode, departedate) => {
+module.exports.createApiPayload = (intent, country, departuredate, returndate, month, tourcode) => {
     return {
         intent: intent,
-        country: country
+        country: country,
+        departuredate: departuredate,
+        returndate: returndate,
+        month: month,
+        tourcode: tourcode
     };
 };

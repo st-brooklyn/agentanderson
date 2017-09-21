@@ -175,7 +175,7 @@ exports.disqualify_post = function(req, res, next) {
                 apikey: 'APImushroomtravel',
                 mode: 'loadproductchatbot',
                 lang: 'th',
-                pagesize: '1',
+                pagesize: configs.apisizepage,
                 pagenumber: '1',
                 sortby: 'mostpopular',
                 country_slug: country,

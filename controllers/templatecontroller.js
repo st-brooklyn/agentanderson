@@ -60,7 +60,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient, recastUuid){
         "altText": "this is a confirm template",
         "template": {
             "type": "confirm",
-            "text": configs.confirmMessage,
+            "text": configs.predefinedMessages.confirmMessage,
             "actions": [
                 {
                   "type": "postback",

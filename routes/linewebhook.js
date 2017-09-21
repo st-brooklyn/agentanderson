@@ -223,10 +223,16 @@ function handleEvent(event) {
                 var reply_confirm = null;
                 // Extract the reply from recast
                 var intent = '';
+                var isdone = false;
 
                 //if(recast_response.action) {
-                    intent = recast_response.action.slug;
-                    var isdone = recast_response.action.done;
+                    if (recast_response.action){
+                        intent = recast_response.action.slug;
+                        isdone = recast_response.action.done;
+                    } else {
+
+                    }
+                   
                     var actual_token = recast_response.conversationToken;
 
                     // Call api tour    

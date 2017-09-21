@@ -273,7 +273,7 @@ function handleEvent(event) {
                                 apikey: 'APImushroomtravel',
                                 mode: 'loadproductchatbot',
                                 lang: 'th',
-                                pagesize: '1',
+                                pagesize: '3',
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
                                 country_slug: country,

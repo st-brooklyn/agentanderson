@@ -226,7 +226,7 @@ function handleEvent(event) {
                 var isdone = false;
 
                 //if(recast_response.action) {
-                    if (recast_response.action){
+                    if (recast_response.action != null){
                         intent = recast_response.action.slug;
                         isdone = recast_response.action.done;
                     } else {

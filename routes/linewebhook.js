@@ -224,7 +224,7 @@ function handleEvent(event) {
                 // Extract the reply from recast
                 var intent = '';
 
-                if(recast_response.action) {
+                //if(recast_response.action) {
                     intent = recast_response.action.slug;
                     var isdone = recast_response.action.done;
                     var actual_token = recast_response.conversationToken;
@@ -442,7 +442,7 @@ function handleEvent(event) {
                     } else {
                         logger.debug('[API] No entity condition');                        
                     }
-                }
+                //}
 
                 if (mockup_products == null) 
                 {

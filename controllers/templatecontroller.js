@@ -85,7 +85,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient, recastUuid){
 module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName){
     return {
         "type" : "text",
-        "text" : 'ลูกค้า: ' +  customerDisplayName + '\nคำถาม: ' + sourceMessage + '\nคำตอบ: ' + replyFromAi + '\nIntent: ' + intent
+        "text" : 'ลูกค้า: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage
         //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
     };
 }

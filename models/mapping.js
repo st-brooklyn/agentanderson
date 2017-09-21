@@ -11,7 +11,9 @@ var MappingSchema = new mongoose.Schema({
     replyMessage: String,
     fullMessage: String,
     action: String,
-    apiPayload: Object
+    apiPayload: Object,
+    isSent: Boolean,
+    recastUuid: String
 });
 
 mongoose.model('Mapping', MappingSchema);

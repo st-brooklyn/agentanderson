@@ -49,7 +49,7 @@ function handleEvent(event) {
         
         if (postbackdata['action'] === 'qualify') {
             logger.debug("Action", {action: postbackdata['action']});
-            qualifier.qualify_get(postbackdata['mappingId']);            
+            qualifier.qualify_get(postbackdata['mappingId'], postbackdata['recastUuid']);            
         }
         else {
             logger.warn("No action found.", {type: typeof(postbackdata)});

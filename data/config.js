@@ -17,5 +17,10 @@ module.exports = {
             channelSecret: '912ad53b5e85ed684a9c52ac621d77e9'
         }
     },
-    confirmMessage: 'คำตอบที่ต้องการส่งหาลูกค้า?'
+    confirmMessage: 'คำตอบที่ต้องการส่งหาลูกค้า?',
+    predefinedMessages: {
+        confirmMessage: 'คำตอบที่ต้องการส่งหาลูกค้า?',
+        confirmSuccess: 'ส่งข้อความสำเร็จแล้ว',
+        confirmFailure: 'ข้อความส่งไม่สำเร็จ'
+    }
 }

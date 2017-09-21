@@ -54,7 +54,7 @@ module.exports.templateCarousel = function(products){
 }
 
 
-module.exports.templateConfirm = function(mappingId, replyToClient){
+module.exports.templateConfirm = function(mappingId, replyToClient, recastUuid){
     var confirm = {
         "type": "template",
         "altText": "this is a confirm template",
@@ -65,8 +65,7 @@ module.exports.templateConfirm = function(mappingId, replyToClient){
                 {
                   "type": "postback",
                   "label": "Yes",
-                  "data": '{"action": "qualify", "mappingId": "' + mappingId + '"}',
-                  "text": "Message sent. :)"
+                  "data": '{"action": "qualify", "mappingId": "' + mappingId + '", "recastUuid": "' + recastUuid + '"}',
                 },
                 {
                   "type": "uri",

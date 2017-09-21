@@ -3,48 +3,87 @@ const Mapping = require('../models/mapping');
 const ConfirmationResult = require('../models/confirmationresult');
 const configs = require('../data/config');
 const line = require('@line/bot-sdk');
+const tpc = require('./templatecontroller');
 
-exports.qualify_get = function(id){
-    logger.debug("[Qualify]", {mappingId: id});
+exports.qualify_get = function(id, recastUuid){
+    logger.debug("[Qualify]", {mappingId: id, recastUuid: recastUuid});
 
     Mapping.findById(id)
     .then((foundone) => {
         // get the message and send back to the room
         logger.silly("[Qualify] Found a mapping.", foundone);
-        var roomId = foundone.roomId;
-        var reply = foundone.replyMessage;
-        reply = reply.replace('/\[\[.*\]\]/', '');
-        logger.silly('[]')
 
-        ConfirmationResult.create({
-            mappingId: id,
-            intent: foundone.intent,
-            message: '',
-            reservationId: foundone.reservationId,
-            result: true,
-            apiPayload: foundone.apiPayload,
-            createdDate: new Date().toJSON(),
-            modifiedDate: new Date().toJSON()
-        })
-        .then((created) => {
-            logger.debug("[Create Recast-YES]", created);
-        })
-        .catch((error) => {
-            logger.error("[Create Recast-NO", error);
-        });
+        var foundRecastUuid = foundone.recastUuid;
+        var isSent = foundone.isSent;
 
-        // send message to room
-        var lineclient = new line.Client(configs.botmapping.default);
-        lineclient.pushMessage(roomId, JSON.parse(reply))
-        Mapping.findByIdAndUpdate(id, 
-            {$set: {action: "YES"}}, 
-            {new: true})
-        .then(() => {
-            logger.debug("[Push after qualify] Message sent");            
-        })
-        .catch((pushError) => {
-            logger.error('[Push after qualify]', pushError);            
-        });
+        if(isSent == true && recastUuid == foundRecastUuid) {
+            logger.debug('[Qualify] This message is already sent.');
+
+            // lineclient.pushMessage(foundone.reservationId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))
+            // .then((notify) => {
+            //     logger.debug('[Qualify] Push confirm success', notify);
+            // })
+            // .catch((confirmerr) => {
+            //     logger.error('[Qualify] Push confirm failed.', confirmerr);
+            // });
+        }
+        else {
+            var roomId = foundone.roomId;
+            var reply = foundone.replyMessage;
+            
+            reply = reply.replace('/\[\[.*\]\]/', '');
+            logger.silly('[Qualify] Replaced message', {ModifiedReply: reply});
+    
+            ConfirmationResult.create({
+                mappingId: id,
+                intent: foundone.intent,
+                message: '',
+                reservationId: foundone.reservationId,
+                result: true,
+                apiPayload: foundone.apiPayload,
+                createdDate: new Date().toJSON(),
+                modifiedDate: new Date().toJSON()
+            })
+            .then((created) => {
+                logger.debug("[Create Recast-YES]", created);
+            })
+            .catch((error) => {
+                logger.error("[Create Recast-NO", error);
+            });
+
+            // send message to room
+            var lineclient = new line.Client(configs.botmapping.default);
+
+            lineclient.pushMessage(roomId, JSON.parse(reply))            
+            .then(() => {
+                logger.debug("[Push after qualify] Message sent");
+
+                Mapping.findByIdAndUpdate(id, 
+                    {$set: {
+                        action: "YES",
+                        isSent: true,
+                        modifiedDate: new Date().toJSON()
+                    }}, 
+                    {new: true})
+                .then((updatedone) => {
+                    logger.debug('[Qualify] Updated mapping.', updatedone)
+                })
+                .catch((errUpdate) => {
+                    logger.error('[QUalify] Failed updating mapping', errupdate);
+                });
+
+                lineclient.pushMessage(foundone.reservationId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))
+                .then((notify) => {
+                    logger.debug('[Qualify] Push confirm success', notify);
+                })
+                .catch((confirmerr) => {
+                    logger.error('[Qualify] Push confirm failed.', confirmerr);
+                });
+            })
+            .catch((pushError) => {
+                logger.error('[Push after qualify]', pushError);            
+            });
+        }
     })
     .catch((finderror) => {
         logger.error("[Find one for Qualification]", finderror);        
@@ -157,7 +196,7 @@ exports.disqualify_post = function(req, res, next) {
             requestSuccess = true;
 
             // Update payload back to the mapping
-            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+            var payload = tpc.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
             Mapping.findByIdAndUpdate(mappingId, 
                 {$set: {
                     apiPayload: payload, 
@@ -191,7 +230,7 @@ exports.disqualify_post = function(req, res, next) {
             timeout -= 500;
         }
 
-        const tpc = require('./templatecontroller');
+        
 
         if(products != null) {
             if(products.data.results > 0) {

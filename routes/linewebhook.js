@@ -226,228 +226,228 @@ function handleEvent(event) {
                 var isdone = false;
 
                 //if(recast_response.action) {
-                    if (recast_response.action != null){
-                        intent = recast_response.action.slug;
-                        isdone = recast_response.action.done;
-                    } else {
+                if (recast_response.action != null){
+                    intent = recast_response.action.slug;
+                    isdone = recast_response.action.done;
+                } 
+                                    
+                var actual_token = recast_response.conversationToken;
 
+                // Call api tour    
+                var entity = recast_response['entities'];
+                var memory = recast_response['memory'];
+                logger.info('[Main] Entity action date  ', [
+                    entity,
+                    {
+                        intent: intent,
+                        isdone: isdone,
+                        actual_token: actual_token
                     }
-                   
-                    var actual_token = recast_response.conversationToken;
+                ]);
 
-                    // Call api tour    
-                    var entity = recast_response['entities'];
-                    var memory = recast_response['memory'];
-                    logger.info('[Main] Entity action date  ', [
-                        entity,
-                        {
-                            intent: intent,
-                            isdone: isdone,
-                            actual_token: actual_token
-                        }
-                    ]);
+                logger.info('[Main] Memory action date ', [
+                    memory,
+                    {
+                        intent: intent,
+                        isdone: isdone,
+                        actual_token: actual_token
+                    }
+                ]);
 
-                    logger.info('[Main] Memory action date ', [
-                        memory,
-                        {
-                            intent: intent,
-                            isdone: isdone,
-                            actual_token: actual_token
-                        }
-                    ]);
+                if (configs.readrecast != 'memory') {
+                    if (entity == null){
+                        mockup_products = null
+                    } 
 
-                    // if (entity == null){
-                    //     mockup_products = null
-                    // } 
-
-                    // var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
-                    // var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
-                    // var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
-                    // var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
-                    // var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
-                    // var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
-                    
+                    var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
+                    var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
+                    var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
+                    var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
+                    var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
+                    var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+                } else {
                     var country = memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null
                     var tourcode = memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null
                     var departuredate = memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null
                     var returndate = memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : null : null
                     var month = memory['month'] ? memory['month'] ? memory['month']['value'] : null : null
                     var traveler = memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
+                }
+                
+                // Construct the reply message
+                // const apitour = require('../controllers/tourapicontroller');
+                var mockup_products = null
 
-                    // Construct the reply message
-                    // const apitour = require('../controllers/tourapicontroller');
-                    var mockup_products = null
+                logger.debug('[API] Extracted values.', {
+                    country:  country,
+                    tourcode: tourcode,
+                    departuredate: departuredate,
+                    returndate: returndate,
+                    month: month,
+                    traveler: traveler
+                });
 
-                    logger.debug('[API] Extracted values.', {
-                        country:  country,
+                // if (country == null && departuredate == null && returndate == null && traveler == null){
+                //     mockup_products = null
+                // }
+                
+                var requestSuccess = false;
+                var timeout = configs.apitimeout;
+                
+                //if (isdone == true && intent == 'tour-search') 
+                if (country && departuredate && returndate && month && traveler) {
+                    var rpoptions = {
+                        uri: configs.apiUrl,
+                        qs: {
+                            apikey: 'APImushroomtravel',
+                            mode: 'loadproductchatbot',
+                            lang: 'th',
+                            pagesize: configs.apisizepage,
+                            pagenumber: '1',
+                            sortby: 'mostpopular',
+                            country_slug: country,
+                            startdate: departuredate,
+                            enddate: returndate,
+                            month: month,
+                            searchword: ''
+                        },
+                        headers: {
+                            'User-Agent': 'Request-Promise'
+                        },
+                        json: true // Automatically parses the JSON string in the response
+                    };
+
+                    rp(rpoptions)
+                    .then((repos) => {
+                        //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                        logger.debug("[API Mockup] API Response:", repos);
+                        mockup_products = repos;
+                        //isdone = true;
+                        requestSuccess = true;
+
+                        // Update payload back to the mapping
+                        var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                        Mapping.findByIdAndUpdate(mappingId, 
+                            {$set: {
+                                apiPayload: payload, 
+                                modifiedDate: new Date().toJSON()}
+                            },
+                            {new: true}
+                        )
+                        .then((updated) => {
+                            logger.debug("[Update Payload] Mapping updated,", updated);
+                        })
+                        .catch((updateerr) => {
+                            logger.error('[Update Payload] Error updating mapping.', updateerr);
+                        });
+                    })
+                    .catch((error)=> {
+                        //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        logger.error("[Find to return api]", error);
+                    });
+
+                    while(true)
+                    {
+                        if (requestSuccess == true || timeout == 0) {
+                            logger.debug('[Mockup Product] Arrived!!')                                
+                            break;
+                        }
+
+                        logger.debug('[API Product] Waiting for product.', {
+                            requestSuccess: requestSuccess,
+                            timeout: timeout
+                        });
+                        require('deasync').sleep(500);
+                        timeout -= 500;
+                    }
+
+                    //isdone = true;
+                    logger.debug('[API] get apiwow:', {
+                        country: country,
+                        tourcode: tourcode,
+                        departuredate: departuredate,
+                        returndate: returndate,
+                        month: month,
+                        traveler: traveler
+                    });   
+                } else if (tourcode && traveler) {
+                    var rpoptions = {
+                        uri: configs.apiUrl,
+                        qs: {
+                            apikey: 'APImushroomtravel',
+                            mode: 'loadproductchatbot',
+                            lang: 'th',
+                            pagesize: configs.apisizepage,
+                            pagenumber: '1',
+                            sortby: 'mostpopular',
+                            country_slug: '',
+                            startdate: '',
+                            enddate: '',
+                            month: '',
+                            searchword: tourcode
+                        },
+                        headers: {
+                            'User-Agent': 'Request-Promise'
+                        },
+                        json: true // Automatically parses the JSON string in the response
+                    };
+
+                    rp(rpoptions)
+                    .then((repos) => {
+                        //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                        logger.debug("[API Mockup] API Response:", repos);
+                        mockup_products = repos;
+                        //isdone = true;
+                        requestSuccess = true;
+
+                        // Update payload back to the mapping
+                        var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                        Mapping.findByIdAndUpdate(mappingId, 
+                            {$set: {
+                                apiPayload: payload, 
+                                modifiedDate: new Date().toJSON()}
+                            },
+                            {new: true}
+                        )
+                        .then((updated) => {
+                            logger.debug("[Update Payload] Mapping updated,", updated);
+                        })
+                        .catch((updateerr) => {
+                            logger.error('[Update Payload] Error updating mapping.', updateerr);
+                        });
+                    })
+                    .catch((error)=> {
+                        //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                        logger.error("[Find to return api]", error);
+                    });
+
+                    while(true)
+                    {
+                        if (requestSuccess == true || timeout == 0) {
+                            logger.debug('[Mockup Product] Arrived!!')                                
+                            break;
+                        }
+
+                        logger.debug('[API Product] Waiting for product.', {
+                            requestSuccess: requestSuccess,
+                            timeout: timeout
+                        });
+                        require('deasync').sleep(500);
+                        timeout -= 500;
+                    }
+
+                    //isdone = true;
+                    logger.debug('[API] get apiwow:', {
+                        country: country,
                         tourcode: tourcode,
                         departuredate: departuredate,
                         returndate: returndate,
                         month: month,
                         traveler: traveler
                     });
-
-                    // if (country == null && departuredate == null && returndate == null && traveler == null){
-                    //     mockup_products = null
-                    // }
-                    
-                    var requestSuccess = false;
-                    var timeout = configs.apitimeout;
-                    
-                   // if (isdone && intent == 'tour-search') {
-                    if (country && departuredate && returndate && month && traveler) {
-                        var rpoptions = {
-                            uri: configs.apiUrl,
-                            qs: {
-                                apikey: 'APImushroomtravel',
-                                mode: 'loadproductchatbot',
-                                lang: 'th',
-                                pagesize: configs.apisizepage,
-                                pagenumber: '1',
-                                sortby: 'mostpopular',
-                                country_slug: country,
-                                startdate: departuredate,
-                                enddate: returndate,
-                                month: month,
-                                searchword: ''
-                            },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup] API Response:", repos);
-                            mockup_products = repos;
-                            //isdone = true;
-                            requestSuccess = true;
-
-                            // Update payload back to the mapping
-                            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
-                            Mapping.findByIdAndUpdate(mappingId, 
-                                {$set: {
-                                    apiPayload: payload, 
-                                    modifiedDate: new Date().toJSON()}
-                                },
-                                {new: true}
-                            )
-                            .then((updated) => {
-                                logger.debug("[Update Payload] Mapping updated,", updated);
-                            })
-                            .catch((updateerr) => {
-                                logger.error('[Update Payload] Error updating mapping.', updateerr);
-                            });
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", error);
-                        });
-
-                        while(true)
-                        {
-                            if (requestSuccess == true || timeout == 0) {
-                                logger.debug('[Mockup Product] Arrived!!')                                
-                                break;
-                            }
-
-                            logger.debug('[API Product] Waiting for product.', {
-                                requestSuccess: requestSuccess,
-                                timeout: timeout
-                            });
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-                        }
-
-                        //isdone = true;
-                        logger.debug('[API] get apiwow:', {
-                            country: country,
-                            tourcode: tourcode,
-                            departuredate: departuredate,
-                            returndate: returndate,
-                            month: month,
-                            traveler: traveler
-                        });   
-                    } else if (tourcode && traveler) {
-                        var rpoptions = {
-                            uri: configs.apiUrl,
-                            qs: {
-                                apikey: 'APImushroomtravel',
-                                mode: 'loadproductchatbot',
-                                lang: 'th',
-                                pagesize: configs.apisizepage,
-                                pagenumber: '1',
-                                sortby: 'mostpopular',
-                                country_slug: '',
-                                startdate: '',
-                                enddate: '',
-                                month: '',
-                                searchword: tourcode
-                            },
-                            headers: {
-                                'User-Agent': 'Request-Promise'
-                            },
-                            json: true // Automatically parses the JSON string in the response
-                        };
-
-                        rp(rpoptions)
-                        .then((repos) => {
-                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                            logger.debug("[API Mockup] API Response:", repos);
-                            mockup_products = repos;
-                            //isdone = true;
-                            requestSuccess = true;
-
-                            // Update payload back to the mapping
-                            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
-                            Mapping.findByIdAndUpdate(mappingId, 
-                                {$set: {
-                                    apiPayload: payload, 
-                                    modifiedDate: new Date().toJSON()}
-                                },
-                                {new: true}
-                            )
-                            .then((updated) => {
-                                logger.debug("[Update Payload] Mapping updated,", updated);
-                            })
-                            .catch((updateerr) => {
-                                logger.error('[Update Payload] Error updating mapping.', updateerr);
-                            });
-                        })
-                        .catch((error)=> {
-                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-                            logger.error("[Find to return api]", error);
-                        });
-
-                        while(true)
-                        {
-                            if (requestSuccess == true || timeout == 0) {
-                                logger.debug('[Mockup Product] Arrived!!')                                
-                                break;
-                            }
-
-                            logger.debug('[API Product] Waiting for product.', {
-                                requestSuccess: requestSuccess,
-                                timeout: timeout
-                            });
-                            require('deasync').sleep(500);
-                            timeout -= 500;
-                        }
-
-                        //isdone = true;
-                        logger.debug('[API] get apiwow:', {
-                            country: country,
-                            tourcode: tourcode,
-                            departuredate: departuredate,
-                            returndate: returndate,
-                            month: month,
-                            traveler: traveler
-                        });
-                    } else {
-                        logger.debug('[API] No entity condition');                        
-                    }
+                } else {
+                    logger.debug('[API] No entity condition');                        
+                }
                 //}
 
                 if (mockup_products == null) 

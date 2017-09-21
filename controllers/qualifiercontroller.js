@@ -12,7 +12,9 @@ exports.qualify_get = function(id){
         // get the message and send back to the room
         logger.silly("[Qualify] Found a mapping.", foundone);
         var roomId = foundone.roomId;
-        var reply = foundone.replyMessage.replace('/\[\[.*\]\]/', '');
+        var reply = foundone.replyMessage;
+        reply = reply.replace('/\[\[.*\]\]/', '');
+        logger.silly('[]')
 
         ConfirmationResult.create({
             mappingId: id,
@@ -55,7 +57,7 @@ exports.disqualify_get = function(req, res, next) {
 
 exports.disqualify_post = function(req, res, next) {
     //const log = require('./logcontroller');
-    const messages = [];    
+    var messages = [];    
     // Perform validation here form the submitted form data
     // req.body.<field_name>
 

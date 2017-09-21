@@ -281,9 +281,9 @@ function handleEvent(event) {
                         traveler: traveler
                     });
 
-                    if (country == null && departuredate == null && returndate == null && traveler == null){
-                        mockup_products = null
-                    }
+                    // if (country == null && departuredate == null && returndate == null && traveler == null){
+                    //     mockup_products = null
+                    // }
                     
                     var requestSuccess = false;
                     var timeout = configs.apitimeout;

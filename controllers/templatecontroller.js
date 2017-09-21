@@ -25,7 +25,7 @@ module.exports.templateCarousel = function(products){
         }
         var column = {
             "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-            "title": '[[seat]]' + product.product_name.substr(0, 40),
+            "title": product.product_name.substr(0, 40),
             "text": periodText.substr(0, 50),
             "actions": [                
                 {
@@ -33,11 +33,11 @@ module.exports.templateCarousel = function(products){
                     "label": "View detail",
                     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
                 },
-                {
-                    "type": "uri",
-                    "label": "View Slide",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                }
+                // {
+                //     "type": "uri",
+                //     "label": "View Slide",
+                //     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+                // }
             ]
         };
 

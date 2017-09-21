@@ -279,7 +279,7 @@ function handleEvent(event) {
                     var mockup_products = null
 
                     logger.debug('[API] Extracted values.', {
-                        country: country,
+                        country:  memory['destination']['value'],
                         tourcode: tourcode,
                         departuredate: departuredate,
                         returndate: returndate,

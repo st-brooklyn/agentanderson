@@ -100,9 +100,6 @@ function handleEvent(event) {
                             customerDisplayName = profile.displayName;
                             mapping.customerDisplayName = customerDisplayName;
                             gotProfile = true;
-
-                            buf = new Buffer(30);
-                            buf = customerDisplayName;
                         })
                         .catch((errProfile) => {
                             logger.error("[Get Profile]: Error getting customer profile.", errProfile);
@@ -364,18 +361,18 @@ function handleEvent(event) {
                     });
                     
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
-                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, buf);
+                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, customerDisplayName);
                         var reply_carousel = tp.templateCarousel(mockup_products);
                         messages.push(reply_details);
                         messages.push(reply_carousel);
                     } else {
-                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, buf);
+                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
                         replyToClient = tp.templateReply(recast_response.reply());
                         messages.push(reply_details);
                         messages.push(replyToClient);
                     }
                 } else {
-                    reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, buf);
+                    reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
                     replyToClient = tp.templateReply(recast_response.reply());
                     messages.push(reply_details);
                     messages.push(replyToClient);

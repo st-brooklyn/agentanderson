@@ -272,10 +272,6 @@ function handleEvent(event) {
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
 
-                    if (country == null && departuredate == null && returndate == null && traveler == null){
-                        mockup_products = null
-                    }
-
                     logger.debug('[API] Extracted values.', {
                         country: country,
                         tourcode: tourcode,
@@ -284,6 +280,10 @@ function handleEvent(event) {
                         month: month,
                         traveler: traveler
                     });
+
+                    if (country == null && departuredate == null && returndate == null && traveler == null){
+                        mockup_products = null
+                    }
                     
                     var requestSuccess = false;
                     var timeout = configs.apitimeout;

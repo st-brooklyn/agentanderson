@@ -5,7 +5,7 @@ module.exports = {
     recastRequestToken: '1307df439794fa6122aa0f939f7d4c58',
     connectionDB: 'mongodb://admin:password@ds052649.mlab.com:52649/softsq_chatbot_database',
     //connectionDB: 'mongodb://chatbot_app:SoftSQ#2017@apitest.softsq.com:27017/softsq_chatbot',
-    apitimeout: 30000,
+    apitimeout: 10000,
     loglevel: 'silly',
     botmapping: {
         default:  {

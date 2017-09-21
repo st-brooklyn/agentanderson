@@ -16,7 +16,7 @@ exports.qualify_get = function(id, recastUuid){
         var foundRecastUuid = foundone.recastUuid;
         var isSent = foundone.isSent;
 
-        if(isSent == true && recastUuid == foundRecastUuid) {
+        if(isSent == true) {
             logger.debug('[Qualify] This message is already sent.');
 
             // lineclient.pushMessage(foundone.reservationId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))

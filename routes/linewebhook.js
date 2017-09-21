@@ -184,7 +184,8 @@ function handleEvent(event) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
                         if(mappingtoupdate) {
-                            logger.debug('[Find when null token] Found a mapping', mappingtoupdate);                            
+                            logger.debug('[Find when null token] Found a mapping', mappingtoupdate);
+                            customerDisplayName = mappingtoupdate.customerDisplayName;
 
                             Mapping.findByIdAndUpdate(mappingId, 
                                 {$set: {conversationToken: recast_response.conversationToken}}, 

@@ -38,6 +38,9 @@ function handleError(err, level) {
 
 function handleEvent(event) {
     logger.debug('[Main] Event:', event);
+
+    // http://35.202.67.147:5000/dc/xxxxx ตัดคำ ก่อนวิ่งเข้า recast
+
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data

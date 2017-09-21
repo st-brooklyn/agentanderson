@@ -12,7 +12,7 @@ exports.qualify_get = function(id){
         // get the message and send back to the room
         logger.silly("[Qualify] Found a mapping.", foundone);
         var roomId = foundone.roomId;
-        var reply = foundone.replyMessage;
+        var reply = foundone.replyMessage.replace('/\[\[.*\]\]/', '');
 
         ConfirmationResult.create({
             mappingId: id,
@@ -188,7 +188,7 @@ exports.disqualify_post = function(req, res, next) {
             require('deasync').sleep(500);
             timeout -= 500;
         }
-        
+
         const tpc = require('./templatecontroller');
 
         if(products != null) {

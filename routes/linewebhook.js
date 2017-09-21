@@ -267,19 +267,19 @@ function handleEvent(event) {
                     // var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
                     // var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
                     
-                    var country = memory['destination'] ? memory['destination'][0] ? memory['destination'][0]['value'] : null : null
-                    var tourcode = memory['tourcode'] ? memory['tourcode'][0] ? memory['tourcode'][0]['value'] : null : null
-                    var departuredate = memory['departure-date'] ? memory['departure-date'][0] ? memory['departure-date'][0]['value'] : null : null
-                    var returndate = memory['returndate'] ? memory['returndate'][0] ? memory['returndate'][0]['value'] : null : null
-                    var month = memory['month'] ? memory['month'][0] ? memory['month'][0]['value'] : null : null
-                    var traveler = memory['traveler'] ? memory['traveler'][0] ? memory['traveler'][0]['value'] : null : null
+                    var country = memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null
+                    var tourcode = memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null
+                    var departuredate = memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null
+                    var returndate = memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : null : null
+                    var month = memory['month'] ? memory['month'] ? memory['month']['value'] : null : null
+                    var traveler = memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
 
                     // Construct the reply message
                     // const apitour = require('../controllers/tourapicontroller');
                     var mockup_products = null
 
                     logger.debug('[API] Extracted values.', {
-                        country:  memory['destination']['value'],
+                        country:  country,
                         tourcode: tourcode,
                         departuredate: departuredate,
                         returndate: returndate,

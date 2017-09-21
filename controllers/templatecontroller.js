@@ -42,7 +42,11 @@ module.exports.templateCarousel = function(products){
         };
 
           carousel.template.columns.push(column);
-    }, this);
+    }
+    
+    // Add another default card here
+    ,
+    this);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 

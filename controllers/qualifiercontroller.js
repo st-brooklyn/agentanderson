@@ -1,5 +1,6 @@
 const logger = require('./logcontroller');
 const Mapping = require('../models/mapping');
+const Recast = require('../models/recast');
 const ConfirmationResult = require('../models/confirmationresult');
 const configs = require('../data/config');
 const line = require('@line/bot-sdk');
@@ -92,6 +93,13 @@ exports.qualify_get = function(id, recastUuid){
 
 exports.disqualify_get = function(req, res, next) {
     logger.silly("[Disqualify] Data", req);
+
+    Recast.findById(req.params.id)
+    .then((foundone) => {
+        // get the message and send back to the room
+        logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
+    });
+
     res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 

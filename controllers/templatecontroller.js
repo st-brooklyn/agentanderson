@@ -54,7 +54,7 @@ module.exports.templateCarousel = function(products){
 }
 
 
-module.exports.templateConfirm = function(mappingId, replyToClient, recastUuid){
+module.exports.templateConfirm = function(mappingId, recastUuid){
     var confirm = {
         "type": "template",
         "altText": "this is a confirm template",

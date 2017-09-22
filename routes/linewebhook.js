@@ -169,7 +169,6 @@ function handleEvent(event) {
                 logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
             });
             */
-            
             var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
                             
@@ -498,11 +497,11 @@ function handleEvent(event) {
                     messages.push(replyToClient);
                 }
                 
-                if (replyToClient == null){
-                    reply_confirm = tp.templateConfirm(mappingId, '');
-                } else {
-                    reply_confirm = tp.templateConfirm(mappingId, replyToClient.text);
-                }
+                //if (replyToClient == null){
+                reply_confirm = tp.templateConfirm(mappingId, '');
+                // } else {
+                //     reply_confirm = tp.templateConfirm(mappingId, replyToClient.text);
+                // }
             
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                 if(reply == null) {

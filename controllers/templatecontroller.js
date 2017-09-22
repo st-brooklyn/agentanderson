@@ -45,7 +45,7 @@ module.exports.templateCarousel = function(products, payload){
     this);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
-    console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + returndate + " month: " + month + " tourcode: " + tourcode);
+    console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + payload.returndate + " month: " + payload.month + " tourcode: " + payload.tourcode);
 
     var column = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',

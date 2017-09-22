@@ -72,6 +72,7 @@ function handleEvent(event) {
         var lineSender = event.source.userId;
 
         var mappingId = '';
+        var dataGetAPI = '';
 
         logger.debug('[Main]', {
             IncomingMessage: originalMessage, 
@@ -344,6 +345,7 @@ function handleEvent(event) {
 
                         // Update payload back to the mapping
                         var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                        dataGetAPI = payload
                         Mapping.findByIdAndUpdate(mappingId, 
                             {$set: {
                                 apiPayload: payload, 
@@ -419,6 +421,7 @@ function handleEvent(event) {
 
                         // Update payload back to the mapping
                         var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                        dataGetAPI = payload
                         Mapping.findByIdAndUpdate(mappingId, 
                             {$set: {
                                 apiPayload: payload, 
@@ -483,7 +486,7 @@ function handleEvent(event) {
                     
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, customerDisplayName);
-                        var reply_carousel = tp.templateCarousel(mockup_products);
+                        var reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
                         messages.push(reply_details);
                         messages.push(reply_carousel);
                     } else {

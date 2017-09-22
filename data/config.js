@@ -22,6 +22,6 @@ module.exports = {
         confirmSuccess: 'ส่งข้อความสำเร็จแล้ว',
         confirmFailure: 'ข้อความส่งไม่สำเร็จ'
     },
-    apisizepage: 5,
+    apisizepage: 4,
     readrecast: 'memory'
 }

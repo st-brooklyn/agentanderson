@@ -111,6 +111,7 @@ exports.disqualify_get = function(req, res, next) {
         var memory = resMessage['memory'];
 
         if (configs.readrecast != 'memory') {
+            
              res.render('disqualify_form', {title: 'Disqualify Form', 
                 mappingId: req.params.id, 
                 intent: intent,
@@ -120,7 +121,17 @@ exports.disqualify_get = function(req, res, next) {
                 returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
                 month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
                 traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
-            });           
+            });     
+
+            logger.silly("[DisQualify] send to form", {
+                Mapping: mappingId, 
+                Intent: intent,
+                Country: country,
+                Tourcode: Tourcode,
+                Departuredate: departuredate,
+                Returndate: returndate,
+                Month: month,
+                Traveler: traveler});      
         } else {
             res.render('disqualify_form', {title: 'Disqualify Form', 
                 mappingId: req.params.id, 
@@ -132,6 +143,16 @@ exports.disqualify_get = function(req, res, next) {
                 month: memory['month'] ? memory['month'] ? memory['month']['value'] : null : null,
                 traveler: memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
             });
+
+            logger.silly("[DisQualify] send to form", {
+                Mapping: mappingId, 
+                Intent: intent,
+                Country: country,
+                Tourcode: Tourcode,
+                Departuredate: departuredate,
+                Returndate: returndate,
+                Month: month,
+                Traveler: traveler}); 
         }
     });
 

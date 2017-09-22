@@ -310,7 +310,7 @@ function handleEvent(event) {
                 var timeout = configs.apitimeout;
                 
                 //if (isdone == true && intent == 'tour-search') 
-                if (country && departuredate && returndate && month && traveler) {
+                if (country && departuredate && returndate && month && traveler && tourcode == null)  {
                     var rpoptions = {
                         uri: configs.apiUrl,
                         qs: {

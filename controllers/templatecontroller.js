@@ -49,7 +49,23 @@ module.exports.templateCarousel = function(products){
                 // }
             ]
         };
-          carousel.template.columns.push(column);
+        carousel.template.columns.push(column);
+
+        var fixcolumn = {
+            "thumbnailImageUrl": '',
+            "title": "",
+            "text": '',
+            "actions": [                
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": "https://www.mushroomtravel.com/tour/outbound/japan"
+                }
+            ]
+        };
+
+         carousel.template.columns.push(fixcolumn);
+
     }
     
     // Add another default card here

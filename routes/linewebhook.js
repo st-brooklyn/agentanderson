@@ -164,11 +164,12 @@ function handleEvent(event) {
             logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
 
             var request = require('request');
+            var textTokenizer = '';
             request(tokenizer, function(err, res, body) {  
-                console.log(body);
+                textTokenizer = body;
             });
                             
-            recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
+            recastrequest.converseText(textTokenizer, { conversationToken: recastConversToken })
             .then(function (recast_response) {
                 logger.debug('[ConversText] Response from Recast.',[
                     {mappingId: mappingId},

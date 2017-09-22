@@ -50,7 +50,7 @@ module.exports.templateCarousel = function(products){
             ]
         };
           carousel.template.columns.push(column);
-    },
+    }
     
     // Add another default card here
     ,

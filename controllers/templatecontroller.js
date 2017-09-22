@@ -41,13 +41,32 @@ module.exports.templateCarousel = function(products){
             ]
         };
         carousel.template.columns.push(column);
-    }
+    } 
     
     // Add another default card here
     ,
     this);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
+
+    var column = {
+        "thumbnailImageUrl": 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg',
+        "title": '',
+        "text": '',
+        "actions": [                
+            {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "https://www.mushroomtravel.com/tour/outbound/japan"
+            },
+            // {
+            //     "type": "uri",
+            //     "label": "View Slide",
+            //     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+            // }
+        ]
+    };
+    carousel.template.columns.push(column);
 
     return carousel;
 }

@@ -22,7 +22,9 @@ module.exports.templateCarousel = function(products){
         }
     };
 
-    parsedProducts.data.products.forEach((product) => {
+    parsedProducts.data.products.forEach(function(i,idx){ (product) => {
+        console.log("DEBUG: [Carousel for check idx] : " + idx);
+
         var periodText = "";
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
@@ -49,28 +51,14 @@ module.exports.templateCarousel = function(products){
                 // }
             ]
         };
+
+        
         carousel.template.columns.push(column);
-
-        var fixcolumn = {
-            "thumbnailImageUrl": '',
-            "title": "",
-            "text": '',
-            "actions": [                
-                {
-                    "type": "uri",
-                    "label": "View detail",
-                    "uri": "https://www.mushroomtravel.com/tour/outbound/japan"
-                }
-            ]
-        };
-
-         carousel.template.columns.push(fixcolumn);
-
     }
     
     // Add another default card here
     ,
-    this);
+    this});
 
     // var fixcolumn = {
     //         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',

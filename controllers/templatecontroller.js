@@ -13,6 +13,15 @@ module.exports.templateCarousel = function(products){
         }
     };
 
+    var imagecarousel = {
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {   
+            "type": "image_carousel",
+            "columns": []
+        }
+    };
+
     parsedProducts.data.products.forEach((product) => {
         var periodText = "";
         product.periods.forEach((period) => {
@@ -40,13 +49,27 @@ module.exports.templateCarousel = function(products){
                 // }
             ]
         };
-
           carousel.template.columns.push(column);
     }
     
     // Add another default card here
     ,
     this);
+
+    var fixcolumn = {
+            "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
+            "title": "",
+            "text": "",
+            "actions": [                
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": 'https://www.mushroomtravel.com/search?q=%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99&month=12'
+                }
+            ]
+        }
+
+    carousel.template.columns.push(fixcolumn);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 

@@ -99,8 +99,40 @@ exports.disqualify_get = function(req, res, next) {
         // get the message and send back to the room
         logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
         var resMessage = foundone.responseMessage
-        logger.silly("[DisQualify] Found a recast.", resMessage.memory['destination']['value']);
-        //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: resMessage.memory['destination']['value']});
+
+        var intent = ''
+        if (resMessage.action != null){
+            intent = resMessage.action.slug;
+        } else {
+            intent = 'tour-search'
+        }
+
+        var entity = resMessage['entities'];
+        var memory = resMessage['memory'];
+
+        if (configs.readrecast != 'memory') {
+             res.render('disqualify_form', {title: 'Disqualify Form', 
+                mappingId: req.params.id, 
+                intent: intent,
+                country: entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null,
+                tourcode: entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null,
+                departuredate: entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null,
+                returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
+                month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
+                traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+            });           
+        } else {
+            res.render('disqualify_form', {title: 'Disqualify Form', 
+                mappingId: req.params.id, 
+                intent: intent,
+                country: memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null,
+                tourcode: memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null,
+                departuredate: memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null,
+                returndate: memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : null : null,
+                month: memory['month'] ? memory['month'] ? memory['month']['value'] : null : null,
+                traveler: memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
+            });
+        }
     });
 
     //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});

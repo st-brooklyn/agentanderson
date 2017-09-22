@@ -8,22 +8,22 @@ block content
     div.form-group
       input(type='hidden' name='mappingId' value=mappingId)
       label(for='fd_intent') Intent: 
-      input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value="tour-search")
+      input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
       br
       label(for='country') Country:
-      input#country.form-control(type='text', placeholder='Country name...' name='country' value='')
+      input#country.form-control(type='text', placeholder='Country name...' name='country' value=country)
       br
       label(for='tourcode') Product Code:
-      input#tourcode.form-control(type='text', placeholder='Product code...' name='tourcode' value='MUSH.......')
+      input#tourcode.form-control(type='text', placeholder='Product code...' name='tourcode' value=tourcode)
       br
       label(for='departuredate') Departure:
-      input#departuredate.form-control(type='text', placeholder='วันเดินทางไป YYYY-mm-dd' name='departuredate' value='')
+      input#departuredate.form-control(type='text', placeholder='วันเดินทางไป YYYY-mm-dd' name='departuredate' value=departuredate)
       br
       label(for='returndate') Return:
-      input#returndate.form-control(type='text', placeholder='วันเดินทางกลับ YYYY-mm-dd' name='returndate' value='')
+      input#returndate.form-control(type='text', placeholder='วันเดินทางกลับ YYYY-mm-dd' name='returndate' value=returndate)
       br
       label(for='traveler') Number of passengers:
-      input#traveler.form-control(type='text', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value='')
+      input#traveler.form-control(type='text', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)
       br
       button.btn.btn-primary(type='submit') Submit  
 

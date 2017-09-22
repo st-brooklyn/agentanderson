@@ -3,7 +3,7 @@ const configs = require('../data/config');
 
 module.exports.templateCarousel = function(products, payload){
 
-    console.log("DEBUG: [payload] " + payload);
+    console.log("DEBUG: [payload] " + payload.country);
     var parsedProducts = products;
 
     var carousel = {

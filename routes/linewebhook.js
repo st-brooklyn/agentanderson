@@ -269,6 +269,7 @@ function handleEvent(event) {
                     }
                 ]);
 
+                // switch case read data
                 if (configs.readrecast != 'memory') {
                     if (entity == null){
                         mockup_products = null
@@ -310,6 +311,7 @@ function handleEvent(event) {
                 var timeout = configs.apitimeout;
                 
                 //if (isdone == true && intent == 'tour-search') 
+                // check condition get data from api
                 if (country && departuredate && returndate && month && traveler && tourcode == null)  {
                     var rpoptions = {
                         uri: configs.apiUrl,

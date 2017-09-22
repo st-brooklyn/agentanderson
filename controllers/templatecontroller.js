@@ -1,7 +1,9 @@
 'use strict';
 const configs = require('../data/config');
 
-module.exports.templateCarousel = function(products){
+module.exports.templateCarousel = function(products, payload){
+
+    console.log("DEBUG: [payload] " + payload);
     var parsedProducts = products;
 
     var carousel = {
@@ -41,29 +43,21 @@ module.exports.templateCarousel = function(products){
             ]
         };
         carousel.template.columns.push(column);
-    } 
-    
-    // Add another default card here
-    ,
+    },
     this);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
 
     var column = {
-        "thumbnailImageUrl": 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg',
-        "title": 'xxxx',
+        "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
+        "title": '',
         "text": 'search result',
         "actions": [                
             {
                 "type": "uri",
                 "label": "View detail",
                 "uri": "https://www.mushroomtravel.com/tour/outbound/japan"
-            },
-            // {
-            //     "type": "uri",
-            //     "label": "View Slide",
-            //     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-            // }
+            }
         ]
     };
     carousel.template.columns.push(column);

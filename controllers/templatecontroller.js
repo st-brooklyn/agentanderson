@@ -2,8 +2,6 @@
 const configs = require('../data/config');
 
 module.exports.templateCarousel = function(products, payload){
-
-    console.log("DEBUG: [payload] " + payload.country);
     var parsedProducts = products;
 
     var carousel = {
@@ -47,6 +45,7 @@ module.exports.templateCarousel = function(products, payload){
     this);
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
+    console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + returndate + " month: " + month + " tourcode: " + tourcode);
 
     var column = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
@@ -56,7 +55,7 @@ module.exports.templateCarousel = function(products, payload){
             {
                 "type": "uri",
                 "label": "View detail",
-                "uri": "https://www.mushroomtravel.com/tour/outbound/japan"
+                "uri": "https://www.mushroomtravel.com/search?q=" + payload.country + "&code=" + payload.tourcode
             }
         ]
     };

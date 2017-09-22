@@ -165,13 +165,9 @@ function handleEvent(event) {
 
             var tokenizer_request = require('request');
             var textToken = '';
-            tokenizer_request.get({url: tokenizer
-                }, (apierr, apiresponse, apidata) => {
-                    if(apierr) return logger.debug('[Main Text]  Tokenizer', {apierr: apierr});
-                    logger.debug('[Main Text]  Tokenizer', {apidata: apidata});                  
-                    textToken = apidata;
-                })
-
+            textToken = tokenizer_request.get(tokenizer);
+            logger.debug('[Main Text]  Tokenizer', {textToken: textToken});  
+            
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {
                 logger.debug('[ConversText] Response from Recast.',[

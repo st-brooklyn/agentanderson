@@ -246,7 +246,7 @@ exports.disqualify_post = function(req, res, next) {
                 country_slug: country,
                 startdate: departuredate,
                 enddate: returndate,
-                searchword: tourcode
+                code: tourcode
             },
             headers: {
                 'User-Agent': 'Request-Promise'

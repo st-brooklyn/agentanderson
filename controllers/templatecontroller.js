@@ -50,7 +50,7 @@ module.exports.templateCarousel = function(products, payload){
 
     var column = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
-        "title": '',
+        "title": 'search result',
         "text": 'search result',
         "actions": [                
             {

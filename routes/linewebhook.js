@@ -168,6 +168,7 @@ function handleEvent(event) {
             request(tokenizer, function(err, res, body) {  
                 textTokenizer = body;
                 event.message.text  = textTokenizer;
+                logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
             });
                             
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })

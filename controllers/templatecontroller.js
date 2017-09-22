@@ -51,8 +51,8 @@ module.exports.templateCarousel = function(products){
 
     var column = {
         "thumbnailImageUrl": 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg',
-        "title": '',
-        "text": '',
+        "title": 'xxxx',
+        "text": 'search result',
         "actions": [                
             {
                 "type": "uri",

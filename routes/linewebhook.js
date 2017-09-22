@@ -163,11 +163,18 @@ function handleEvent(event) {
             var tokenizer = 'http://35.202.67.147:5000/dc/' + event.message.text   
             logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
 
-            var tokenizer_request = require('request');
-            var textToken = '';
-            textToken = tokenizer_request.get(tokenizer);
-            logger.debug('[Main Text]  Tokenizer', {textToken: textToken});  
-            
+            // var tokenizer_request = require('request');
+            // var textToken = '';
+            // textToken = tokenizer_request.get(tokenizer);
+            // logger.debug('[Main Text]  Tokenizer', {textToken: textToken});  
+
+            var request = require('request');
+                request(tokenizer, function (error, response, body) {
+                console.log('error:', error); // Print the error if one occurred
+                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                console.log('body:', body); // Print the HTML for the Google homepage.
+            });
+                            
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {
                 logger.debug('[ConversText] Response from Recast.',[

@@ -100,7 +100,7 @@ exports.disqualify_get = function(req, res, next) {
         logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
     });
 
-    res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
+    //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 
 exports.disqualify_post = function(req, res, next) {

@@ -91,6 +91,7 @@ exports.qualify_get = function(id, recastUuid){
 };
 
 exports.disqualify_get = function(req, res, next) {
+    logger.silly("[Disqualify] Data", req);
     res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 

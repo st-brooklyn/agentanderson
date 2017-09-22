@@ -157,9 +157,7 @@ function handleEvent(event) {
                 });
             }
 
-            var recastrequest = new rc.request(configs.recastRequestToken);
-            logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
-
+            /*            
             var tokenizer = 'http://35.202.67.147:5000/dc/' + event.message.text   
             logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
 
@@ -170,6 +168,10 @@ function handleEvent(event) {
                 event.message.text  = textTokenizer;
                 logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
             });
+            */
+            
+            var recastrequest = new rc.request(configs.recastRequestToken);
+            logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
                             
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {

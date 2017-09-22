@@ -98,6 +98,9 @@ exports.disqualify_get = function(req, res, next) {
     .then((foundone) => {
         // get the message and send back to the room
         logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
+        var resMessage = foundone.responseMessage
+        logger.silly("[DisQualify] Found a recast.", resMessage.memory['destination']['value']);
+        //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: resMessage.memory['destination']['value']});
     });
 
     //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});

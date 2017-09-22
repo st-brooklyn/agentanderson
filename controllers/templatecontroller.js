@@ -13,11 +13,7 @@ module.exports.templateCarousel = function(products){
         }
     };
 
-    var last = parsedProducts.data.products.last();
-    console.log("DEBUG: [Carousel for check last product] : " + last);
-
     parsedProducts.data.products.forEach((product) => {
-        
         var periodText = "";
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
@@ -44,8 +40,7 @@ module.exports.templateCarousel = function(products){
                 // }
             ]
         };
-
-          carousel.template.columns.push(column);
+        carousel.template.columns.push(column);
     }
     
     // Add another default card here

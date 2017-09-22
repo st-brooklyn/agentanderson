@@ -163,6 +163,15 @@ function handleEvent(event) {
             var tokenizer = 'http://35.202.67.147:5000/dc/' + event.message.text   
             logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
 
+            var tokenizer_request = require('request');
+            var textToken = '';
+            tokenizer_request.get({url: tokenizer
+                }, (apierr, apiresponse, apidata) => {
+                    if(apierr) return logger.debug('[Main Text]  Tokenizer', {apierr: apierr});
+                    logger.debug('[Main Text]  Tokenizer', {apidata: apidata});                  
+                    textToken = apidata;
+                })
+
             recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {
                 logger.debug('[ConversText] Response from Recast.',[

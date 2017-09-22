@@ -167,9 +167,10 @@ function handleEvent(event) {
             var textTokenizer = '';
             request(tokenizer, function(err, res, body) {  
                 textTokenizer = body;
+                event.message.text  = textTokenizer;
             });
                             
-            recastrequest.converseText(textTokenizer, { conversationToken: recastConversToken })
+            recastrequest.converseText(event.message.text, { conversationToken: recastConversToken })
             .then(function (recast_response) {
                 logger.debug('[ConversText] Response from Recast.',[
                     {mappingId: mappingId},

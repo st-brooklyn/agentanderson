@@ -94,7 +94,7 @@ exports.qualify_get = function(id, recastUuid){
 exports.disqualify_get = function(req, res, next) {
     logger.silly("[Disqualify] Data", req);
 
-    Recast.findById(req.params.id)
+    Recast.findOne({mappingId: req.params.id})
     .then((foundone) => {
         // get the message and send back to the room
         logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);

@@ -18,7 +18,7 @@ module.exports.templateCarousel = function(products, payload){
         var periodText = "";
         var countPeriod = "";
 
-        console.log("DEBUG: [count period for display]: " + product.periods.length)
+        console.log("DEBUG: [period price]: " + product.periods[0][price_adults_double])
 
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
@@ -32,11 +32,12 @@ module.exports.templateCarousel = function(products, payload){
         if (product.periods.length == 1){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-                "text":  product.product_name,
+                "title": periodText.substr(0, 50),
+                "text": 'ผู้ใหญ่' +  product.periods[0][price_adults_double],
                 "actions": [                
                     {
                         "type": "uri",
-                        "label": "",
+                        "label": "ดูรายละเอียด",
                         "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
                     }
                 ] 
@@ -44,12 +45,12 @@ module.exports.templateCarousel = function(products, payload){
         } else {
             column = {
                 "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-                "title": "[[seat]]" + product.product_name.substr(0, 40),
+                "title": product.product_name.substr(0, 40),
                 "text": periodText.substr(0, 50),
                 "actions": [                
                     {
                         "type": "uri",
-                        "label": "View detail",
+                        "label": "ดูรายละเอียด",
                         "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
                     },
                     // {

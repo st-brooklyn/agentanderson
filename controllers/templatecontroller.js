@@ -17,11 +17,13 @@ module.exports.templateCarousel = function(products, payload){
     parsedProducts.data.products.forEach((product) => {
         var periodText = "";
         var countPeriod = "";
+        var adultsText = "";
 
-        console.log("DEBUG: [period price]: " + product.periods[0][price_adults_double])
+        console.log("DEBUG: [period price]: " + product.periods)
 
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
+            adultsText += period.price_adults_double
         });
         console.log("DEBUG: [Carousel for period] : " + periodText);
 
@@ -33,7 +35,7 @@ module.exports.templateCarousel = function(products, payload){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
                 "title": periodText.substr(0, 50),
-                "text": 'ผู้ใหญ่' +  product.periods[0][price_adults_double],
+                "text": 'ผู้ใหญ่ (พักคู่)  ' + adultsText,
                 "actions": [                
                     {
                         "type": "uri",

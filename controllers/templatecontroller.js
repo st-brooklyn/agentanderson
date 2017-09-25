@@ -35,7 +35,7 @@ module.exports.templateCarousel = function(products, payload){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
                 "title": periodText.substr(0, 50),
-                "text": 'ผู้ใหญ่(คู่)' + boubleText + 'ผู้ใหญ่(เดี่ยว)' + singleText + '/n' ,
+                "text": 'ผู้ใหญ่(คู่)' + boubleText + 'บาท ผู้ใหญ่(เดี่ยว)' + singleText + 'บาท'   ,
                 "actions": [                
                     {
                         "type": "uri",

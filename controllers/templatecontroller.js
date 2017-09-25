@@ -20,8 +20,6 @@ module.exports.templateCarousel = function(products, payload){
         var boubleText = "";
         var singleText = "";
 
-        console.log("DEBUG: [period price]: " + product.periods)
-
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
             boubleText += period.price_adults_double 
@@ -37,7 +35,7 @@ module.exports.templateCarousel = function(products, payload){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
                 "title": periodText.substr(0, 50),
-                "text": 'ผู้ใหญ่ (พักคู่)  ' + boubleText + '/nผู้ใหญ่ (พักเดี่ยว)  ' + singleText + '/n' ,
+                "text": 'ผู้ใหญ่(คู่)' + boubleText + 'ผู้ใหญ่(เดี่ยว)' + singleText + '/n' ,
                 "actions": [                
                     {
                         "type": "uri",

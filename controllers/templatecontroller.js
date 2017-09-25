@@ -15,6 +15,10 @@ module.exports.templateCarousel = function(products, payload){
 
     parsedProducts.data.products.forEach((product) => {
         var periodText = "";
+        var countPeriod = "";
+
+        console.log("DEBUG: [count period for display]: " + product.periods.length)
+
         product.periods.forEach((period) => {
             periodText += period.period_start + ' - ' + period.period_end + '\n'
         });
@@ -64,7 +68,7 @@ module.exports.templateCarousel = function(products, payload){
             {
                 "type": "uri",
                 "label": "View detail",
-                "uri": "https://www.mushroomtravel.com/search?q=" + country + "&code=" + tourcode
+                "uri": "https://www.mushroomtravel.com/search?q=" + country
             }
         ]
     };

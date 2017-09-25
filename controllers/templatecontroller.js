@@ -45,7 +45,10 @@ module.exports.templateCarousel = function(products, payload){
                 ] 
             };
         } else {
+            var imageProduct = "http://210.4.150.197:8888/unsafe/filters:text(" +  product.product_name + ",25,395,black,28):text(" + product.product_code + ",60,525,red,20):text(" + product.stay_night + "วัน " + product.stay_night + "คืน,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(" + product.url_airline_pic + ",315,525,0)/www.mushroomtravel.com/assets/images/01B.png"
+            console.log("DEBUG: [ url use  thumbor ] : " + imageProduct);
             column = {
+                //http://210.4.150.197:8888/unsafe/filters:text(%E0%B8%97%E0%B8%B1%E0%B8%A7%E0%B8%A3%E0%B9%8C%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%20%E0%B8%AE%E0%B8%AD%E0%B8%81%E0%B9%84%E0%B8%81%E0%B9%82%E0%B8%94%20%E0%B8%88%E0%B8%B4%E0%B9%82%E0%B8%81%E0%B8%81%E0%B8%B8%E0%B8%94%E0%B8%B2%E0%B8%99%E0%B8%B4%20%E0%B8%AA%E0%B8%A7%E0%B8%99%E0%B8%AB%E0%B8%A1%E0%B8%B5%E0%B9%82%E0%B8%8A%E0%B8%A7%E0%B8%B0%E0%B8%8A%E0%B8%B4%E0%B8%99%E0%B8%8B%E0%B8%B1%E0%B8%87%20,25,395,black,28):text(MUSH170702,60,525,red,20):text(6%E0%B8%A7%E0%B8%B1%E0%B8%99%204%E0%B8%84%E0%B8%B7%E0%B8%99,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(www.mushroomtravel.com/assets/images/airlinelogo/thailionairlogo.jpg,315,525,0)/www.mushroomtravel.com/assets/images/01B.png
                 "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
                 "title": product.product_name.substr(0, 40),
                 "text": periodText.substr(0, 50),

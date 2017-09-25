@@ -167,7 +167,7 @@ exports.disqualify_post = function(req, res, next) {
 
     var hasError = false;
     logger.silly("[Disqualify Post] Payload", req.body);
-
+    var payload = "";
     // {
     //     "mappingId":"59b62f882eb59000125491f5",
     //     "intent":"tour-search",
@@ -200,6 +200,7 @@ exports.disqualify_post = function(req, res, next) {
          traveler: traveler,
          departuredate: departuredate,
          returndate: returndate,
+         month: month,
          country: country,
      });
      // //Check that the name field is not empty
@@ -264,7 +265,7 @@ exports.disqualify_post = function(req, res, next) {
             requestSuccess = true;
 
             // Update payload back to the mapping
-            var payload = tpc.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+            payload = tpc.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
             Mapping.findByIdAndUpdate(mappingId, 
                 {$set: {
                     apiPayload: payload, 
@@ -302,8 +303,8 @@ exports.disqualify_post = function(req, res, next) {
 
         if(products != null) {
             if(products.data.results > 0) {
-                tpc.templateCarousel(products);
-                var reply_carousel = tpc.templateCarousel(products);
+                //tpc.templateCarousel(products);
+                var reply_carousel = tpc.templateCarousel(products, payload);
                 var reply_confirm = tpc.templateConfirm(mappingId, '');
                 messages.push(reply_carousel);
                 messages.push(reply_confirm);

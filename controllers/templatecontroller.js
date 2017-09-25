@@ -47,6 +47,15 @@ module.exports.templateCarousel = function(products, payload){
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
     console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + payload.returndate + " month: " + payload.month + " tourcode: " + payload.tourcode);
 
+    var tourcode = ''
+    var country = ''
+    if (payload.tourcode == null){
+        tourcode = ''  
+    }
+    if (payload.country == null){   
+        country = ''
+    }
+
     var column = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
         "title": 'search result',
@@ -55,7 +64,7 @@ module.exports.templateCarousel = function(products, payload){
             {
                 "type": "uri",
                 "label": "View detail",
-                "uri": "https://www.mushroomtravel.com/search?q=" + payload.country + "&code=" + payload.tourcode
+                "uri": "https://www.mushroomtravel.com/search?q=" + country + "&code=" + tourcode
             }
         ]
     };

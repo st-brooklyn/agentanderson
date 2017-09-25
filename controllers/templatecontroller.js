@@ -35,7 +35,7 @@ module.exports.templateCarousel = function(products, payload){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
                 "title": periodText.substr(0, 50),
-                "text": 'ผู้ใหญ่(คู่)' + boubleText + 'บาท ผู้ใหญ่(เดี่ยว)' + singleText + 'บาท'   ,
+                "text": 'ผู้ใหญ่(คู่): ' + boubleText + ' บาท\nผู้ใหญ่(เดี่ยว): ' + singleText + ' บาท'   ,
                 "actions": [                
                     {
                         "type": "uri",
@@ -86,8 +86,8 @@ module.exports.templateCarousel = function(products, payload){
         "actions": [                
             {
                 "type": "uri",
-                "label": "View detail",
-                "uri": "https://www.mushroomtravel.com/search?q=" + country
+                "label": "ดูรายละเอียด",
+                "uri": "https://www.mushroomtravel.com/search?q=" + payload.country
             }
         ]
     };

@@ -112,6 +112,7 @@ function handleEvent(event) {
                 }
                 else{
                     gotProfile = true;
+                    customerDisplayName = mapping.customerDisplayName;
                 }
 
                 var profileTimeout = configs.apitimeout;

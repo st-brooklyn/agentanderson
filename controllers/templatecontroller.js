@@ -34,8 +34,8 @@ module.exports.templateCarousel = function(products, payload){
         if (product.periods.length == 1){
             column = {
                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-                "title": periodText.substr(0, 50),
-                "text": 'ผู้ใหญ่(คู่): ' + boubleText + ' บาท\nผู้ใหญ่(เดี่ยว): ' + singleText + ' บาท'   ,
+                "title": 'ผู้ใหญ่(คู่): ' + boubleText + ' บาท\nผู้ใหญ่(เดี่ยว): ' + singleText + ' บาท' ,
+                "text": product.product_name.substr(0, 40) ,
                 "actions": [                
                     {
                         "type": "uri",

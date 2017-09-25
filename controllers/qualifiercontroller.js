@@ -268,6 +268,7 @@ exports.disqualify_post = function(req, res, next) {
             payload = tpc.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
             Mapping.findByIdAndUpdate(mappingId, 
                 {$set: {
+                    action: "NO",
                     apiPayload: payload, 
                     modifiedDate: new Date().toJSON()}
                 },

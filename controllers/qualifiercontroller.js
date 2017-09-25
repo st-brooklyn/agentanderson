@@ -191,14 +191,16 @@ exports.disqualify_post = function(req, res, next) {
     var departuredate = req.body.departuredate;
     var returndate = req.body.returndate;
     var country = req.body.country;
+    var month = req.body.month;
 
      logger.debug('[Disqualify Post] Extracted values.', {
          intent: intent,
          tourcode: tourcode,
          mappingId: mappingId,
-         traveler, traveler,
+         traveler: traveler,
          departuredate: departuredate,
-         returndate: returndate
+         returndate: returndate,
+         country: country,
      });
      // //Check that the name field is not empty
     // req.checkBody('name', 'Genre name required').notEmpty();
@@ -246,6 +248,7 @@ exports.disqualify_post = function(req, res, next) {
                 country_slug: country,
                 startdate: departuredate,
                 enddate: returndate,
+                month: month,
                 searchword: tourcode
             },
             headers: {

@@ -73,15 +73,6 @@ module.exports.templateCarousel = function(products, payload){
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
     console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + payload.returndate + " month: " + payload.month + " tourcode: " + payload.tourcode);
 
-    var tourcode = ''
-    var country = ''
-    if (payload.tourcode == null){
-        tourcode = ''  
-    }
-    if (payload.country == null){   
-        country = ''
-    }
-
     var column = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
         "title": 'รายการเพิ่มเติม',

@@ -390,7 +390,7 @@ function handleEvent(event) {
                         month: month,
                         traveler: traveler
                     });   
-                } else if (tourcode && traveler) {
+                } else if (tourcode && departuredate && returndate && month && traveler) {
                     var rpoptions = {
                         uri: configs.apiUrl,
                         qs: {

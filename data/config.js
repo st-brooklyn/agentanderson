@@ -23,5 +23,6 @@ module.exports = {
         confirmFailure: 'ข้อความส่งไม่สำเร็จ'
     },
     apisizepage: 4,
-    readrecast: 'memory'
+    readrecast: 'memory',
+    replyMessage: 'สักครู่นะคะ เช็คให้คะ',
 }

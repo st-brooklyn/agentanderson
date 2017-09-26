@@ -238,6 +238,7 @@ function handleEvent(event) {
                 var replyToClient = null;
                 var reply_details = null;            
                 var reply_confirm = null;
+                var reply_carousel = null;
                 // Extract the reply from recast
                 var intent = '';
                 var isdone = false;
@@ -563,8 +564,10 @@ function handleEvent(event) {
                     
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, customerDisplayName);
-                        var reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
+                        reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
+                        replyToClient = tp.templateReply(config.replyMessage);
                         messages.push(reply_details);
+                        messages.push(replyToClient);
                         messages.push(reply_carousel);
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);

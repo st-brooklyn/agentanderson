@@ -235,6 +235,7 @@ function handleEvent(event) {
                 }
 
                 const messages = [];    
+                const messagesCarousel = []; 
                 var replyToClient = null;
                 var reply_details = null;            
                 var reply_confirm = null;
@@ -566,9 +567,12 @@ function handleEvent(event) {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, customerDisplayName);
                         reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
                         replyToClient = tp.templateReply(config.replyMessage);
+                        messagesCarousel.push(reply_details);
+                        messagesCarousel.push(replyToClient);
+                        messagesCarousel.push(reply_carousel);
                         messages.push(reply_details);
-                        messages.push(replyToClient);
                         messages.push(reply_carousel);
+
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
                         replyToClient = tp.templateReply(recast_response.reply());
@@ -599,9 +603,11 @@ function handleEvent(event) {
                 };
         
                 messages.push(reply_confirm);
+                messagesCarousel.push(reply_confirm)
 
                 //handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
                 logger.debug("[Main] Messages to be sent.", messages);
+                logger.debug("[Main] Messages to be sent.", messagesCarousel);
 
                 var reservationId = '';
 
@@ -632,7 +638,7 @@ function handleEvent(event) {
 
                             } else {
                                 Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(messages)}},
+                                    {$set: {replyMessage: JSON.stringify(messagesCarousel)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");

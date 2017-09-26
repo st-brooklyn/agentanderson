@@ -629,7 +629,7 @@ function handleEvent(event) {
 
                             } else {
                                 Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}},
+                                    {$set: {replyMessage: JSON.stringify(messages)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");

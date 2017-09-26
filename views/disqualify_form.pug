@@ -3,14 +3,12 @@ extends ../node_modules/pug-bootstrap/_bootstrap
 append body
   h1= title
   p Welcome to #{title}
-  +alert-info("This is a sample info alert.")
+  +alert-info(source)
 
   div.container
     form(method='POST' action='' type='callAPI')
       div.form-group
         input(type='hidden' name='mappingId' value=mappingId)
-        input(name='source' value=source)
-        br
         label(for='fd_intent') Intent: 
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br

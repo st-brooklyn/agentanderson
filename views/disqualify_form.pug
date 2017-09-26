@@ -13,7 +13,11 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        input#country.form-control(type='text', placeholder='ประเทศที่ต้องการเดินทาง' name='country' value=country)
+        +dropdown(country,[
+          {text:"ญี่ปุ่น",value:"ญี่ปุ่น"},
+          {text:"เกาหลี",value:"เกาหลี"},
+          {text:"จีน",value:"จีน"},
+        ])
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

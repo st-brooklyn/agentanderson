@@ -30,7 +30,7 @@ append body
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='text', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)
         br
-        button.btn.btn-primary(type='submit') Submit  
+        +submit-primary("ส่งข้อมูล")        
 
     if errors
       ul

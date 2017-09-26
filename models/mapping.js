@@ -13,7 +13,8 @@ var MappingSchema = new mongoose.Schema({
     action: String,
     apiPayload: Object,
     isSent: Boolean,
-    recastUuid: String
+    recastUuid: String,
+    expired: Boolean
 });
 
 mongoose.model('Mapping', MappingSchema);

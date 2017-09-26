@@ -2,6 +2,17 @@
 const configs = require('../data/config');
 const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
+module.exports.templateUrl = function(products, payload){
+    let parsedProducts = products;
+    let column = "";
+    parsedProducts.data.products.forEach((product) => {
+        var URLReturn = null
+        URLReturn += "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug + "\n"
+    });
+    
+    return URLReturn
+}
+
 module.exports.templateCarousel = function(products, payload){
     let parsedProducts = products;
     let column = "";
@@ -197,7 +208,6 @@ module.exports.templateCarousel = function(products, payload){
     return carousel;
 }
 
-
 module.exports.templateConfirm = function(mappingId, recastUuid){
     let confirm = {
         "type": "template",
@@ -225,7 +235,6 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
     return confirm;
 }
 
-
 module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName){
     return {
         "type" : "text",
@@ -233,7 +242,6 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
         //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
     };
 }
-
 
 module.exports.templateReply = function(replyFromAi){
     return {

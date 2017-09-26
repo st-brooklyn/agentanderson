@@ -305,7 +305,8 @@ exports.disqualify_post = function(req, res, next) {
         if(products != null) {
             if(products.data.results > 0) {
                 //tpc.templateCarousel(products);
-                var reply_carousel = tpc.templateCarousel(products, payload);
+                // var reply_carousel = tpc.templateCarousel(products, payload);
+                var reply_carousel = tpc.templateUrl(products, payload);
                 var reply_confirm = tpc.templateConfirm(mappingId, '');
                 messages.push(reply_carousel);
                 messages.push(reply_confirm);

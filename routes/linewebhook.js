@@ -74,48 +74,100 @@ function handleEvent(event) {
         var mappingId = '';
         var dataGetAPI = '';
 
+        let needCreate = false;
+
         logger.debug('[Main]', {
             IncomingMessage: originalMessage, 
             RoomId: roomId
         });
 
         // Check if the conversation exists -- using roomId
-        Mapping.findOne({roomId: roomId})
+        Mapping.findOne({roomId: roomId, expired: false})
         .then((mapping) => {
+            let customerDisplayName = null;
+            let gotProfile = false;
+
             if(mapping) {
                 // Mapping exists, set the converse token
                 logger.debug('[Check room Id] Found a mapping.', mapping);
                 
                 recastConversToken = mapping.conversationToken;
-                mappingId = mapping._id;
+                mappingId = mapping._id;                
+                customerDisplayName = mapping.customerDisplayName;
+
+                // TODO: date conversion and calculation
+                let now = new Date();
+                let modDate = new Date(mapping.modifiedDate);
+                
+                logger.debug('[date] check date time : ', now = now, modDate = modDate);
+
+                if ((Math.abs(now - modDate)) > (15*60*1000)) {
+                    needCreate = true;
+                    mapping.expired = true;
+                }
+
+                // if (mapping.reservationId == null) {
+                //     if (lineSender != mapping.customerId) {
+                //         mapping.customerId = lineSender;
+
+                //         // Get the customer display name
+                //         lineclient.getProfile(lineSender)
+                //         .then((profile) => {
+                //             logger.debug("[Get Profile] Customer Profile:", profile);
+                //             customerDisplayName = profile.displayName;
+                //             mapping.customerDisplayName = customerDisplayName;
+                //             gotProfile = true;
+                //         })
+                //         .catch((errProfile) => {
+                //             logger.error("[Get Profile]: Error getting customer profile.", errProfile);
+                //         });
+                //     }
+                // }
+                // else{
+                //     gotProfile = true;
+                //     customerDisplayName = mapping.customerDisplayName;
+                // }
+
+                // var profileTimeout = configs.apitimeout;
+
+                // while(true) {
+                //     if (gotProfile == true || profileTimeout == 0) {
+                //         logger.silly("[Profile] Got profile.");
+                //         break;
+                //     }
+
+                //     logger.silly('[Profile] Still waiting for Profile.', {gotProfile: gotProfile, profileTimeout: profileTimeout});
+
+                //     require('deasync').sleep(500);
+                //     profileTimeout -= 500;
+                // }
+
+                mapping.modifiedDate = new Date().toJSON();
                 mapping.fullMessage += ' ' + originalMessage;
                 mapping.message = originalMessage;
-                var customerDisplayName = null;
-                var gotProfile = false;
+                mapping.save();
+            }
+            else {
+                needCreate = true;
+                // No mapping -> create a new one [converse token is still null]
+                logger.debug('[Check room Id] No mapping found');            
+                
+            }
 
-                if (mapping.customerId == null) {
-                    if (lineSender != mapping.reservationId) {
-                        mapping.customerId = lineSender;
-
-                        // Get the customer display name
-                        lineclient.getProfile(lineSender)
-                        .then((profile) => {
-                            logger.debug("[Get Profile] Customer Profile:", profile);
-                            customerDisplayName = profile.displayName;
-                            mapping.customerDisplayName = customerDisplayName;
-                            gotProfile = true;
-                        })
-                        .catch((errProfile) => {
-                            logger.error("[Get Profile]: Error getting customer profile.", errProfile);
-                        });
-                    }
-                }
-                else{
+            if (needCreate === true) {
+                // Get the customer display name
+                lineclient.getProfile(lineSender)
+                .then((profile) => {
+                    logger.debug("[Get Profile] Customer Profile:", profile);
+                    customerDisplayName = profile.displayName;
+                    //mapping.customerDisplayName = customerDisplayName;
                     gotProfile = true;
-                    customerDisplayName = mapping.customerDisplayName;
-                }
+                })
+                .catch((errProfile) => {
+                    logger.error("[Get Profile]: Error getting customer profile.", errProfile);
+                });
 
-                var profileTimeout = configs.apitimeout;
+                let profileTimeout = configs.apitimeout;
 
                 while(true) {
                     if (gotProfile == true || profileTimeout == 0) {
@@ -128,19 +180,12 @@ function handleEvent(event) {
                     require('deasync').sleep(500);
                     profileTimeout -= 500;
                 }
-
-                mapping.modifiedDate = new Date().toJSON(),
-                mapping.save();
-            }
-            else {
-                // No mapping -> create a new one [converse token is still null]
-                logger.debug('[Check room Id] No mapping found');
                 
                 Mapping.create({
                     roomId: roomId,
-                    reservationId: lineSender,
-                    customerId: null,
-                    customerDisplayName: null,
+                    reservationId: configs.mapper,
+                    customerId: lineSender,
+                    customerDisplayName: customerDisplayName,
                     conversationToken: null,
                     createdDate: new Date().toJSON(),
                     modifiedDate: new Date().toJSON(),
@@ -148,7 +193,8 @@ function handleEvent(event) {
                     replyMessage: null,
                     fullMessage: originalMessage,
                     action: null,
-                    apiPayload: null
+                    apiPayload: null,
+                    expire: false
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
@@ -235,11 +281,9 @@ function handleEvent(event) {
                 }
 
                 const messages = [];    
-                const messagesCarousel = []; 
                 var replyToClient = null;
                 var reply_details = null;            
                 var reply_confirm = null;
-                var reply_carousel = null;
                 // Extract the reply from recast
                 var intent = '';
                 var isdone = false;
@@ -565,14 +609,9 @@ function handleEvent(event) {
                     
                     if (mockup_products['success'] == 'True' && mockup_products['data']['results'] > 0){
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, '', recast_response.source, customerDisplayName);
-                        reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
-                        replyToClient = tp.templateReply(config.replyMessage);
-                        messagesCarousel.push(reply_details);
-                        messagesCarousel.push(replyToClient);
-                        messagesCarousel.push(reply_carousel);
+                        var reply_carousel = tp.templateCarousel(mockup_products, dataGetAPI);
                         messages.push(reply_details);
                         messages.push(reply_carousel);
-
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
                         replyToClient = tp.templateReply(recast_response.reply());
@@ -603,22 +642,20 @@ function handleEvent(event) {
                 };
         
                 messages.push(reply_confirm);
-                messagesCarousel.push(reply_confirm)
 
                 //handleError('[Main] Messages: ' + JSON.stringify(messages), "DEBUG");
                 logger.debug("[Main] Messages to be sent.", messages);
-                logger.debug("[Main] Messages to be sent.", messagesCarousel);
 
                 var reservationId = '';
 
                 Mapping.findById(mappingId)
                 .then((senderMapping) => {
                     if(senderMapping) {
-                        reservationId = senderMapping.reservationId;
+                        //reservationId = senderMapping.reservationId;
                         
                         logger.debug("[Find for sender] Found a mapping.", senderMapping);
                         
-                        lineclient.pushMessage(reservationId, messages)
+                        lineclient.pushMessage(configs.mapper, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");
@@ -638,7 +675,7 @@ function handleEvent(event) {
 
                             } else {
                                 Mapping.findByIdAndUpdate(mappingId, 
-                                    {$set: {replyMessage: JSON.stringify(messagesCarousel)}},
+                                    {$set: {replyMessage: JSON.stringify(reply_carousel)}},
                                     {new: true})
                                 .then((mappingUpdateReply) => {                                
                                     //handleError("[Find to update reply] Updated response mapping: " + mappingUpdateReply, "DEBUG");

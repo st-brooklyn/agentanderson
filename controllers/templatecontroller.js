@@ -160,7 +160,7 @@ module.exports.templateCarousel = function(products, payload){
         // { month: 'ธ.ค.', dates: '28-5 ม.ค.' },
         // { month: 'ก.พ.', dates: '5-15' } ]
 
-        let periodText2 = null;
+        let periodText2 = "";
 
         // Convert the display array into the display text
         // ::Example::

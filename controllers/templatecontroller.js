@@ -239,12 +239,40 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
     return confirm;
 }
 
-module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName){
-    return {
-        "type" : "text",
-        "text" : 'ลูกค้า: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage
-        //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
-    };
+module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName, entity, memory){
+    if (configs.readrecast != 'memory'){
+
+        var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : '' : ''
+        var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : '' : ''
+        var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : '' : ''
+        var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : '' : ''
+        var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : '' : ''
+        var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : '' : ''
+
+        return {
+            "type" : "text",
+            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: \nCountry:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
+            //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+        };
+    } else {
+
+        var country = memory['destination'] ? memory['destination'] ? memory['destination']['value'] : '' : ''
+        var tourcode = memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : '' : ''
+        var departuredate = memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : '' : ''
+        var returndate = memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : '' : ''
+        var month = memory['month'] ? memory['month'] ? memory['month']['value'] : '' : ''
+        var traveler = memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : '' : ''
+        return {
+            "type" : "text",
+            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: \nCountry:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
+            //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+        };
+    }
+    // return {
+    //     "type" : "text",
+    //     "text" : 'ลูกค้า: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage
+    //     //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
+    // };
 }
 
 module.exports.templateReply = function(replyFromAi){

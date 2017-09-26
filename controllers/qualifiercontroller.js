@@ -98,9 +98,10 @@ exports.disqualify_get = function(req, res, next) {
     .then((foundone) => {
         // get the message and send back to the room
         logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
-        var resMessage = foundone.responseMessage
+        var resMessage = foundone.responseMessage;
 
-        var intent = ''
+        var source = resMessage.source;
+        var intent = '';
         if (resMessage.action != null){
             intent = resMessage.action.slug;
         } else {
@@ -114,6 +115,7 @@ exports.disqualify_get = function(req, res, next) {
             
              res.render('disqualify_form', {title: 'Disqualify Form', 
                 mappingId: req.params.id, 
+                source: source,
                 intent: intent,
                 country: entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null,
                 tourcode: entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null,
@@ -136,6 +138,7 @@ exports.disqualify_get = function(req, res, next) {
             res.render('disqualify_form', {title: 'Disqualify Form', 
                 mappingId: req.params.id, 
                 intent: intent,
+                source: source,
                 country: memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null,
                 tourcode: memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null,
                 departuredate: memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null,

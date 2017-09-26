@@ -9,6 +9,8 @@ append body
     form(method='POST' action='' type='callAPI')
       div.form-group
         input(type='hidden' name='mappingId' value=mappingId)
+        input(name='source' value=source)
+        br
         label(for='fd_intent') Intent: 
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br

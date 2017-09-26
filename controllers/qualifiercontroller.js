@@ -39,7 +39,7 @@ exports.qualify_get = function(id, recastUuid){
                 mappingId: id,
                 intent: foundone.intent,
                 message: '',
-                reservationId: foundone.reservationId,
+                reservationId: foundone.customerId,
                 result: true,
                 apiPayload: foundone.apiPayload,
                 createdDate: new Date().toJSON(),
@@ -73,7 +73,7 @@ exports.qualify_get = function(id, recastUuid){
                     logger.error('[QUalify] Failed updating mapping', errupdate);
                 });
 
-                lineclient.pushMessage(foundone.reservationId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))
+                lineclient.pushMessage(foundone.customerId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))
                 .then((notify) => {
                     logger.debug('[Qualify] Push confirm success', notify);
                 })
@@ -317,9 +317,9 @@ exports.disqualify_post = function(req, res, next) {
                     if(senderMapping) {
                         logger.debug("[Disqualify] Found a mapping.", senderMapping);
 
-                        var reservationId = senderMapping.reservationId;                        
+                        var customerId = senderMapping.customerId;                        
                         var lineclient = new line.Client(configs.botmapping.default);
-                        lineclient.pushMessage(reservationId, messages)
+                        lineclient.pushMessage(customerId, messages)
                         .then(() => {
                             // process after push message to Line
                             //handleError("[Push carousel] Carousel sent to the sender.", "DEBUG");

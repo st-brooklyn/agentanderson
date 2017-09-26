@@ -99,9 +99,9 @@ function handleEvent(event) {
                 let now = new Date();
                 let modDate = new Date(mapping.modifiedDate);
                 
-                logger.debug('[date] check date time : ', now = now, modDate = modDate);
+                logger.debug('[date] check date time : ', {DateDiff: Math.abs(modDate - now), calDate: 15*60*1000}); 
 
-                if ((Math.abs(now - modDate)) > (15*60*1000)) {
+                if ((Math.abs(modDate - now)) > (15*60*1000)) {
                     needCreate = true;
                     mapping.expired = true;
                 }

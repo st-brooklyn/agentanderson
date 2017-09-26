@@ -614,13 +614,13 @@ function handleEvent(event) {
                         messages.push(reply_details);
                         messages.push(reply_carousel);
                     } else {
-                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
+                        reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName, entity, memory);
                         replyToClient = tp.templateReply(recast_response.reply());
                         messages.push(reply_details);
                         messages.push(replyToClient);
                     }
                 } else {
-                    reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName);
+                    reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName, entity, memory);
                     replyToClient = tp.templateReply(recast_response.reply());
                     messages.push(reply_details);
                     messages.push(replyToClient);

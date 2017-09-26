@@ -180,7 +180,7 @@ module.exports.templateCarousel = function(products, payload){
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
     console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + payload.returndate + " month: " + payload.month + " tourcode: " + payload.tourcode);
 
-    let column = {
+    let defaultcolumn = {
         "thumbnailImageUrl": 'https://cdn.mushroomtravel.com/files/MUSH/Uploads/MainSlider/add-line%20%282%29.png',
         "title": 'รายการเพิ่มเติม',
         "text": 'รายการเพิ่มเติม',
@@ -192,7 +192,7 @@ module.exports.templateCarousel = function(products, payload){
             }
         ]
     };
-    carousel.template.columns.push(column);
+    carousel.template.columns.push(defaultcolumn);
 
     return carousel;
 }

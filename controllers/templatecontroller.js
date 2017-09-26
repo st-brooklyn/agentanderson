@@ -47,24 +47,74 @@ module.exports.templateCarousel = function(products, payload){
         let boubleText = "";
         let singleText = "";
 
-        let parsed_periods = [];
+        console.log("DEBUG: [Carousel for period] : " + periodText);
 
-        product.periods.forEach((period) => {
-            periodText += period.period_start + ' - ' + period.period_end + '\n'
-            boubleText += period.price_adults_double 
-            singleText += period.price_adults_single
+        if (product.url_pic == '') {
+            product.url_pic = 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg'
+        }
+        
+        if (product.periods.length == 1){
+            boubleText += product.periods[0].price_adults_double; 
+            singleText += product.periods[0].price_adults_single;
 
-            parsed_periods.push({
-                start: period.period_start,
-                end: period.period_end,
-                calcStart: convertperiod(period.period_start),
-                calcEnd: convertperiod(period.period_end)
+            column = {
+               "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
+                "title": 'ผู้ใหญ่(คู่): ' + boubleText + ' บาท\nผู้ใหญ่(เดี่ยว): ' + singleText + ' บาท' ,
+                "text": product.product_name.substr(0, 40) ,
+                "actions": [                
+                    {
+                        "type": "uri",
+                        "label": "ดูรายละเอียด",
+                        "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+                    }
+                ] 
+            };
+        } else {
+            let parsed_periods = [];
+
+            product.periods.forEach((period) => {
+                periodText += period.period_start + ' - ' + period.period_end + '\n';
+
+                parsed_periods.push({
+                    start: period.period_start,
+                    end: period.period_end,
+                    calcStart: convertperiod(period.period_start),
+                    calcEnd: convertperiod(period.period_end)
+                });
             });
-        });
 
+            let displayperiod = generatePeriodDisplay(parsed_periods);
+
+            let imageProduct = "http://210.4.150.197:8888/unsafe/filters:text(" +  product.product_name + ",25,395,black,28):text(" + product.product_code + ",60,525,red,20):text(" + product.stay_night + "วัน " + product.stay_night + "คืน,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(" + product.url_airline_pic + ",315,525,0)/www.mushroomtravel.com/assets/images/01B.png"
+            console.log("DEBUG: [ url use  thumbor ] : " + imageProduct);
+            column = {
+                //http://210.4.150.197:8888/unsafe/filters:text(%E0%B8%97%E0%B8%B1%E0%B8%A7%E0%B8%A3%E0%B9%8C%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%20%E0%B8%AE%E0%B8%AD%E0%B8%81%E0%B9%84%E0%B8%81%E0%B9%82%E0%B8%94%20%E0%B8%88%E0%B8%B4%E0%B9%82%E0%B8%81%E0%B8%81%E0%B8%B8%E0%B8%94%E0%B8%B2%E0%B8%99%E0%B8%B4%20%E0%B8%AA%E0%B8%A7%E0%B8%99%E0%B8%AB%E0%B8%A1%E0%B8%B5%E0%B9%82%E0%B8%8A%E0%B8%A7%E0%B8%B0%E0%B8%8A%E0%B8%B4%E0%B8%99%E0%B8%8B%E0%B8%B1%E0%B8%87%20,25,395,black,28):text(MUSH170702,60,525,red,20):text(6%E0%B8%A7%E0%B8%B1%E0%B8%99%204%E0%B8%84%E0%B8%B7%E0%B8%99,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(www.mushroomtravel.com/assets/images/airlinelogo/thailionairlogo.jpg,315,525,0)/www.mushroomtravel.com/assets/images/01B.png
+                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
+                "title": product.product_name.substr(0, 40),
+                //"text": periodText.substr(0, 50),
+                "text": displayperiod.substr(0, 50),
+                "actions": [                
+                    {
+                        "type": "uri",
+                        "label": "ดูรายละเอียด",
+                        "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+                    },
+                    // {
+                    //     "type": "uri",
+                    //     "label": "View Slide",
+                    //     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
+                    // }
+                ]
+            };
+        }
+        carousel.template.columns.push(column);
+    },
+    this);
+
+    function generatePeriodDisplay(parsed_periods) {
         // Sort the parsed period by the sum
         parsed_periods.sort((a, b) => { return a.calcStart.sum - b.calcStart.sum });
-
+        
         // Select distinct months
         let uniques = [...new Set(parsed_periods.map(item => item.calcStart.month))];
 
@@ -124,50 +174,8 @@ module.exports.templateCarousel = function(products, payload){
             periodText2 += dp.month + "  " + dp.dates;
         });
 
-        console.log("DEBUG: [Carousel for period] : " + periodText);
-
-        if (product.url_pic == '') {
-            product.url_pic = 'https://www.mushroomtravel.com/assets/images/share/thumb_default.jpg'
-        }
-        
-        if (product.periods.length == 1){
-            column = {
-               "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-                "title": 'ผู้ใหญ่(คู่): ' + boubleText + ' บาท\nผู้ใหญ่(เดี่ยว): ' + singleText + ' บาท' ,
-                "text": product.product_name.substr(0, 40) ,
-                "actions": [                
-                    {
-                        "type": "uri",
-                        "label": "ดูรายละเอียด",
-                        "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                    }
-                ] 
-            };
-        } else {
-            let imageProduct = "http://210.4.150.197:8888/unsafe/filters:text(" +  product.product_name + ",25,395,black,28):text(" + product.product_code + ",60,525,red,20):text(" + product.stay_night + "วัน " + product.stay_night + "คืน,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(" + product.url_airline_pic + ",315,525,0)/www.mushroomtravel.com/assets/images/01B.png"
-            console.log("DEBUG: [ url use  thumbor ] : " + imageProduct);
-            column = {
-                //http://210.4.150.197:8888/unsafe/filters:text(%E0%B8%97%E0%B8%B1%E0%B8%A7%E0%B8%A3%E0%B9%8C%E0%B8%8D%E0%B8%B5%E0%B9%88%E0%B8%9B%E0%B8%B8%E0%B9%88%E0%B8%99%20%E0%B8%AE%E0%B8%AD%E0%B8%81%E0%B9%84%E0%B8%81%E0%B9%82%E0%B8%94%20%E0%B8%88%E0%B8%B4%E0%B9%82%E0%B8%81%E0%B8%81%E0%B8%B8%E0%B8%94%E0%B8%B2%E0%B8%99%E0%B8%B4%20%E0%B8%AA%E0%B8%A7%E0%B8%99%E0%B8%AB%E0%B8%A1%E0%B8%B5%E0%B9%82%E0%B8%8A%E0%B8%A7%E0%B8%B0%E0%B8%8A%E0%B8%B4%E0%B8%99%E0%B8%8B%E0%B8%B1%E0%B8%87%20,25,395,black,28):text(MUSH170702,60,525,red,20):text(6%E0%B8%A7%E0%B8%B1%E0%B8%99%204%E0%B8%84%E0%B8%B7%E0%B8%99,570,525,black,20):watermark(http://35.184.198.144:8000/unsafe/708x380/https://goo.gl/SsxmAV,0,0,0):watermark(www.mushroomtravel.com/assets/images/airlinelogo/thailionairlogo.jpg,315,525,0)/www.mushroomtravel.com/assets/images/01B.png
-                "thumbnailImageUrl": product.url_pic.startsWith('https', 0) ? product.url_pic : product.url_pic.replace("http","https"),
-                "title": product.product_name.substr(0, 40),
-                "text": periodText.substr(0, 50),
-                "actions": [                
-                    {
-                        "type": "uri",
-                        "label": "ดูรายละเอียด",
-                        "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                    },
-                    // {
-                    //     "type": "uri",
-                    //     "label": "View Slide",
-                    //     "uri": "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug
-                    // }
-                ]
-            };
-        }
-        carousel.template.columns.push(column);
-    },
-    this);
+        return periodText2;
+    }
 
     console.log("DEBUG: [createProductCarousel] " + JSON.stringify(carousel));
     console.log("DEBUG: [payload] country: " + payload.country + " departuredate: " + payload.departuredate + " returndate: " + payload.returndate + " month: " + payload.month + " tourcode: " + payload.tourcode);

@@ -29,6 +29,7 @@
     "node-datetime": "^2.0.0",
     "pg-promise": "^6.5.1",
     "pug": "^2.0.0-beta6",
+    "pug-bootstrap": "0.0.15",
     "recastai": "^3.4.1",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",

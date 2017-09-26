@@ -9,7 +9,7 @@ module.exports.templateUrl = function(products, payload){
     parsedProducts.data.products.forEach((product) => {
         URLReturn += "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug + "\n"
     });
-    
+    console.log("DEBUG: [templateUrl] : " + URLReturn);
     return URLReturn
 }
 

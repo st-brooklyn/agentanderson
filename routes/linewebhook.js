@@ -615,7 +615,8 @@ function handleEvent(event) {
                         messages.push(reply_carousel);
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName, entity, memory);
-                        replyToClient = tp.templateReply(recast_response.reply());
+                        //replyToClient = tp.templateReply(recast_response.reply());
+                        replyToClient = tp.templateReply('สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ');
                         messages.push(reply_details);
                         messages.push(replyToClient);
                     }

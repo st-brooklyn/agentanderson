@@ -194,7 +194,7 @@ function handleEvent(event) {
                     fullMessage: originalMessage,
                     action: null,
                     apiPayload: null,
-                    expire: false
+                    expired: false
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;

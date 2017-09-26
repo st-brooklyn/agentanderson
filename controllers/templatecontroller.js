@@ -19,7 +19,7 @@ module.exports.templateCarousel = function(products, payload){
         const regex = /(\d*) (.+\D) (\d*)/g;
         let m;
 
-        while ((m = regex.exec(start_date)) !== null) {
+        while ((m = regex.exec(date)) !== null) {
             // This is necessary to avoid infinite loops with zero-width matches
             if (m.index === regex.lastIndex) {
                 regex.lastIndex++;

@@ -10,7 +10,11 @@ module.exports.templateUrl = function(products, payload){
         URLReturn += "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug + "\n"
     });
     console.log("DEBUG: [templateUrl] : " + URLReturn);
-    return URLReturn
+    
+    return {
+        "type" : "text",
+        "text" : URLReturn
+    };
 }
 
 module.exports.templateCarousel = function(products, payload){

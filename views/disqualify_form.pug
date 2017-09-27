@@ -14,9 +14,13 @@ append body
         br
         label(for='country') Country:
         select#Country.form-control
-          option(value="ญี่ปุ่น" selected=true) ญี่ปุ่น
+          option(value="ญี่ปุ่น") ญี่ปุ่น
           option(value="เกาหลี") เกาหลี
+          option(value="ฮ่องกง") ฮ่องกง
           option(value="จีน") จีน
+          option(value="ไต้หวัน") ไต้หวัน
+          option(value="สิงคโปร์") สิงคโปร์
+          option(value="ยุโรป") ยุโรป
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

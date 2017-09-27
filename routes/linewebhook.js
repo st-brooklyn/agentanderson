@@ -243,7 +243,6 @@ function handleEvent(event) {
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token
-                logger.debug("[check recast conversationToken] ", recastConversToken)
                 if (recastConversToken == null) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {
@@ -361,7 +360,7 @@ function handleEvent(event) {
                 
                 //if (isdone == true && intent == 'tour-search') 
                 // check condition get data from api
-                if (country && departuredate && returndate && month && traveler && tourcode == null)  {
+                if (country && departuredate && returndate && month && traveler)  {
                     var rpoptions = {
                         uri: configs.apiUrl,
                         qs: {

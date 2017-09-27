@@ -243,6 +243,7 @@ function handleEvent(event) {
 
                 // Update conversation token back to the mapping 
                 // and Set the converse token
+                logger.debug("[check recast conversationToken] ", recastConversToken)
                 if (recastConversToken == null) {
                     Mapping.findById(mappingId)
                     .then((mappingtoupdate) => {

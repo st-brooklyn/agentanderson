@@ -13,8 +13,9 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        select#country.form-control(type='select' placeholder='เลือกประเทศ' name='country' required='true')
-          option(value="ญี่ปุ่น", selected="ญี่ปุ่น" ) ญี่ปุ่น
+        select#country.form-control(type='select' placeholder='เลือกประเทศ' name='country')
+          option(value=country)
+          option(value="ญี่ปุ่น") ญี่ปุ่น
           option(value="เกาหลี") เกาหลี
           option(value="ฮ่องกง") ฮ่องกง
           option(value="จีน") จีน
@@ -26,7 +27,7 @@ append body
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)
         br
         label(for='departuredate') Departure:
-        input#departuredate.form-control(type='text', placeholder='วันเดินทางไป' name='departuredate' value=departuredate)
+        input#departuredate.form-control(type='date', placeholder='วันเดินทางไป' name='departuredate' value=departuredate)
         br
         label(for='returndate') Return:
         input#returndate.form-control(type='date', placeholder='วันเดินทางกลับ' name='returndate' value=returndate)

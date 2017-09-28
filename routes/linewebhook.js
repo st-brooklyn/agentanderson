@@ -291,7 +291,7 @@ function handleEvent(event) {
                 if (recast_response.action){
                     isdone = recast_response.action.done;
                 } 
-                var intent = recast_response.intents.slug;                        
+                var intent = recast_response['intents'][0]['slug'];                        
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    

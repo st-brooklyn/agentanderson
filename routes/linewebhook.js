@@ -286,12 +286,15 @@ function handleEvent(event) {
                 var reply_confirm = null;
                 // Extract the reply from recast
                 var isdone = false;
-
+                var intent = '';
                 //if(recast_response.action) {
-                if (recast_response.action){
+                if (recast_response.action != null){
                     isdone = recast_response.action.done;
                 } 
-                var intent = recast_response['intents'][0]['slug'];                        
+                if (recast_response['intents'][0] != ''){
+                    intent = recast_response['intents'][0]['slug'];
+                } 
+                                    
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
@@ -314,19 +317,26 @@ function handleEvent(event) {
                         actual_token: actual_token
                     }
                 ]);
-
+                
+                var mockup_products = null
                 // switch case read data
                 if (configs.readrecast != 'memory') {
-                    if (entity == null){
+                    if (entity == ''){
                         mockup_products = null
                     } 
-
                     var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
+                    var city = entity['city'] ? entity['city'][0] ? entity['city'][0]['value'] : null : null
+                    var region = entity['region'] ? entity['region'][0] ? entity['region'][0]['value'] : null : null
                     var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
+                    var price = entity['price'] ? entity['price'][0] ? entity['price'][0]['value'] : null : null
                     var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
                     var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
                     var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
+                    var period = entity['period'] ? entity['period'][0] ? entity['period'][0]['value'] : null : null
+                    var holiday = entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null
                     var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+                    var traveleradult = entity['traveler_adult'] ? entity['traveler_adult'][0] ? entity['traveler_adult'][0]['value'] : null : null
+                    var traveler = entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
                 } else {
                     var country = memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null
                     var tourcode = memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null
@@ -338,7 +348,7 @@ function handleEvent(event) {
                 
                 // Construct the reply message
                 // const apitour = require('../controllers/tourapicontroller');
-                var mockup_products = null
+                
 
                 logger.debug('[API] Extracted values.', {
                     country:  country,

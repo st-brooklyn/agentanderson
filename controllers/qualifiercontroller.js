@@ -316,8 +316,10 @@ exports.disqualify_post = function(req, res, next) {
                 messages.push(reply_carousel);
                 messages.push(reply_confirm);
             } else {
-                replyToClient = tpc.templateReply('สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ');
+                replyToClient = tpc.templateReply(intent, 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ');
+                reply_confirm = tpc.templateConfirm(mappingId, '');
                 messages.push(replyToClient);
+                messages.push(reply_confirm);
             }
 
             Mapping.findById(mappingId)

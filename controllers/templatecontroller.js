@@ -251,7 +251,7 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
 
         return {
             "type" : "text",
-            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: ' + entity
+            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: ' +  JSON.stringify(entity)
             //"text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
             //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
         };

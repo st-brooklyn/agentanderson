@@ -24,6 +24,6 @@ module.exports = {
         confirmFailure: 'ข้อความส่งไม่สำเร็จ'
     },
     apisizepage: 3,
-    readrecast: 'entities'
-
+    readrecast: 'entities',
+    timeExpired: 2
 }

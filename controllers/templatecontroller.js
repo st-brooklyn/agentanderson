@@ -278,17 +278,25 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
 
 module.exports.templateReply = function(intent, replyFromAi){
     //console.log("DEBUG: [Reply AI] " + replyFromAi);
-    if (replyFromAi != null){
+    if (replyFromAi){
         return {
             "type" : "text",
             "text" : replyFromAi
         };
     } else {
-        return {
-            "type" : "text",
-            "text" : intent + " ไม่มีข้อมูล reply ส่งกลับ"
-        };
+        if (replyFromAi != null) {
+             return {
+                "type" : "text",
+                "text" : replyFromAi 
+            };
+        } else {
+            return {
+                "type" : "text",
+                "text" : intent + " ไม่มีข้อมูล reply ส่งกลับ"
+            };
+        }
     }
+    
 }
 
 module.exports.createApiPayload = (intent, country, departuredate, returndate, month, tourcode) => {

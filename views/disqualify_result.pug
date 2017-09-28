@@ -1,8 +1,9 @@
-extends layout
+extends ../node_modules/pug-bootstrap/_bootstrap
 
-block content
+append body
   h1= title
   p Mapping Id: #{mappingId}
+  +alert-info(source)
   p Sent to get data = SUCCESS
 
   if errors

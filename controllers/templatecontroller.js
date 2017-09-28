@@ -276,7 +276,7 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
     // };
 }
 
-module.exports.templateReply = function(replyFromAi){
+module.exports.templateReply = function(intent, replyFromAi){
     //console.log("DEBUG: [Reply AI] " + replyFromAi);
     if (replyFromAi){
         return {
@@ -286,11 +286,9 @@ module.exports.templateReply = function(replyFromAi){
     } else {
         return {
             "type" : "text",
-            "text" : replyFromAi + "ไม่มีข้อมูลส่งมาจากทาง recast"
+            "text" : intent + " ไม่มีข้อมูล reply ส่งกลับ"
         };
-
     }
-    
 }
 
 module.exports.createApiPayload = (intent, country, departuredate, returndate, month, tourcode) => {

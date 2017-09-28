@@ -73,7 +73,7 @@ exports.qualify_get = function(id, recastUuid){
                     logger.error('[QUalify] Failed updating mapping', errupdate);
                 });
 
-                lineclient.pushMessage(foundone.customerId, tpc.templateReply(configs.predefinedMessages.confirmSuccess))
+                lineclient.pushMessage(foundone.customerId, tpc.templateReply(intent, configs.predefinedMessages.confirmSuccess))
                 .then((notify) => {
                     logger.debug('[Qualify] Push confirm success', notify);
                 })
@@ -303,7 +303,7 @@ exports.disqualify_post = function(req, res, next) {
             timeout -= 500;
         }
 
-        var reply_carousel = '';
+        var reply_carousel = null;
         var reply_confirm  = '';
         var replyToClient = '';
 

@@ -626,7 +626,7 @@ function handleEvent(event) {
                     }
                 } else {
                     reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName, entity, memory);
-                    replyToClient = tp.templateReply(recast_response.reply());
+                    replyToClient = tp.templateReply(intent, recast_response.reply());
                     messages.push(reply_details);
                     messages.push(replyToClient);
                 }

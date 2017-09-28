@@ -278,7 +278,7 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
 
 module.exports.templateReply = function(intent, replyFromAi){
     //console.log("DEBUG: [Reply AI] " + replyFromAi);
-    if (replyFromAi){
+    if (replyFromAi != null){
         return {
             "type" : "text",
             "text" : replyFromAi

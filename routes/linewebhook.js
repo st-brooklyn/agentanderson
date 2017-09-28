@@ -336,7 +336,7 @@ function handleEvent(event) {
                     var holiday = entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null
                     var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
                     var traveleradult = entity['traveler_adult'] ? entity['traveler_adult'][0] ? entity['traveler_adult'][0]['value'] : null : null
-                    var traveler = entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
+                    var traveler_child = entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
                 } else {
                     var country = memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null
                     var tourcode = memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null

@@ -285,20 +285,18 @@ function handleEvent(event) {
                 var reply_details = null;            
                 var reply_confirm = null;
                 // Extract the reply from recast
-                var intent = '';
                 var isdone = false;
 
                 //if(recast_response.action) {
                 if (recast_response.action){
-                    intent = recast_response.action.slug;
                     isdone = recast_response.action.done;
                 } 
-                                    
+                var intent = recast_response.intents.slug;                        
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    
-                var entity = recast_response['entities'];
-                var memory = recast_response['memory'];
+                var entity = recast_response.entities;
+                var memory = recast_response.memory;
                 logger.info('[Main] Entity action date  ', [
                     entity,
                     {

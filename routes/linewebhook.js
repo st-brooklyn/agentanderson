@@ -600,10 +600,6 @@ function handleEvent(event) {
                         logger.debug('[API] No entity condition');                        
                     }
                     //}
-
-                    if (mockup_products == null) {
-                        intent = '-';
-                    }
                 }
                 logger.debug('[Mockup product] Details:', mockup_products);
 

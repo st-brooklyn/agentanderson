@@ -242,16 +242,17 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
 module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName, entity, memory){
     if (configs.readrecast != 'memory'){
 
-        var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
-        var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
-        var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
-        var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
-        var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
-        var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+        // var country = entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null
+        // var tourcode = entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null
+        // var departuredate = entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null
+        // var returndate = entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null
+        // var month = entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null
+        // var traveler = entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
 
         return {
             "type" : "text",
-            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
+            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: ' + entity
+            //"text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
             //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
         };
     } else {

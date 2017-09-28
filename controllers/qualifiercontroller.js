@@ -303,16 +303,21 @@ exports.disqualify_post = function(req, res, next) {
             timeout -= 500;
         }
 
-        
+        var reply_carousel = '';
+        var reply_confirm  = '';
+        var replyToClient = '';
 
         if(products != null) {
             if(products.data.results > 0) {
                 //tpc.templateCarousel(products);
                 // var reply_carousel = tpc.templateCarousel(products, payload);
-                var reply_carousel = tpc.templateUrl(products, payload);
-                var reply_confirm = tpc.templateConfirm(mappingId, '');
+                reply_carousel = tpc.templateUrl(products, payload);
+                reply_confirm = tpc.templateConfirm(mappingId, '');
                 messages.push(reply_carousel);
                 messages.push(reply_confirm);
+            } else {
+                replyToClient = tpc.templateReply('สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ');
+                messages.push(replyToClient);
             }
 
             Mapping.findById(mappingId)

@@ -277,12 +277,20 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
 }
 
 module.exports.templateReply = function(replyFromAi){
-     console.log("DEBUG: [Reply AI] " + replyFromAi);
+    //console.log("DEBUG: [Reply AI] " + replyFromAi);
+    if (replyFromAi){
+        return {
+            "type" : "text",
+            "text" : replyFromAi
+        };
+    } else {
+        return {
+            "type" : "text",
+            "text" : replyFromAi + "ไม่มีข้อมูลส่งมาจากทาง recast"
+        };
 
-    return {
-        "type" : "text",
-        "text" : replyFromAi
-    };
+    }
+    
 }
 
 module.exports.createApiPayload = (intent, country, departuredate, returndate, month, tourcode) => {

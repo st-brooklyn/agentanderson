@@ -39,7 +39,7 @@ function handleError(err, level) {
 function handleEvent(event) {
     logger.debug('[Main] Event:', event);
 
-    // http://35.202.67.147:5000/dc/xxxxx ตัดคำ ก่อนวิ่งเข้า recast
+    // http://35.193.232.190:5000/dc/xxxxx ตัดคำ ก่อนวิ่งเข้า recast
 
     // Process only text message
     if (event.type === 'postback') {
@@ -217,6 +217,7 @@ function handleEvent(event) {
                 logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
             });
             */
+            
             var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            
                             

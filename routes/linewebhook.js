@@ -202,7 +202,7 @@ function handleEvent(event) {
                 });
             }
     
-            var tokenizer = configs.tokenizer + event.message.text   
+            var tokenizer = configs.tokenizer +  event.message.text.replace("\n"," ")
             logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
             var token = {
@@ -216,7 +216,6 @@ function handleEvent(event) {
             rp(token)
             .then((tok) => {
                 //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-                tok = tok.replace("\n"," ")
                 event.message.text = tok
                 logger.debug("[Token] Token:", tok);
             })
@@ -627,7 +626,7 @@ function handleEvent(event) {
                     } else {
                         reply_details = tp.templateAIMessage(intent, recast_response.conversationToken, recast_response.reply(), recast_response.source, customerDisplayName, entity, memory);
                         //replyToClient = tp.templateReply(recast_response.reply());
-                        replyToClient = tp.templateReply(intent, 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ');
+                        replyToClient = tp.templateReply(intent, configs.apinotfound);
                         messages.push(reply_details);
                         messages.push(replyToClient);
                     }

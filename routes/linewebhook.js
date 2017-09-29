@@ -211,12 +211,13 @@ function handleEvent(event) {
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'User-Agent': 'Request-Promise'
                 },
-                json: false // Automatically parses the JSON string in the response
+                json: false 
             };
-
             rp(token)
             .then((tok) => {
                 //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                tok = tok.replace("\n"," ")
+                event.message.text = tok
                 logger.debug("[Token] Token:", tok);
             })
             .catch((error)=> {

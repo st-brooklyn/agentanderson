@@ -201,30 +201,28 @@ function handleEvent(event) {
                     logger.error('[Create mapping] Error creating a mapping', errorcreate);                    
                 });
             }
+    
+            var tokenizer = configs.tokenizer + event.message.text   
+            logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
-                      
-            // var tokenizer = configs.tokenizer + event.message.text   
-            // logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
+            var token = {
+                uri: encodeURI(tokenizer),
+                headers: {
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                    'User-Agent': 'Request-Promise'
+                },
+                json: false // Automatically parses the JSON string in the response
+            };
 
-            // var token = {
-            //     uri: tokenizer,
-            //     headers: {
-            //         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-            //         'User-Agent': 'Request-Promise'
-            //     },
-            //     json: true // Automatically parses the JSON string in the response
-            // };
-
-            // rp(token)
-            // .then((repos) => {
-            //     //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
-            //     logger.debug("[Token] Token:", repos);
-            // })
-            // .catch((error)=> {
-            //     //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
-            //     logger.error("[Token]", error);
-            // });
-              
+            rp(token)
+            .then((tok) => {
+                //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                logger.debug("[Token] Token:", tok);
+            })
+            .catch((error)=> {
+                //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                logger.error("[Token]", error);
+            });
             
             var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            

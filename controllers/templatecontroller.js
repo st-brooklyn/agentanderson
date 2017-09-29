@@ -292,7 +292,7 @@ module.exports.templateReply = function(intent, replyFromAi){
         } else {
             return {
                 "type" : "text",
-                "text" : intent + " ไม่มีข้อมูล reply ส่งกลับ"
+                "text" : intent + " " + configs.apinotreply
             };
         }
     }

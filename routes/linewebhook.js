@@ -207,14 +207,20 @@ function handleEvent(event) {
             logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
             var request = require('request');
-            var textTokenizer = '';
-            var text = http.request(tokenizer, function(err, res, body) {  
-                textTokenizer = body;
-                event.message.text  = textTokenizer;
-                logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  
-            });
-              logger.debug('[Main] tokenizer', {text}); 
-        
+                request('http://www.google.com', function (error, response, body) {
+                console.log('error:', error); // Print the error if one occurred
+                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                console.log('body:', body); // Print the HTML for the Google homepage.
+                });
+
+            // var request = require('request');
+            // var textTokenizer = '';
+            // request(tokenizer, function(err, res, body) {  
+            //     textTokenizer = body;
+            //     event.message.text  = textTokenizer;
+            //     logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  
+            // });
+              
             
             var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            

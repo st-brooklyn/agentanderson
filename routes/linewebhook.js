@@ -208,7 +208,7 @@ function handleEvent(event) {
 
             var request = require('request');
             var textTokenizer = '';
-            request(tokenizer, function(err, res, body) {  
+            var text = http.request(tokenizer, function(err, res, body) {  
                 textTokenizer = body;
                 event.message.text  = textTokenizer;
                 logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  

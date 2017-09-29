@@ -206,22 +206,23 @@ function handleEvent(event) {
             var tokenizer = configs.tokenizer + event.message.text   
             logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
-            var request = require('request');
+            var token = {
+                uri: tokenizer,
+                headers: {
+                    'User-Agent': 'Request-Promise'
+                },
+                json: true // Automatically parses the JSON string in the response
+            };
 
-            request.get({
-                url: tokenizer,
-            }, (apierr, apiresponse, apidata) => {
-                logger.debug('[Main] pass tokenizer', {apierr: apierr, textbody: apidata, response: apiresponse});   
-                // if(apierr) return logger.debug('[Main] token',apierr);   
-                // logger.debug('[Main] pass tokenizer', {textbody: apidata, response: apiresponse});   
-                // var checkToken = apidata
+            rp(token)
+            .then((repos) => {
+                //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                logger.debug("[Token] Token:", repos);
             })
-            
-            // request(tokenizer, function(err, res, body) {  
-            //     textTokenizer = body;
-            //     event.message.text  = textTokenizer;
-            //     logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  
-            // });
+            .catch((error)=> {
+                //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                logger.error("[Token]", error);
+            });
               
             
             var recastrequest = new rc.request(configs.recastRequestToken);

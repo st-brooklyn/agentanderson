@@ -206,12 +206,17 @@ function handleEvent(event) {
             var tokenizer = configs.tokenizer + event.message.text   
             logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
-            http.get(tokenizer, (res) => {
-                 logger.debug('[Main] pass tokenizer', { res});  
-               
-            });
-            // var request = require('request');
-            // var textTokenizer = '';
+            var request = require('request');
+
+            request.get({
+                url: tokenizer,
+                json: true
+            }, (apierr, apiresponse, apidata) => {
+                if(apierr) returnlogger.debug('[Main] token',apierr);   
+                logger.debug('[Main] pass tokenizer', {textbody: apidata});   
+                var checkToken = apidata
+            })
+            
             // request(tokenizer, function(err, res, body) {  
             //     textTokenizer = body;
             //     event.message.text  = textTokenizer;

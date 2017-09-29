@@ -7,7 +7,7 @@ module.exports.templateUrl = function(products, payload){
     let parsedProducts = products;
     let column = "";
     parsedProducts.data.products.forEach((product) => {
-        URLReturn += "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug + "\n\n\n"
+        URLReturn += "https://www.mushroomtravel.com/tour/outbound/" + product.country_slug + "/" + product.product_code + "-" + product.product_slug + "\n\n"
     });
     console.log("DEBUG: [templateUrl] : " + URLReturn);
     
@@ -251,7 +251,7 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
 
         return {
             "type" : "text",
-            "text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: ' +  JSON.stringify(entity)
+            "text" : 'Res: ' +  customerDisplayName + '\nคำถาม: ' + sourceMessage + '\nIntent: ' + intent + '\nEntity: ' +  JSON.stringify(entity)
             //"text" : 'Res: \n' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
             //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
         };
@@ -265,7 +265,7 @@ module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, 
         var traveler = memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
         return {
             "type" : "text",
-            "text" : 'Res: ' +  customerDisplayName + '\nคำถาม: \n' + sourceMessage + '\nIntent: \n' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
+            "text" : 'Res: ' +  customerDisplayName + '\nคำถาม: ' + sourceMessage + '\nIntent: ' + intent + '\nEntity: Country:' + country + '\nTourCode:' + tourcode + '\nDeparturedate: ' + departuredate + '\nReturndate: ' + returndate + '\nMonth: ' + month
             //"text" : 'Source: ' + sourceMessage + '\nMessage: ' + replyFromAi + '\nIntent: ' + intent + '\nConverse Token: ' + converseToken
         };
     }

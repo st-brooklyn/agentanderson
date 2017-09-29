@@ -204,14 +204,14 @@ function handleEvent(event) {
 
                       
             var tokenizer = configs.tokenizer + event.message.text   
-            logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
+            logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
             var request = require('request');
             var textTokenizer = '';
             request(tokenizer, function(err, res, body) {  
                 textTokenizer = body;
                 event.message.text  = textTokenizer;
-                logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
+                logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  
             });
         
             

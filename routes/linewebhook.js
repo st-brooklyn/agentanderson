@@ -38,9 +38,6 @@ function handleError(err, level) {
 
 function handleEvent(event) {
     logger.debug('[Main] Event:', event);
-
-    // http://35.193.232.190:5000/dc/xxxxx ตัดคำ ก่อนวิ่งเข้า recast
-
     // Process only text message
     if (event.type === 'postback') {
         // select action from the postback data
@@ -205,8 +202,8 @@ function handleEvent(event) {
                 });
             }
 
-            /*            
-            var tokenizer = 'http://35.202.67.147:5000/dc/' + event.message.text   
+                      
+            var tokenizer = configs.tokenizer + event.message.text   
             logger.debug('[Main] pass tokenizer', {tokenizer: tokenizer});  
 
             var request = require('request');
@@ -216,7 +213,7 @@ function handleEvent(event) {
                 event.message.text  = textTokenizer;
                 logger.debug('[Main] pass tokenizer', {text:  event.message.text });  
             });
-            */
+        
             
             var recastrequest = new rc.request(configs.recastRequestToken);
             logger.debug('[Main] Conversation token', {recastConversToken: recastConversToken});            

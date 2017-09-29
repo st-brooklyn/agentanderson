@@ -25,5 +25,6 @@ module.exports = {
     },
     apisizepage: 3,
     readrecast: 'entities',
-    timeExpired: 2
+    timeExpired: 2,
+    tokenizer: 'http://35.193.232.190:5000/dc/'
 }

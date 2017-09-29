@@ -210,11 +210,11 @@ function handleEvent(event) {
 
             request.get({
                 url: tokenizer,
-                json: true
             }, (apierr, apiresponse, apidata) => {
-                if(apierr) return logger.debug('[Main] token',apierr);   
-                logger.debug('[Main] pass tokenizer', {textbody: apidata});   
-                var checkToken = apidata
+                logger.debug('[Main] pass tokenizer', {apierr: apierr, textbody: apidata, response: apiresponse});   
+                // if(apierr) return logger.debug('[Main] token',apierr);   
+                // logger.debug('[Main] pass tokenizer', {textbody: apidata, response: apiresponse});   
+                // var checkToken = apidata
             })
             
             // request(tokenizer, function(err, res, body) {  

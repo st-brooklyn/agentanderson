@@ -298,10 +298,14 @@ function handleEvent(event) {
                 if (recast_response.action != null){
                     isdone = recast_response.action.done;
                 } 
-                if (recast_response['intents'][0] != ''){
-                    intent = recast_response['intents'][0]['slug'];
-                } 
-                                    
+                if (recast_response.intents() != []){
+                    if (recast_response['intents'][0] != ''){
+                        intent = recast_response['intents'][0]['slug'];
+                    } 
+                } else {
+                    intent = '';
+                }
+                               
                 var actual_token = recast_response.conversationToken;
 
                 // Call api tour    

@@ -380,6 +380,11 @@ function handleEvent(event) {
                 if (intent == 'tour-search') {
                     // check condition get data from api
                     if ((country || city || region) && departuredate && returndate && month && traveler)  {
+                        let datacountry = '';
+                        if (country) return datacountry = country;
+                        if (city) return datacountry = city;
+                        if (region) return datacountry = region;
+                        
                         var rpoptions = {
                             uri: configs.apiUrl,
                             qs: {
@@ -389,7 +394,7 @@ function handleEvent(event) {
                                 pagesize: configs.apisizepage,
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
-                                country_slug: country,
+                                country_slug: datacountry,
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: month,
@@ -455,6 +460,170 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });   
+                    } else if ((country || city || region) && departuredate && returndate && traveler) {
+                        let datacountry = '';
+                        if (country) return datacountry = country;
+                        if (city) return datacountry = city;
+                        if (region) return datacountry = region;
+
+                        let mperiod = new Date().toJSON();
+                        
+                        var rpoptions = {
+                            uri: configs.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: configs.apisizepage,
+                                pagenumber: '1',
+                                sortby: 'mostpopular',
+                                country_slug: datacountry,
+                                startdate: departuredate,
+                                enddate: returndate,
+                                month: mperiod.getMonth(),
+                                searchword: ''
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup] API Response:", repos);
+                            mockup_products = repos;
+                            //isdone = true;
+                            requestSuccess = true;
+
+                            // Update payload back to the mapping
+                            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                            dataGetAPI = payload
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {
+                                    apiPayload: payload, 
+                                    modifiedDate: new Date().toJSON()}
+                                },
+                                {new: true}
+                            )
+                            .then((updated) => {
+                                logger.debug("[Update Payload] Mapping updated,", updated);
+                            })
+                            .catch((updateerr) => {
+                                logger.error('[Update Payload] Error updating mapping.', updateerr);
+                            });
+                        })
+                        .catch((error)=> {
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", error);
+                        });
+
+                        while(true)
+                        {
+                            if (requestSuccess == true || timeout == 0) {
+                                logger.debug('[Mockup Product] Arrived!!')                                
+                                break;
+                            }
+
+                            logger.debug('[API Product] Waiting for product.', {
+                                requestSuccess: requestSuccess,
+                                timeout: timeout
+                            });
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+                        }
+
+                        //isdone = true;
+                        logger.debug('[API] get apiwow:', {
+                            country: country,
+                            tourcode: tourcode,
+                            departuredate: departuredate,
+                            returndate: returndate,
+                            month: month,
+                            traveler: traveler
+                        });
+                    } else if ((country || city || region) && month && traveler) {
+                        let datacountry = '';
+                        if (country) return datacountry = country;
+                        if (city) return datacountry = city;
+                        if (region) return datacountry = region;
+                        
+                        var rpoptions = {
+                            uri: configs.apiUrl,
+                            qs: {
+                                apikey: 'APImushroomtravel',
+                                mode: 'loadproductchatbot',
+                                lang: 'th',
+                                pagesize: configs.apisizepage,
+                                pagenumber: '1',
+                                sortby: 'mostpopular',
+                                country_slug: datacountry,
+                                startdate: '',
+                                enddate: '',
+                                month: month,
+                                searchword: ''
+                            },
+                            headers: {
+                                'User-Agent': 'Request-Promise'
+                            },
+                            json: true // Automatically parses the JSON string in the response
+                        };
+
+                        rp(rpoptions)
+                        .then((repos) => {
+                            //log.handleError("[API Mockup] Repos: " + JSON.stringify(repos), "DEBUG");
+                            logger.debug("[API Mockup] API Response:", repos);
+                            mockup_products = repos;
+                            //isdone = true;
+                            requestSuccess = true;
+
+                            // Update payload back to the mapping
+                            var payload = tp.createApiPayload(intent, country, departuredate, returndate, month, tourcode);
+                            dataGetAPI = payload
+                            Mapping.findByIdAndUpdate(mappingId, 
+                                {$set: {
+                                    apiPayload: payload, 
+                                    modifiedDate: new Date().toJSON()}
+                                },
+                                {new: true}
+                            )
+                            .then((updated) => {
+                                logger.debug("[Update Payload] Mapping updated,", updated);
+                            })
+                            .catch((updateerr) => {
+                                logger.error('[Update Payload] Error updating mapping.', updateerr);
+                            });
+                        })
+                        .catch((error)=> {
+                            //log.handleError('[Find to return api] ' + errupdate.stack, "ERROR");
+                            logger.error("[Find to return api]", error);
+                        });
+
+                        while(true)
+                        {
+                            if (requestSuccess == true || timeout == 0) {
+                                logger.debug('[Mockup Product] Arrived!!')                                
+                                break;
+                            }
+
+                            logger.debug('[API Product] Waiting for product.', {
+                                requestSuccess: requestSuccess,
+                                timeout: timeout
+                            });
+                            require('deasync').sleep(500);
+                            timeout -= 500;
+                        }
+
+                        //isdone = true;
+                        logger.debug('[API] get apiwow:', {
+                            country: country,
+                            tourcode: tourcode,
+                            departuredate: departuredate,
+                            returndate: returndate,
+                            month: month,
+                            traveler: traveler
+                        });
                     } else if (tourcode && departuredate && returndate && month && traveler) {
                         var rpoptions = {
                             uri: configs.apiUrl,
@@ -543,8 +712,8 @@ function handleEvent(event) {
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
                                 country_slug: '',
-                                startdate: '',
-                                enddate: '',
+                                startdate: departuredate,
+                                enddate: returndate,
                                 month: mperiod.getMonth(),
                                 searchword: tourcode
                             },
@@ -684,7 +853,7 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });
-                    } else {
+                    }  else {
                         logger.debug('[API] No entity condition');                        
                     }
                     //}

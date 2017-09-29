@@ -213,6 +213,7 @@ function handleEvent(event) {
                 event.message.text  = textTokenizer;
                 logger.debug('[Main] pass tokenizer', {textbody: textTokenizer, event: event.message.text });  
             });
+              logger.debug('[Main] tokenizer', {text}); 
         
             
             var recastrequest = new rc.request(configs.recastRequestToken);

@@ -212,7 +212,7 @@ function handleEvent(event) {
                 url: tokenizer,
                 json: true
             }, (apierr, apiresponse, apidata) => {
-                if(apierr) returnlogger.debug('[Main] token',apierr);   
+                if(apierr) return logger.debug('[Main] token',apierr);   
                 logger.debug('[Main] pass tokenizer', {textbody: apidata});   
                 var checkToken = apidata
             })

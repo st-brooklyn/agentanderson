@@ -209,9 +209,10 @@ function handleEvent(event) {
             var token = {
                 uri: tokenizer,
                 headers: {
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'User-Agent': 'Request-Promise'
                 },
-                json: true // Automatically parses the JSON string in the response
+                json: false // Automatically parses the JSON string in the response
             };
 
             rp(token)

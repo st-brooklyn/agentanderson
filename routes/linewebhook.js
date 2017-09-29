@@ -206,13 +206,10 @@ function handleEvent(event) {
             var tokenizer = configs.tokenizer + event.message.text   
             logger.debug('[Main] path tokenizer', {tokenizer: tokenizer});  
 
-            var request = require('request');
-                request('http://www.google.com', function (error, response, body) {
-                console.log('error:', error); // Print the error if one occurred
-                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                console.log('body:', body); // Print the HTML for the Google homepage.
-                });
-
+            http.get(tokenizer, (res) => {
+                 logger.debug('[Main] pass tokenizer', { res});  
+               
+            });
             // var request = require('request');
             // var textTokenizer = '';
             // request(tokenizer, function(err, res, body) {  

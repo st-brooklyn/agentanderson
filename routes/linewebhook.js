@@ -298,7 +298,7 @@ function handleEvent(event) {
                 if (recast_response.action != null){
                     isdone = recast_response.action.done;
                 } 
-                if (recast_response.intents[0] != []){
+                if (recast_response.intents[0]){
                     if (recast_response['intents'][0] != ''){
                         intent = recast_response['intents'][0]['slug'];
                     } 

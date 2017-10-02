@@ -14,32 +14,32 @@ append body
         br
         label(for='country') Country:
         select#country.form-control(type='select' placeholder='เลือกประเทศ' name='country')
-          option(value="ญี่ปุ่น") ญี่ปุ่น
-          option(value="เกาหลี") เกาหลี
-          option(value="ฮ่องกง") ฮ่องกง
-          option(value="สิงคโปร์") สิงคโปร์
-          option(value="ยุโรป") ยุโรป
-          option(value="พม่า") พม่า
-          option(value="เวียดนาม") เวียดนาม
-          option(value="จีน") จีน
-          option(value="มาเก๊า") มาเก๊า
-          option(value="ลาว") ลาว
-          option(value="ไต้หวัน") ไต้หวัน
-          option(value="เยอรมัน") เยอรมัน
-          option(value="อินเดีย") อินเดีย
-          option(value="อเมริกา") อเมริกา
-          option(value="ออสเตรเลีย") ออสเตรเลีย
-          option(value="นิวซีแลนด์") นิวซีแลนด์
-          option(value="อียิปต์") อียิปต์
-          option(value="แอฟริกาใต้") แอฟริกาใต้
-          option(value="รัสเซีย") รัสเซีย
-          option(value="อังกฤษ") อังกฤษ
-          option(value="ออสเตรีย") ออสเตรีย
+          option(value="ญี่ปุ่น" selected= country == ญี่ปุ่น) ญี่ปุ่น
+          option(value="เกาหลี" selected= country == เกาหลี) เกาหลี
+          option(value="ฮ่องกง" selected= country == ฮ่องกง) ฮ่องกง
+          option(value="สิงคโปร์" selected= country == สิงคโปร์) สิงคโปร์
+          option(value="ยุโรป" selected= country == ยุโรป) ยุโรป
+          option(value="พม่า" selected= country == พม่า) พม่า
+          option(value="เวียดนาม" selected= country == เวียดนาม) เวียดนาม
+          option(value="จีน" selected= country == จีน) จีน
+          option(value="มาเก๊า" selected= country == มาเก๊า) มาเก๊า
+          option(value="ลาว" selected= country == ลาว) ลาว
+          option(value="ไต้หวัน" selected= country == ไต้หวัน) ไต้หวัน
+          option(value="เยอรมัน" selected= country == เยอรมัน) เยอรมัน
+          option(value="อินเดีย" selected= country == อินเดีย) อินเดีย
+          option(value="อเมริกา" selected= country == อเมริกา) อเมริกา
+          option(value="ออสเตรเลีย" selected= country == ออสเตรเลีย) ออสเตรเลีย
+          option(value="นิวซีแลนด์" selected= country == นิวซีแลนด์) นิวซีแลนด์
+          option(value="อียิปต์" selected= country == อียิปต์) อียิปต์
+          option(value="แอฟริกาใต้" selected= country == แอฟริกาใต้) แอฟริกาใต้
+          option(value="รัสเซีย" selected= country == รัสเซีย) รัสเซีย
+          option(value="อังกฤษ" selected= country == อังกฤษ) อังกฤษ
+          option(value="ออสเตรีย" selected= country == ออสเตรีย) ออสเตรีย
 
           script.
             var pOptions = document.getElementById('country').options;
             for (i=0; i < pOptions.length; i++) {
-              if (pOptions[i].value == #{property.typeId}) pOptions[i].selected = true;
+              if (pOptions[i].value == #country) pOptions[i].selected = true;
             }
         br
         label(for='tourcode') Product Code:

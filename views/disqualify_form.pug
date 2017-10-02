@@ -1,5 +1,7 @@
 extends ../node_modules/pug-bootstrap/_bootstrap
 
+- const stateOptions = [{value:'AL', text:'Alabama'},{value:'XX', text:'XXXXXXXXX'}]
+
 append body
   h1= title
   p Welcome to #{title}
@@ -13,28 +15,12 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country')
-          option(value="ญี่ปุ่น") ญี่ปุ่น
-          option(value="เกาหลี") เกาหลี
-          option(value="ฮ่องกง") ฮ่องกง
-          option(value="สิงคโปร์") สิงคโปร์
-          option(value="ยุโรป") ยุโรป
-          option(value="พม่า" ) พม่า
-          option(value="เวียดนาม") เวียดนาม
-          option(value="จีน") จีน
-          option(value="มาเก๊า") มาเก๊า
-          option(value="ลาว") ลาว
-          option(value="ไต้หวัน") ไต้หวัน
-          option(value="เยอรมัน") เยอรมัน
-          option(value="อินเดีย") อินเดีย
-          option(value="อเมริกา") อเมริกา
-          option(value="ออสเตรเลีย") ออสเตรเลีย
-          option(value="นิวซีแลนด์") นิวซีแลนด์
-          option(value="อียิปต์") อียิปต์
-          option(value="แอฟริกาใต้") แอฟริกาใต้
-          option(value="รัสเซีย") รัสเซีย
-          option(value="อังกฤษ") อังกฤษ
-          option(value="ออสเตรีย") ออสเตรีย
+        select#state(name='state')
+          each option in stateOptions
+            if (option.value === meeting.state) 
+              option(value=(option.value) selected) #{option.text}
+            else
+              option(value=(option.value)) #{option.text}
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

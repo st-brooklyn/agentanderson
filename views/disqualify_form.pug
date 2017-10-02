@@ -14,8 +14,8 @@ append body
         br
         label(for='country') Country:
         select#country.form-control(type='select' placeholder='เลือกประเทศ' name='country')
-          option(value='0', selected= true) -- Select --
-          option(value="ญี่ปุ่น" selected= country.id == ญี่ปุ่น) ญี่ปุ่น
+          option(selected=country == country) #{country}
+          option(value="ญี่ปุ่น" selected= country == "ญี่ปุ่น) ญี่ปุ่น
           option(value="เกาหลี" selected= country.id == เกาหลี) เกาหลี
           option(value="ฮ่องกง" selected= country.id == ฮ่องกง) ฮ่องกง
           option(value="สิงคโปร์" selected= country.id == สิงคโปร์) สิงคโปร์

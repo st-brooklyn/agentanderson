@@ -118,11 +118,18 @@ exports.disqualify_get = function(req, res, next) {
                 source: source,
                 intent: intent,
                 country: entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null,
+                city: entity['city'] ? entity['city'][0] ? entity['city'][0]['value'] : null : null,
+                region: entity['region'] ? entity['region'][0] ? entity['region'][0]['value'] : null : null,
                 tourcode: entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null,
+                price: entity['price'] ? entity['price'][0] ? entity['price'][0]['value'] : null : null,
                 departuredate: entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null,
                 returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
                 month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
-                traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null
+                period: entity['period'] ? entity['period'][0] ? entity['period'][0]['value'] : null : null,
+                holiday: entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null,
+                traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null,
+                traveleradult: entity['traveler_adult'] ? entity['traveler_adult'][0] ? entity['traveler_adult'][0]['value'] : null : null,
+                traveler_child: entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
             });     
 
             logger.silly("[DisQualify] send to form", {

@@ -887,11 +887,11 @@ function handleEvent(event) {
                     messages.push(replyToClient);
                 }
                 
-                if (intent != '') {
+                //if (intent != '') {
                     reply_confirm = tp.templateConfirm(mappingId, '');
-                } else {
-                    reply_confirm = tp.templateNo(mappingId, '');
-                }
+                // } else {
+                //     reply_confirm = tp.templateNo(mappingId, '');
+                // }
 
             
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                

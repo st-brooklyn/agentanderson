@@ -239,6 +239,33 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
     return confirm;
 }
 
+module.exports.templateNo = function(mappingId, recastUuid){
+    let confirm = {
+        "type": "template",
+        "altText": "this is a confirm template",
+        "template": {
+            "type": "confirm",
+            "text": configs.predefinedMessages.confirmMessage,
+            "actions": [
+                {
+                    "type": "message",
+                    "label": "Yes",
+                    "text": "yes"
+                },
+                {
+                  "type": "uri",
+                  "label": "No",
+                  "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
+                }
+            ]
+        }
+    };
+
+    console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
+
+    return confirm;
+}
+
 module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName, entity, memory){
     if (configs.readrecast != 'memory'){
        return {

@@ -13,33 +13,28 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        select#country.select.form-control.input-lg(type='select' placeholder='เลือกประเทศ' name='country')
-        script.
-          var pOptions = document.getElementById('country').options;
-          for (i=0; i < pOptions.length; i++) {
-            if (pOptions[i].value == #{country}) pOptions[i].selected = true;
-          }
-          option(value="ญี่ปุ่น" selected= country.id == ญี่ปุ่น) ญี่ปุ่น
-          option(value="เกาหลี" selected= country.id == เกาหลี) เกาหลี
-          option(value="ฮ่องกง" selected= country.id == ฮ่องกง) ฮ่องกง
-          option(value="สิงคโปร์" selected= country.id == สิงคโปร์) สิงคโปร์
-          option(value="ยุโรป" selected= country.id == ยุโรป) ยุโรป
-          option(value="พม่า" selected= country.id == พม่า) พม่า
-          option(value="เวียดนาม" selected= country.id == เวียดนาม) เวียดนาม
-          option(value="จีน" selected= country.id == จีน) จีน
-          option(value="มาเก๊า" selected= country.id == มาเก๊า) มาเก๊า
-          option(value="ลาว" selected= country.id == ลาว) ลาว
-          option(value="ไต้หวัน" selected= country.id == ไต้หวัน) ไต้หวัน
-          option(value="เยอรมัน" selected= country.id == เยอรมัน) เยอรมัน
-          option(value="อินเดีย" selected= country.id == อินเดีย) อินเดีย
-          option(value="อเมริกา" selected= country.id == อเมริกา) อเมริกา
-          option(value="ออสเตรเลีย" selected= country.id == ออสเตรเลีย) ออสเตรเลีย
-          option(value="นิวซีแลนด์" selected= country.id == นิวซีแลนด์) นิวซีแลนด์
-          option(value="อียิปต์" selected= country.id == อียิปต์) อียิปต์
-          option(value="แอฟริกาใต้" selected= country.id == แอฟริกาใต้) แอฟริกาใต้
-          option(value="รัสเซีย" selected= country.id == รัสเซีย) รัสเซีย
-          option(value="อังกฤษ" selected= country.id == อังกฤษ) อังกฤษ
-          option(value="ออสเตรีย" selected= country.id == ออสเตรีย) ออสเตรีย
+        select#country.select.form-control(type='select' placeholder='เลือกประเทศ' name='country')
+          option(value="ญี่ปุ่น") ญี่ปุ่น
+          option(value="เกาหลี") เกาหลี
+          option(value="ฮ่องกง") ฮ่องกง
+          option(value="สิงคโปร์") สิงคโปร์
+          option(value="ยุโรป") ยุโรป
+          option(value="พม่า" ) พม่า
+          option(value="เวียดนาม") เวียดนาม
+          option(value="จีน") จีน
+          option(value="มาเก๊า") มาเก๊า
+          option(value="ลาว") ลาว
+          option(value="ไต้หวัน") ไต้หวัน
+          option(value="เยอรมัน") เยอรมัน
+          option(value="อินเดีย") อินเดีย
+          option(value="อเมริกา") อเมริกา
+          option(value="ออสเตรเลีย") ออสเตรเลีย
+          option(value="นิวซีแลนด์") นิวซีแลนด์
+          option(value="อียิปต์") อียิปต์
+          option(value="แอฟริกาใต้") แอฟริกาใต้
+          option(value="รัสเซีย") รัสเซีย
+          option(value="อังกฤษ") อังกฤษ
+          option(value="ออสเตรีย") ออสเตรีย
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)
@@ -59,6 +54,14 @@ append body
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='Number', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)
         br
+        var array = ['a', 'b', 'c'];
+        +generateDropDownList('label', 'id', 'array')
+
+        mixin generateDropDownList(label, id, array)
+          label(for=id) #{label}
+          select(name=id placeholder=placeholder id=id)
+            each val in array
+              option #{val}
         +submit-primary("ส่งข้อมูล")        
 
     if errors

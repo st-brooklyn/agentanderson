@@ -54,14 +54,6 @@ append body
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='Number', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)
         br
-        var array = ['a', 'b', 'c'];
-        +generateDropDownList('label', 'id', 'array')
-
-        mixin generateDropDownList(label, id, array)
-          label(for=id) #{label}
-          select(name=id placeholder=placeholder id=id)
-            each val in array
-              option #{val}
         +submit-primary("ส่งข้อมูล")        
 
     if errors

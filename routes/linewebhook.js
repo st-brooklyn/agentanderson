@@ -887,11 +887,12 @@ function handleEvent(event) {
                     messages.push(replyToClient);
                 }
                 
-                //if (replyToClient == null){
-                reply_confirm = tp.templateConfirm(mappingId, '');
-                // } else {
-                //     reply_confirm = tp.templateConfirm(mappingId, replyToClient.text);
-                // }
+                if (intent != '') {
+                    reply_confirm = tp.templateConfirm(mappingId, '');
+                } else {
+                    reply_confirm = tp.templateNo(mappingId, '');
+                }
+
             
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                
                 if(reply == null) {

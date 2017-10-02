@@ -15,7 +15,7 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        select#state(name='state')
+        select#country(name='country')
           each option in stateOptions
             if (option.value === meeting.state) 
               option(value=(option.value) selected) #{option.text}

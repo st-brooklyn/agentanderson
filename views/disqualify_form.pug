@@ -13,10 +13,10 @@ append body
         input#intent.form-control(type='text', placeholder='Please select intent...' name='intent' value=intent)
         br
         label(for='country') Country:
-        - const worshipstyleOptions = [{value: 'Programmed'}, {value: 'Unprogrammed'}, {value: 'Semi-programmed'}]
-          select#worshipstyle(name='worshipstyle' size='3' multiple required)
-          each worshipstyle in worshipstyleOptions
-            option(value=(worshipstyle.value)) #{worshipstyle.value}
+        - const listCountryOption = [{value: 'ญี่ปุ่น' }, {value: 'เกาหลี'}, {value: 'ฮ่องกง'}]
+          select#country.form-control(type='select' placeholder='เลือกประเทศ' name='country')
+          each country in listCountryOption
+            option(value=(country.value)) #{country.value}
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

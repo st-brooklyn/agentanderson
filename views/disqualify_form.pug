@@ -35,6 +35,12 @@ append body
           option(value="รัสเซีย") รัสเซีย
           option(value="อังกฤษ") อังกฤษ
           option(value="ออสเตรีย") ออสเตรีย
+
+          script.
+            var pOptions = document.getElementById('country').options;
+            for (i=0; i < pOptions.length; i++) {
+              if (pOptions[i].value == #{property.typeId}) pOptions[i].selected = true;
+            }
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

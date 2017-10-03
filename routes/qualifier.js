@@ -29,7 +29,7 @@ function handleError(err, level) {
 
 router.get('/disqualify/:id', qualifier_controller.disqualify_get);
 router.post('/disqualify/:id', qualifier_controller.disqualify_post);
-
+router.get('/disqualifytraining/:id', qualifier_controller.disqualifytraining_get);
 /* GET home page. */
 router.get('/qualify/:id', function (req, res, next) {
     var id = req.params.id;
@@ -59,6 +59,8 @@ router.get('/qualify/:id', function (req, res, next) {
         handleError("[Find one for Qualification] " + finderror.stack, "ERROR");
     });
 });
+
+
 
 // router.get('/disqualify/:id', function(req, res) {
 //     // Update the database that this is not correct

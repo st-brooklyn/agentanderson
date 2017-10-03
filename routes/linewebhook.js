@@ -367,7 +367,14 @@ function handleEvent(event) {
                     departuredate: departuredate,
                     returndate: returndate,
                     month: month,
-                    traveler: traveler
+                    traveler: traveler,
+                    city: city,
+                    region: region,
+                    price: price,
+                    period: period,
+                    holiday: holiday,
+                    traveleradult: traveleradult,
+                    traveler_child: traveler_child
                 });
 
                 // if (country == null && departuredate == null && returndate == null && traveler == null){
@@ -384,7 +391,7 @@ function handleEvent(event) {
                         if (country) return datacountry = country;
                         if (city) return datacountry = city;
                         if (region) return datacountry = region;
-                        
+                        logger.debug("[API Mockup] data country :", datacountry);
                         var rpoptions = {
                             uri: configs.apiUrl,
                             qs: {

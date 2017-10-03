@@ -239,6 +239,33 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
     return confirm;
 }
 
+module.exports.templateTraining = function(mappingId, recastUuid){
+    let confirm = {
+        "type": "template",
+        "altText": "this is a confirm template training",
+        "template": {
+            "type": "confirm",
+            "text": configs.predefinedMessages.confirmMessage,
+            "actions": [
+                {
+                  "type": "postback",
+                  "label": "Yes",
+                  "data": '{"action": "qualify", "mappingId": "' + mappingId + '", "recastUuid": "' + recastUuid + '"}',
+                },
+                {
+                  "type": "postback",
+                  "label": "No",
+                  "data": '{"action": "disqualifytraining", "mappingId": "' + mappingId + '", "recastUuid": "' + recastUuid + '"}',
+                }
+            ]
+        }
+    };
+
+    console.log("DEBUG: [createConfirmation] " + JSON.stringify(confirm));
+
+    return confirm;
+}
+
 module.exports.templateAIMessage = function(intent, converseToken, replyFromAi, sourceMessage, customerDisplayName, entity, memory){
     if (configs.readrecast != 'memory'){
        return {

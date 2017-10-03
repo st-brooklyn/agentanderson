@@ -72,14 +72,31 @@ exports.qualify_get = function(id, recastUuid){
                 .catch((errUpdate) => {
                     logger.error('[QUalify] Failed updating mapping', errupdate);
                 });
-
-                lineclient.pushMessage(foundone.customerId, tpc.templateReply(intent, configs.predefinedMessages.confirmSuccess))
-                .then((notify) => {
-                    logger.debug('[Qualify] Push confirm success', notify);
-                })
-                .catch((confirmerr) => {
-                    logger.error('[Qualify] Push confirm failed.', confirmerr);
-                });
+                if (configs.modetraining == true){
+                    var training = {
+                        uri: 'http://chatlog.tourprox.com/train/send',
+                        headers: {
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                            'User-Agent': 'Request-Promise'
+                        },
+                        json: false 
+                    };
+                    rp(training)
+                    .then((train) => {
+                        logger.debug("[train] train:", train);
+                    })
+                    .catch((error)=> {
+                        logger.error("[train]", error);
+                    });
+                } else {
+                    lineclient.pushMessage(foundone.customerId, tpc.templateReply(intent, configs.predefinedMessages.confirmSuccess))
+                    .then((notify) => {
+                        logger.debug('[Qualify] Push confirm success', notify);
+                    })
+                    .catch((confirmerr) => {
+                        logger.error('[Qualify] Push confirm failed.', confirmerr);
+                    });
+                }
             })
             .catch((pushError) => {
                 logger.error('[Push after qualify]', pushError);            
@@ -91,81 +108,170 @@ exports.qualify_get = function(id, recastUuid){
     });
 };
 
-exports.disqualify_get = function(req, res, next) {
-    logger.silly("[Disqualify] Data", req);
+exports.disqualifytraining_get = function(id, recastUuid){
+    logger.debug("[DisQualify Training]", {mappingId: id, recastUuid: recastUuid});
 
-    Recast.findOne({mappingId: req.params.id}).sort({ "_id": -1 })
+    Mapping.findById(id)
     .then((foundone) => {
         // get the message and send back to the room
-        logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
-        var resMessage = foundone.responseMessage;
+        logger.silly("[DisQualify Training] Found a mapping.", foundone);
 
-        var source = resMessage.source;
-        var intent = '';
-        if (resMessage.action != null){
-            intent = resMessage.action.slug;
-        } else {
-            intent = 'tour-search'
+        var foundRecastUuid = foundone.recastUuid;
+        var isSent = foundone.isSent;
+
+        if(isSent == true && recastUuid == foundRecastUuid) {
+            logger.debug('[DisQualify Training] This message is already sent.');
         }
-
-        var entity = resMessage['entities'];
-        var memory = resMessage['memory'];
-
-        if (configs.readrecast != 'memory') {
+        else {
+            var roomId = foundone.roomId;
+            var reply = foundone.replyMessage;
             
-             res.render('disqualify_form', {title: 'Disqualify Form', 
-                mappingId: req.params.id, 
-                source: source,
-                intent: intent,
-                country: entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null,
-                city: entity['city'] ? entity['city'][0] ? entity['city'][0]['value'] : null : null,
-                region: entity['region'] ? entity['region'][0] ? entity['region'][0]['value'] : null : null,
-                tourcode: entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null,
-                price: entity['price'] ? entity['price'][0] ? entity['price'][0]['value'] : null : null,
-                departuredate: entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null,
-                returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
-                month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
-                period: entity['period'] ? entity['period'][0] ? entity['period'][0]['value'] : null : null,
-                holiday: entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null,
-                traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null,
-                traveleradult: entity['traveler_adult'] ? entity['traveler_adult'][0] ? entity['traveler_adult'][0]['value'] : null : null,
-                traveler_child: entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
-            });     
-
-            logger.silly("[DisQualify] send to form", {
-                Mapping: mappingId, 
-                Intent: intent,
-                Country: country,
-                Tourcode: Tourcode,
-                Departuredate: departuredate,
-                Returndate: returndate,
-                Month: month,
-                Traveler: traveler});      
-        } else {
-            res.render('disqualify_form', {title: 'Disqualify Form', 
-                mappingId: req.params.id, 
-                intent: intent,
-                source: source,
-                country: memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null,
-                tourcode: memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null,
-                departuredate: memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null,
-                returndate: memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : null : null,
-                month: memory['month'] ? memory['month'] ? memory['month']['value'] : null : null,
-                traveler: memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
+            reply = reply.replace('/\[\[.*\]\]/', '');
+            logger.silly('[DisQualify Training] Replaced message', {ModifiedReply: reply});
+    
+            ConfirmationResult.create({
+                mappingId: id,
+                intent: foundone.intent,
+                message: '',
+                reservationId: foundone.customerId,
+                result: true,
+                apiPayload: foundone.apiPayload,
+                createdDate: new Date().toJSON(),
+                modifiedDate: new Date().toJSON()
+            })
+            .then((created) => {
+                logger.debug("[Create DisQualify Recast-YES]", created);
+            })
+            .catch((error) => {
+                logger.error("[Create DisQualify Recast-NO", error);
             });
 
-            logger.silly("[DisQualify] send to form", {
-                Mapping: mappingId, 
-                Intent: intent,
-                Country: country,
-                Tourcode: Tourcode,
-                Departuredate: departuredate,
-                Returndate: returndate,
-                Month: month,
-                Traveler: traveler}); 
-        }
-    });
+            // send message to room
+            var lineclient = new line.Client(configs.botmapping.default);
 
+            lineclient.pushMessage(roomId, JSON.parse(reply))            
+            .then(() => {
+                logger.debug("[Push after DisQualify] Message sent");
+
+                Mapping.findByIdAndUpdate(id, 
+                    {$set: {
+                        action: "No",
+                        isSent: true,
+                        modifiedDate: new Date().toJSON()
+                    }}, 
+                    {new: true})
+                .then((updatedone) => {
+                    logger.debug('[DisQualify Training] Updated mapping.', updatedone)
+                })
+                .catch((errUpdate) => {
+                    logger.error('[DisQualify Training] Failed updating mapping', errupdate);
+                });
+
+                var training = {
+                    uri: 'http://chatlog.tourprox.com/train/send',
+                    headers: {
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                        'User-Agent': 'Request-Promise'
+                    },
+                    json: false 
+                };
+                rp(training)
+                .then((train) => {
+                    logger.debug("[train] train:", train);
+                })
+                .catch((error)=> {
+                    logger.error("[train]", error);
+                });
+                
+            })
+            .catch((pushError) => {
+                logger.error('[Push after disqualify train]', pushError);            
+            });
+        }
+    })
+    .catch((finderror) => {
+        logger.error("[Find one for DisQualification]", finderror);        
+    });
+};
+
+exports.disqualify_get = function(req, res, next) {
+    logger.silly("[Disqualify] Data", req);
+    if (configs.modetraining == true){
+
+
+    } else{
+        Recast.findOne({mappingId: req.params.id}).sort({ "_id": -1 })
+        .then((foundone) => {
+            // get the message and send back to the room
+            logger.silly("[DisQualify] Found a recast.", foundone.responseMessage);
+            var resMessage = foundone.responseMessage;
+
+            var source = resMessage.source;
+            var intent = '';
+            if (resMessage.action != null){
+                intent = resMessage.action.slug;
+            } else {
+                intent = 'tour-search'
+            }
+
+            var entity = resMessage['entities'];
+            var memory = resMessage['memory'];
+
+            if (configs.readrecast != 'memory') {
+                
+                res.render('disqualify_form', {title: 'Disqualify Form', 
+                    mappingId: req.params.id, 
+                    source: source,
+                    intent: intent,
+                    country: entity['country'] ? entity['country'][0] ? entity['country'][0]['value'] : null : null,
+                    city: entity['city'] ? entity['city'][0] ? entity['city'][0]['value'] : null : null,
+                    region: entity['region'] ? entity['region'][0] ? entity['region'][0]['value'] : null : null,
+                    tourcode: entity['tourcode'] ? entity['tourcode'][0] ? entity['tourcode'][0]['value'] : null : null,
+                    price: entity['price'] ? entity['price'][0] ? entity['price'][0]['value'] : null : null,
+                    departuredate: entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null,
+                    returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
+                    month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
+                    period: entity['period'] ? entity['period'][0] ? entity['period'][0]['value'] : null : null,
+                    holiday: entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null,
+                    traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null,
+                    traveleradult: entity['traveler_adult'] ? entity['traveler_adult'][0] ? entity['traveler_adult'][0]['value'] : null : null,
+                    traveler_child: entity['traveler_child'] ? entity['traveler_child'][0] ? entity['traveler_child'][0]['value'] : null : null
+                });     
+
+                logger.silly("[DisQualify] send to form", {
+                    Mapping: mappingId, 
+                    Intent: intent,
+                    Country: country,
+                    Tourcode: Tourcode,
+                    Departuredate: departuredate,
+                    Returndate: returndate,
+                    Month: month,
+                    Traveler: traveler});      
+            } else {
+                res.render('disqualify_form', {title: 'Disqualify Form', 
+                    mappingId: req.params.id, 
+                    intent: intent,
+                    source: source,
+                    country: memory['destination'] ? memory['destination'] ? memory['destination']['value'] : null : null,
+                    tourcode: memory['tourcode'] ? memory['tourcode'] ? memory['tourcode']['value'] : null : null,
+                    departuredate: memory['departure-date'] ? memory['departure-date'] ? memory['departure-date']['value'] : null : null,
+                    returndate: memory['returndate'] ? memory['returndate'] ? memory['returndate']['value'] : null : null,
+                    month: memory['month'] ? memory['month'] ? memory['month']['value'] : null : null,
+                    traveler: memory['traveler'] ? memory['traveler'] ? memory['traveler']['value'] : null : null
+                });
+
+                logger.silly("[DisQualify] send to form", {
+                    Mapping: mappingId, 
+                    Intent: intent,
+                    Country: country,
+                    Tourcode: Tourcode,
+                    Departuredate: departuredate,
+                    Returndate: returndate,
+                    Month: month,
+                    Traveler: traveler}); 
+            }
+        });
+    }
     //res.render('disqualify_form', {title: 'Disqualify Form', mappingId: req.params.id});
 };
 

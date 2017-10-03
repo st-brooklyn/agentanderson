@@ -895,11 +895,11 @@ function handleEvent(event) {
                     messages.push(replyToClient);
                 }
                 
-                //if (intent != '') {
+                if (configs.modetraining == true) {
+                    reply_confirm = tp.templateTraining(mappingId, '');
+                } else {
                     reply_confirm = tp.templateConfirm(mappingId, '');
-                // } else {
-                //     reply_confirm = tp.templateNo(mappingId, '');
-                // }
+                }
 
             
                 var reply = recast_response.reply() + '\n' + recast_response.conversationToken;                

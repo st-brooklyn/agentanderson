@@ -386,12 +386,13 @@ function handleEvent(event) {
                 
                 if (intent == 'tour-search') {
                     // check condition get data from api
-                    if ((country || city || region) && departuredate && returndate && month && traveler)  {
-                        let datacountry = '';
-                        if (country) return datacountry = country;
-                        if (city) return datacountry = city;
-                        if (region) return datacountry = region;
-                        logger.debug("[API Mockup] data country :", datacountry);
+                    //if ((country || city || region) && departuredate && returndate && month && traveler)  {
+                    if (country && departuredate && returndate && month && traveler)  {
+                        // let datacountry = '';
+                        // if (country) return datacountry = country;
+                        // if (city) return datacountry = city;
+                        // if (region) return datacountry = region;
+                        // logger.debug("[API Mockup] data country :", datacountry);
                         var rpoptions = {
                             uri: configs.apiUrl,
                             qs: {
@@ -401,7 +402,7 @@ function handleEvent(event) {
                                 pagesize: configs.apisizepage,
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
-                                country_slug: datacountry,
+                                country_slug: country,
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: month,
@@ -467,11 +468,11 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });   
-                    } else if ((country || city || region) && departuredate && returndate && traveler) {
-                        let datacountry = '';
-                        if (country) return datacountry = country;
-                        if (city) return datacountry = city;
-                        if (region) return datacountry = region;
+                    } else if (country && departuredate && returndate && traveler) {
+                        // let datacountry = '';
+                        // if (country) return datacountry = country;
+                        // if (city) return datacountry = city;
+                        // if (region) return datacountry = region;
 
                         let mperiod = new Date().toJSON();
                         
@@ -484,7 +485,7 @@ function handleEvent(event) {
                                 pagesize: configs.apisizepage,
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
-                                country_slug: datacountry,
+                                country_slug: country,
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: mperiod.getMonth(),
@@ -550,11 +551,11 @@ function handleEvent(event) {
                             month: month,
                             traveler: traveler
                         });
-                    } else if ((country || city || region) && month && traveler) {
-                        let datacountry = '';
-                        if (country) return datacountry = country;
-                        if (city) return datacountry = city;
-                        if (region) return datacountry = region;
+                    } else if (country && month && traveler) {
+                        // let datacountry = '';
+                        // if (country) return datacountry = country;
+                        // if (city) return datacountry = city;
+                        // if (region) return datacountry = region;
                         
                         var rpoptions = {
                             uri: configs.apiUrl,
@@ -565,7 +566,7 @@ function handleEvent(event) {
                                 pagesize: configs.apisizepage,
                                 pagenumber: '1',
                                 sortby: 'mostpopular',
-                                country_slug: datacountry,
+                                country_slug: country,
                                 startdate: '',
                                 enddate: '',
                                 month: month,

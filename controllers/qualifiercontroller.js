@@ -5,6 +5,7 @@ const ConfirmationResult = require('../models/confirmationresult');
 const configs = require('../data/config');
 const line = require('@line/bot-sdk');
 const tpc = require('./templatecontroller');
+const rp = require('request-promise');
 
 exports.qualify_get = function(id, recastUuid){
     logger.debug("[Qualify]", {mappingId: id, recastUuid: recastUuid});

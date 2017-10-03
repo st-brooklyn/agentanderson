@@ -47,12 +47,23 @@ function handleEvent(event) {
         logger.debug("[Postback] Data: ", postbackdata);
         var qualifier = require('../controllers/qualifiercontroller');
         
-        if (postbackdata['action'] === 'qualify') {
-            logger.debug("Action", {action: postbackdata['action']});
-            qualifier.qualify_get(postbackdata['mappingId'], postbackdata['recastUuid']);            
-        }
-        else {
-            logger.warn("No action found.", {type: typeof(postbackdata)});
+        if (configs.modetraining == true){
+            if (postbackdata['action'] === 'qualify') {
+                logger.debug("Action", {action: postbackdata['action']});
+                qualifier.qualify_get(postbackdata['mappingId'], postbackdata['recastUuid']);            
+            } 
+            else {
+                logger.debug("Action", {action: postbackdata['action']});
+                qualifier.disqualifytraining_get(postbackdata['mappingId'], postbackdata['recastUuid']);       
+            }
+        } else {
+            if (postbackdata['action'] === 'qualify') {
+                logger.debug("Action", {action: postbackdata['action']});
+                qualifier.qualify_get(postbackdata['mappingId'], postbackdata['recastUuid']);            
+            } 
+            else {
+                logger.warn("No action found.", {type: typeof(postbackdata)});
+            }
         }
     }
     else if (event.type !== 'message' || event.message.type !== 'text') {

@@ -1,10 +1,10 @@
 module.exports = {
-    // mapper: 'U5f4a5b31134878d0c98a1233d7e71d59', // น้องเม่น 
-    mapper: 'U5753269d897c7a610ad81fbe741806c6', 
+    mapper: 'U5f4a5b31134878d0c98a1233d7e71d59', // น้องเม่น 
+    // mapper: 'U5753269d897c7a610ad81fbe741806c6', 
     lineChannelAccessToken: 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=',
     lineChannelSecret: '912ad53b5e85ed684a9c52ac621d77e9',
     apiUrl: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',
-    recastRequestToken: '1307df439794fa6122aa0f939f7d4c58',
+    recastRequestToken: '14dbc382a7fcd17d4df5e3a8a73a0176', //tourbot
     connectionDB: 'mongodb://admin:password@ds052649.mlab.com:52649/softsq_chatbot_database',
     //connectionDB: 'mongodb://chatbot_app:SoftSQ#2017@apitest.softsq.com:27017/softsq_chatbot',
     apitimeout: 10000,
@@ -25,8 +25,8 @@ module.exports = {
         confirmFailure: 'ข้อความส่งไม่สำเร็จ'
     },
     apisizepage: 3,
-    readrecast: 'entities',
-    timeExpired: 2,
+    readrecast: 'entities', // or memory
+    timeExpired: 1,
     tokenizer: 'http://35.193.232.190:5000/dc/',
     apinotfound: 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ',
     apinotreply: 'ไม่มีข้อมูล intent หรือไม่ใช่ tour-search หรือไม่มีข้อมูล reply',

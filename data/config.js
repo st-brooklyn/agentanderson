@@ -1,5 +1,6 @@
 module.exports = {
-    mapper: 'U5f4a5b31134878d0c98a1233d7e71d59',
+    // mapper: 'U5f4a5b31134878d0c98a1233d7e71d59', // น้องเม่น 
+    mapper: 'U5753269d897c7a610ad81fbe741806c6', 
     lineChannelAccessToken: 'dIZf/b/ZabUO0IafFmPxBvcG9xPKQXtGZ6wClV70CCqTwV1TJDT1m58rdm3pko08nIimFRk5wmcElbc7mF9ZXkntG7goq5NDifdSJBkGLyReznHswZuhR77uOYc9ryJIVAfhouccWFwtKMIMucBXpQdB04t89/1O/w1cDnyilFU=',
     lineChannelSecret: '912ad53b5e85ed684a9c52ac621d77e9',
     apiUrl: 'http://apitest.softsq.com:9001/JsonSOA/getdata.ashx',

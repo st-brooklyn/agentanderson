@@ -31,4 +31,5 @@ module.exports = {
     apinotfound: 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ',
     apinotreply: 'ไม่มีข้อมูล intent หรือไม่มีข้อมูล reply',
     modetraining:  true
+    
 }

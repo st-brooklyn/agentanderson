@@ -212,7 +212,7 @@ exports.disqualify_get = function(req, res, next) {
             if (resMessage.action != null){
                 intent = resMessage.action.slug;
             } else {
-                intent = 'tour-search'
+                intent = ''
             }
 
             var entity = resMessage['entities'];
@@ -232,6 +232,7 @@ exports.disqualify_get = function(req, res, next) {
                     departuredate: entity['departure-date'] ? entity['departure-date'][0] ? entity['departure-date'][0]['value'] : null : null,
                     returndate: entity['returndate'] ? entity['returndate'][0] ? entity['returndate'][0]['value'] : null : null,
                     month: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
+                    returnmonth: entity['month'] ? entity['month'][0] ? entity['month'][0]['value'] : null : null,
                     period: entity['period'] ? entity['period'][0] ? entity['period'][0]['value'] : null : null,
                     holiday: entity['holiday'] ? entity['holiday'][0] ? entity['holiday'][0]['value'] : null : null,
                     traveler: entity['traveler'] ? entity['traveler'][0] ? entity['traveler'][0]['value'] : null : null,

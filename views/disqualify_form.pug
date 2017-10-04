@@ -14,31 +14,9 @@ append body
         br
         label(for='country') Country:
         select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
-          - repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'พม่า']
+          - repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'สิงคโปร์', 'ยุโรป', 'พม่า', 'เวียดนาม', 'จีน', 'มาเก๊า', 'ลาว', 'ไต้หวัน', 'เยอรมัน', 'อินเดีย', 'อเมริกา', 'ออสเตรเลีย', 'นิวซีแลนด์', 'อียิปต์', 'แอฟริกาใต้', 'รัสเซีย', 'อังกฤษ', 'ออสเตรีย']
           for item in repeation
             option(selected=country == item) #{item}
-        //- select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
-        //-   option(value="ญี่ปุ่น") ญี่ปุ่น
-        //-   option(value="เกาหลี") เกาหลี
-        //-   option(value="ฮ่องกง") ฮ่องกง
-        //-   option(value="สิงคโปร์") สิงคโปร์
-        //-   option(value="ยุโรป") ยุโรป
-        //-   option(value="พม่า" ) พม่า
-        //-   option(value="เวียดนาม") เวียดนาม
-        //-   option(value="จีน") จีน
-        //-   option(value="มาเก๊า") มาเก๊า
-        //-   option(value="ลาว") ลาว
-        //-   option(value="ไต้หวัน") ไต้หวัน
-        //-   option(value="เยอรมัน") เยอรมัน
-        //-   option(value="อินเดีย") อินเดีย
-        //-   option(value="อเมริกา") อเมริกา
-        //-   option(value="ออสเตรเลีย") ออสเตรเลีย
-        //-   option(value="นิวซีแลนด์") นิวซีแลนด์
-        //-   option(value="อียิปต์") อียิปต์
-        //-   option(value="แอฟริกาใต้") แอฟริกาใต้
-        //-   option(value="รัสเซีย") รัสเซีย
-        //-   option(value="อังกฤษ") อังกฤษ
-        //-   option(value="ออสเตรีย") ออสเตรีย
         br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)

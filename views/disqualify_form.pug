@@ -35,7 +35,7 @@ append body
         br
         label(for='returnmonth') Return-Month:
         select#returnmonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
-        - listRMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          - listRMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
         for Ritem in listRMonth
           option(selected=returnmonth == Ritem) #{Ritem}
         br

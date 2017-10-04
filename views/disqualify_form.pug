@@ -18,6 +18,12 @@ append body
           for item in listcountrys
             option(selected=country == item) #{item}
         br
+        label(for='city') City:
+        select#city.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='city' value=city)
+          - listcitys = [ 'โตเกียว', 'ฮอกไกโด', 'โอซาก้า', 'ฟุกุโอกะ', 'ปูซาน', 'มัณฑะเลย์', 'ย่างกุ้ง', 'ฮานอย', 'ซาปา', 'ดานัง', 'จางเจียเจี้ย', 'คุนหมิง', 'กุ้ยหลิน', 'ปักกิ่ง']
+          for item in listcitys 
+            option(selected=city == item) #{item}
+        br
         label(for='tourcode') Product Code:
         input#tourcode.form-control(type='text', placeholder='รหัสสินค้า' name='tourcode' value=tourcode)
         br

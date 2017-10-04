@@ -14,7 +14,7 @@ append body
         br
         label(for='country') Country:
         select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
-          repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'พม่า']
+          - repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'พม่า']
           for item in repeation
             option(selected=country == item) #{item}
         //- select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)

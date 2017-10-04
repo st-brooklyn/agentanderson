@@ -395,7 +395,7 @@ function handleEvent(event) {
                 var requestSuccess = false;
                 var timeout = configs.apitimeout;
                 
-                if (intent == 'tour-search') {
+                if (intent == 'tour-search' || intent == 'tour-availability') {
                     // check condition get data from api
                     //if ((country || city || region) && departuredate && returndate && month && traveler)  {
                     if (country && departuredate && returndate && month && traveler)  {

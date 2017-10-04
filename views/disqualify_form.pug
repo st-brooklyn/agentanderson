@@ -26,18 +26,18 @@ append body
         br
         label(for='departuremonth') Departure-Month:
         select#departuremonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
-          - DMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
-          for item in DMonth
-            option(selected=departuremonth == item) #{item}
+          - listDMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          for Ditem in listDMonth
+            option(selected=departuremonth == Ditem) #{Ditem}
         br
         label(for='returndate') Return:
         input#returndate.form-control(type='Number', placeholder='วันเดินทางกลับ' name='returndate' value=returndate)
         br
         label(for='returnmonth') Return-Month:
         select#returnmonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
-        - RMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
-        for item in RMonth
-          option(selected=returnmonth == item) #{item}
+        - listRMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+        for Ritem in listRMonth
+          option(selected=returnmonth == Ritem) #{Ritem}
         br
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='Number', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)

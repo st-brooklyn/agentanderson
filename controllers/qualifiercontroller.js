@@ -169,12 +169,12 @@ exports.disqualifytraining_get = function(id, recastUuid){
                 });
 
                 var training = {
-                    uri: 'http://chatlog.tourprox.com/train/send',
+                    uri: 'http://chatlog.tourprox.com/training/send',
                     headers: {
                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                         'User-Agent': 'Request-Promise'
                     },
-                    json: false 
+                    json: true 
                 };
                 rp(training)
                 .then((train) => {

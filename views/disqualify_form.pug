@@ -27,6 +27,7 @@ append body
         label(for='departuremonth') Departure-Month:
         select#departuremonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
           - listDMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          option(value="") เลือกเดือน
           for Ditem in listDMonth
             option(selected=departuremonth == Ditem) #{Ditem}
         br
@@ -36,6 +37,7 @@ append body
         label(for='returnmonth') Return-Month:
         select#returnmonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
           - listRMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          option(value="") เลือกเดือน
           for Ritem in listRMonth
             option(selected=returnmonth == Ritem) #{Ritem}
         br

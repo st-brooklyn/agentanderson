@@ -14,8 +14,8 @@ append body
         br
         label(for='country') Country:
         select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
-          - repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'สิงคโปร์', 'ยุโรป', 'พม่า', 'เวียดนาม', 'จีน', 'มาเก๊า', 'ลาว', 'ไต้หวัน', 'เยอรมัน', 'อินเดีย', 'อเมริกา', 'ออสเตรเลีย', 'นิวซีแลนด์', 'อียิปต์', 'แอฟริกาใต้', 'รัสเซีย', 'อังกฤษ', 'ออสเตรีย']
-          for item in repeation
+          - listcountrys = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'สิงคโปร์', 'ยุโรป', 'พม่า', 'เวียดนาม', 'จีน', 'มาเก๊า', 'ลาว', 'ไต้หวัน', 'เยอรมัน', 'อินเดีย', 'อเมริกา', 'ออสเตรเลีย', 'นิวซีแลนด์', 'อียิปต์', 'แอฟริกาใต้', 'รัสเซีย', 'อังกฤษ', 'ออสเตรีย']
+          for item in listcountrys
             option(selected=country == item) #{item}
         br
         label(for='tourcode') Product Code:
@@ -24,19 +24,19 @@ append body
         label(for='departuredate') Departure:
         input#departuredate.form-control(type='Number', placeholder='วันเดินทางไป' name='departuredate' value=departuredate)
         br
-        label(for='month') Departure-Month:
+        label(for='departuremonth') Departure-Month:
         select#departuremonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
-          - repeation = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
-          for item in repeation
+          - DMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          for item in DMonth
             option(selected=departuremonth == item) #{item}
         br
         label(for='returndate') Return:
         input#returndate.form-control(type='Number', placeholder='วันเดินทางกลับ' name='returndate' value=returndate)
         br
-        label(for='month') Return-Month:
+        label(for='returnmonth') Return-Month:
         select#returnmonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
-        - repeation = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
-        for item in repeation
+        - RMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+        for item in RMonth
           option(selected=returnmonth == item) #{item}
         //-   option(value="มกราคม") มกราคม
         //-   option(value="กุมภาพันธ์") กุมภาพันธ์

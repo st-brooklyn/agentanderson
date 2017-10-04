@@ -25,39 +25,31 @@ append body
         input#departuredate.form-control(type='Number', placeholder='วันเดินทางไป' name='departuredate' value=departuredate)
         br
         label(for='month') Departure-Month:
-        //- input#month.form-control(type='text', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
-        select#departuremonth.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
-          option(value="มกราคม") มกราคม
-          option(value="กุมภาพันธ์") กุมภาพันธ์
-          option(value="มีนาคม") มีนาคม
-          option(value="เมษายน") เมษายน
-          option(value="พฤษภาคม") พฤษภาคม
-          option(value="มิถุนายน" ) มิถุนายน
-          option(value="กรกฎาคม") กรกฎาคม
-          option(value="สิงหาคม") สิงหาคม
-          option(value="กันยายน") กันยายน
-          option(value="ตุลาคม") ตุลาคม
-          option(value="พฤศจิกายน") พฤศจิกายน
-          option(value="ธันวาคม") ธันวาคม
+        select#departuremonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
+          - repeation = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+          for item in repeation
+            option(selected=departuremonth == item) #{item}
         br
         label(for='returndate') Return:
         input#returndate.form-control(type='Number', placeholder='วันเดินทางกลับ' name='returndate' value=returndate)
         br
         label(for='month') Return-Month:
-        //- input#month.form-control(type='text', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
-        select#returnmonth.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
-          option(value="มกราคม") มกราคม
-          option(value="กุมภาพันธ์") กุมภาพันธ์
-          option(value="มีนาคม") มีนาคม
-          option(value="เมษายน") เมษายน
-          option(value="พฤษภาคม") พฤษภาคม
-          option(value="มิถุนายน" ) มิถุนายน
-          option(value="กรกฎาคม") กรกฎาคม
-          option(value="สิงหาคม") สิงหาคม
-          option(value="กันยายน") กันยายน
-          option(value="ตุลาคม") ตุลาคม
-          option(value="พฤศจิกายน") พฤศจิกายน
-          option(value="ธันวาคม") ธันวาคม
+        select#returnmonth.select.form-control.input(type='select' placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
+        - repeation = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+        for item in repeation
+          option(selected=returnmonth == item) #{item}
+        //-   option(value="มกราคม") มกราคม
+        //-   option(value="กุมภาพันธ์") กุมภาพันธ์
+        //-   option(value="มีนาคม") มีนาคม
+        //-   option(value="เมษายน") เมษายน
+        //-   option(value="พฤษภาคม") พฤษภาคม
+        //-   option(value="มิถุนายน" ) มิถุนายน
+        //-   option(value="กรกฎาคม") กรกฎาคม
+        //-   option(value="สิงหาคม") สิงหาคม
+        //-   option(value="กันยายน") กันยายน
+        //-   option(value="ตุลาคม") ตุลาคม
+        //-   option(value="พฤศจิกายน") พฤศจิกายน
+        //-   option(value="ธันวาคม") ธันวาคม
         br
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='Number', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)

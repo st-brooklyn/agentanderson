@@ -75,7 +75,7 @@ exports.qualify_get = function(id, recastUuid){
                 });
                 if (configs.modetraining == true){
                     var training = {
-                        uri: 'http://chatlog.tourprox.com/train/send',
+                        uri: 'http://chatlog.tourprox.com/training/send',
                         headers: {
                             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                             'User-Agent': 'Request-Promise'

@@ -42,9 +42,9 @@ append body
         label(for='departuredate') Departure:
         input#departuredate.form-control(type='Number', placeholder='วันเดินทางไป' name='departuredate' value=departuredate)
         br
-        label(for='month') Month:
+        label(for='month') Departure-Month:
         //- input#month.form-control(type='text', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
-        select#month.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
+        select#departuremonth.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='departuremonth' value=departuremonth)
           option(value="มกราคม") มกราคม
           option(value="กุมภาพันธ์") กุมภาพันธ์
           option(value="มีนาคม") มีนาคม
@@ -61,9 +61,9 @@ append body
         label(for='returndate') Return:
         input#returndate.form-control(type='Number', placeholder='วันเดินทางกลับ' name='returndate' value=returndate)
         br
-        label(for='month') Month:
+        label(for='month') Return-Month:
         //- input#month.form-control(type='text', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
-        select#month.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='month' value=month)
+        select#returnmonth.form-control(type='select', placeholder='เดือนที่จะเดินทาง' name='returnmonth' value=returnmonth)
           option(value="มกราคม") มกราคม
           option(value="กุมภาพันธ์") กุมภาพันธ์
           option(value="มีนาคม") มีนาคม

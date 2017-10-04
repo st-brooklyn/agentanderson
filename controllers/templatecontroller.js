@@ -239,6 +239,33 @@ module.exports.templateConfirm = function(mappingId, recastUuid){
     return confirm;
 }
 
+module.exports.templateNoIntent = function(mappingId, recastUuid){
+    let confirm = {
+        "type": "template",
+        "altText": "this is a confirm no intent template",
+        "template": {
+            "type": "confirm",
+            "text": configs.predefinedMessages.confirmMessage,
+            "actions": [
+                {
+                  "type": "uri",
+                  "label": "Map",
+                  "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
+                },
+                {
+                  "type": "uri",
+                  "label": "No",
+                  "uri": "https://agentanderson.herokuapp.com/qualifier/disqualify/" + mappingId
+                }
+            ]
+        }
+    };
+
+    console.log("DEBUG: [createConfirmation No Intent] " + JSON.stringify(confirm));
+
+    return confirm;
+}
+
 module.exports.templateTraining = function(mappingId, recastUuid){
     let confirm = {
         "type": "template",

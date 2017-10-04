@@ -29,6 +29,6 @@ module.exports = {
     timeExpired: 1,
     tokenizer: 'http://35.193.232.190:5000/dc/',
     apinotfound: 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ',
-    apinotreply: 'ไม่มีข้อมูล intent หรือไม่ใช่ tour-search หรือไม่มีข้อมูล reply',
-    modetraining:  true
+    apinotreply: 'ไม่มีข้อมูล intent หรือไม่มีข้อมูล reply',
+    modetraining:  false
 }

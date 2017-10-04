@@ -1352,7 +1352,11 @@ function handleEvent(event) {
                 if (configs.modetraining == true) {
                     reply_confirm = tp.templateTraining(mappingId, '');
                 } else {
-                    reply_confirm = tp.templateConfirm(mappingId, '');
+                    if (intent == ''){
+                        reply_confirm = tp.templateNoIntent(mappingId, '');
+                    } else {
+                        reply_confirm = tp.templateConfirm(mappingId, '');
+                    }
                 }
 
             

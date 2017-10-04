@@ -290,7 +290,7 @@ function handleEvent(event) {
                         }
                     })
                     .catch((errfind) => {
-                        logger.erro('[Find when null token]', errfind);                        
+                        logger.error('[Find when null token]', errfind);                        
                     });
                 }
                 else {

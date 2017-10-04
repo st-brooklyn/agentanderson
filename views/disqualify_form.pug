@@ -16,10 +16,7 @@ append body
         select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
           repeation = [ 'ญี่ปุ่น', 'เกาหลี', 'ฮ่องกง', 'พม่า']
           for item in repeation
-            if country == item
-              option(selected="true") #{item}
-            else
-              option #{item}
+            option(selected=country == item) #{item}
         //- select#country.select.form-control.input(type='select' placeholder='เลือกประเทศ' name='country' value=country)
         //-   option(value="ญี่ปุ่น") ญี่ปุ่น
         //-   option(value="เกาหลี") เกาหลี

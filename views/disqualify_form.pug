@@ -38,18 +38,6 @@ append body
         - RMonth = [ 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
         for item in RMonth
           option(selected=returnmonth == item) #{item}
-        //-   option(value="มกราคม") มกราคม
-        //-   option(value="กุมภาพันธ์") กุมภาพันธ์
-        //-   option(value="มีนาคม") มีนาคม
-        //-   option(value="เมษายน") เมษายน
-        //-   option(value="พฤษภาคม") พฤษภาคม
-        //-   option(value="มิถุนายน" ) มิถุนายน
-        //-   option(value="กรกฎาคม") กรกฎาคม
-        //-   option(value="สิงหาคม") สิงหาคม
-        //-   option(value="กันยายน") กันยายน
-        //-   option(value="ตุลาคม") ตุลาคม
-        //-   option(value="พฤศจิกายน") พฤศจิกายน
-        //-   option(value="ธันวาคม") ธันวาคม
         br
         label(for='traveler') Number of passengers:
         input#traveler.form-control(type='Number', placeholder='จำนวนคนที่จะเดินทาง' name='traveler' value=traveler)

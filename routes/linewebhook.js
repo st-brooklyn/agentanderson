@@ -107,9 +107,13 @@ function handleEvent(event) {
                 let now = new Date();
                 let modDate = new Date(mapping.modifiedDate);
                 
-                logger.debug('[date] check date time : ', {DateDiff: Math.abs(modDate - now), calDate: configs.timeExpired}); 
+                logger.debug('[date] check date time : ', {
+                    DateDiff: Math.abs(modDate - now), 
+                    calDate: configs.timeExpired,
+                    expired: Math.abs(modDate - now) >= configs.timeExpired
+                }); 
 
-                if ((Math.abs(modDate - now)) >= (configs.timeExpired)) {
+                if (Math.abs(modDate - now) >= configs.timeExpired) {
                     needCreate = true;
                     mapping.expired = true;
                 }
@@ -206,7 +210,7 @@ function handleEvent(event) {
                 })
                 .then((createdmapping) => {
                     mappingId = createdmapping._id;
-                    logger.debug('[Create mapping] Mapping created.', createdmapping);                    
+                    logger.debug('[Create mapping] Mapping created.', [createdmapping, {id: mappingId}]); 
                 })
                 .catch((errorcreate) => {
                     logger.error('[Create mapping] Error creating a mapping', errorcreate);                    

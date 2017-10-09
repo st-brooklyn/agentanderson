@@ -109,7 +109,7 @@ function handleEvent(event) {
                 
                 logger.debug('[date] check date time : ', {DateDiff: Math.abs(modDate - now), calDate: configs.timeExpired}); 
 
-                if ((Math.abs(modDate - now)) >= (configs.timeExpired * 60 * 1000)) {
+                if ((Math.abs(modDate - now)) >= (configs.timeExpired)) {
                     needCreate = true;
                     mapping.expired = true;
                 }

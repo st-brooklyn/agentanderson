@@ -26,7 +26,7 @@ module.exports = {
     },
     apisizepage: 3,
     readrecast: 'entities', // or memory
-    timeExpired: 0.5,
+    timeExpired: 2000,
     tokenizer: 'http://35.193.232.190:5000/dc/',
     apinotfound: 'สำหรับโปรแกรมทัวร์ที่ลูกค้าสนใจ ตอนนี้เต็มแล้ว สนใจโปรแกรมอื่นไหมค่ะ',
     apinotreply: 'ไม่มีข้อมูล intent หรือไม่มีข้อมูล reply',

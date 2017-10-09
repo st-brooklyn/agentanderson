@@ -39,7 +39,7 @@ exports.qualify_get = function(id, recastUuid){
             ConfirmationResult.create({
                 mappingId: id,
                 intent: foundone.intent,
-                message: foundone.Message,
+                message: foundone.originalMessage,
                 reservationId: foundone.customerId,
                 result: true,
                 apiPayload: foundone.apiPayload,
@@ -133,7 +133,7 @@ exports.disqualifytraining_get = function(id, recastUuid){
             ConfirmationResult.create({
                 mappingId: id,
                 intent: foundone.intent,
-                message: foundone.Message,
+                message: foundone.originalMessage,
                 reservationId: foundone.customerId,
                 result: false,
                 apiPayload: foundone.apiPayload,

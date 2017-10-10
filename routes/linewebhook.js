@@ -416,7 +416,8 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: month,
-                                searchword: ''
+                                searchword: '',
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -494,7 +495,8 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: mperiod.getMonth(),
-                                searchword: ''
+                                searchword: '',
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -570,7 +572,8 @@ function handleEvent(event) {
                                 startdate: '',
                                 enddate: '',
                                 month: month,
-                                searchword: ''
+                                searchword: '',
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -646,7 +649,8 @@ function handleEvent(event) {
                                 startdate: returndate,
                                 enddate: departuredate,
                                 month: month,
-                                searchword: city
+                                searchword: city,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -723,7 +727,8 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: mperiod.getMonth(),
-                                searchword: city
+                                searchword: city,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -799,7 +804,8 @@ function handleEvent(event) {
                                 startdate: '',
                                 enddate: '',
                                 month: month,
-                                searchword: city
+                                searchword: city,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -875,7 +881,8 @@ function handleEvent(event) {
                                 startdate: returndate,
                                 enddate: departuredate,
                                 month: month,
-                                searchword: region
+                                searchword: region,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -952,7 +959,8 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: mperiod.getMonth(),
-                                searchword: region
+                                searchword: region,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -1028,7 +1036,8 @@ function handleEvent(event) {
                                 startdate: '',
                                 enddate: '',
                                 month: month,
-                                searchword: region
+                                searchword: region,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -1104,7 +1113,8 @@ function handleEvent(event) {
                                 startdate: returndate,
                                 enddate: departuredate,
                                 month: month,
-                                searchword: tourcode
+                                searchword: tourcode,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -1181,7 +1191,8 @@ function handleEvent(event) {
                                 startdate: departuredate,
                                 enddate: returndate,
                                 month: mperiod.getMonth(),
-                                searchword: tourcode
+                                searchword: tourcode,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
@@ -1257,7 +1268,8 @@ function handleEvent(event) {
                                 startdate: '',
                                 enddate: '',
                                 month: month,
-                                searchword: tourcode
+                                searchword: tourcode,
+                                pax: traveler
                             },
                             headers: {
                                 'User-Agent': 'Request-Promise'
